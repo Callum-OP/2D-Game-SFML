@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "system_error": "cpp",
+        "filesystem": "cpp",
+        "optional": "cpp",
+        "xlocmes": "cpp",
+        "xiosbase": "cpp",
+        "atomic": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xtree": "cpp",
+        "forward_list": "cpp",
+        "ios": "cpp",
+        "xstring": "cpp"
+    }
+}
