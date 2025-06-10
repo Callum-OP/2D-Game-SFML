@@ -13,6 +13,9 @@
         "xtree": "cpp",
         "forward_list": "cpp",
         "ios": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "iterator": "cpp",
+        "type_traits": "cpp",
+        "xutility": "cpp"
     }
 }
