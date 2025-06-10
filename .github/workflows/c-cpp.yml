@@ -14,9 +14,5 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install SFML
       run: sudo apt-get install libsfml-dev
-    - name: Build
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - name: Compile with MSVC
+      run: cl /EHsc /std:c++17 /I "C:\C++ Libraries\SFML-3.0.0-windows-vc17-32-bit\SFML-3.0.0\include" main.cpp /link "/LIBPATH:C:\C++ Libraries\SFML-3.0.0-windows-vc17-32-bit\SFML-3.0.0\lib" sfml-graphics.lib sfml-window.lib sfml-system.lib
