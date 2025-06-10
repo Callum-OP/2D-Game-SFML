@@ -9,7 +9,11 @@
 int main()
 {
     // Create a player sprite
-    sf::Texture texture("spritesheet.png");
+    sf::Texture texture;
+    if (!texture.loadFromFile("spritesheet.png")) {
+        // Handle error
+    }
+
     sf::Sprite sprite(texture);
 
     int texWidth;
