@@ -43,23 +43,23 @@ int main()
         // Remainder of main loop
 
         // Create new window with sprite drawn in
-        window.clear();
+        window.clear(sf::Color::White);
         window.draw(sprite);
         window.display();
 
         // If left key pressed then move character left
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) {
-            sprite.move({-1.f, 0.f});
+            sprite.move({-2.f, 0.f});
         }
         // If right key pressed then move character right
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right))
         {
-            sprite.move({1.f, 0.f});
+            sprite.move({2.f, 0.f});
         }
         // If down key pressed then move character down
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down))
         {
-            sprite.move({0.f, 1.f});
+            sprite.move({0.f, 2.f});
 
             // Walking down animation
             timer += 0.1f;
@@ -98,7 +98,7 @@ int main()
         // If up key pressed then move character up
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up))
         {
-            sprite.move({0.f, -1.f});
+            sprite.move({0.f, -2.f});
         }
     }
 }
