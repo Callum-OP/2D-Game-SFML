@@ -14,9 +14,9 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install SFML
       run: sudo apt-get install libsfml-dev
-    - name: configure
-      run: ./configure
-    - name: make
+    - name: Configure CMake
+      run: cmake .
+    - name: Build
       run: make
     - name: make check
       run: make check
