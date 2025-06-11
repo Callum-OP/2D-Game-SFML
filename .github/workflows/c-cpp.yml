@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  ubuntu:
+   ubuntu:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,27 +15,25 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install Dependencies
-      run: sudo apt-get update && sudo apt-get install -y cmake g++ libx11-dev libxrandr-dev libgl1-mesa-dev libfreetype6-dev libjpeg-dev libopenal-dev libxcursor-dev libxi-dev libudev-dev libogg-dev libvorbis-dev libflac-dev libsndfile-dev libpthread-stubs0-dev
+      run: sudo apt-get update && sudo apt-get install -y g++ libx11-dev libxrandr-dev libgl1-mesa-dev libfreetype6-dev libjpeg-dev libopenal-dev libxcursor-dev libxi-dev libudev-dev libogg-dev libvorbis-dev libflac-dev libsndfile-dev libpthread-stubs0-dev libsfml-dev
 
     - name: Clone SFML 3.0
       run: git clone --branch 3.0.0 https://github.com/SFML/SFML.git
 
-    - name: Configure CMake with Install Support
+    - name: Build SFML 3.0 Manually
       run: |
-        cd SFML
-        cmake -B build -DCMAKE_INSTALL_PREFIX=/usr/local
+        cd SFML/src
+        g++ -std=c++17 -c SFML/Window/*.cpp SFML/Graphics/*.cpp SFML/System/*.cpp
+        ar rcs libsfml.a *.o
+        sudo cp libsfml.a /usr/local/lib/
+        sudo cp -r SFML /usr/local/include/
 
-    - name: Build SFML 3.0 from Source
-      run: |
-        cd SFML
-        cmake --build build -- -j$(nproc)
-        sudo make install
-
-    - name: Compile Project with SFML 3.0
+    - name: Compile C++ Project with SFML
       run: g++ -std=c++17 main.cpp -o main -I/usr/local/include -L/usr/local/lib -lsfml-graphics -lsfml-window -lsfml-system
 
     - name: Verify SFML Version
       run: sfml-config --version
+
 
     # Windows test doesn't work due to missing dependencies error
 #    windows:
