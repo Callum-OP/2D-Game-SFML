@@ -7,22 +7,30 @@ on:
     branches: [ "main" ]
 
 jobs:
-  linux:
+  ubuntu:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: Install SFML
-      run: sudo apt-get install libsfml-dev
+    - name: Install Dependencies
+      run: sudo apt-get install cmake g++ libx11-dev libxrandr-dev libgl1-mesa-dev libfreetype6-dev libjpeg-dev libopenal-dev
 
-    - name: Verify SFML Installation
-      run: dpkg -L libsfml-dev | grep include/SFML
-
-    - name: Compile with g++
+    - name: Build SFML 3.0 from Source
       run: |
-        g++ -std=c++17 -Wall main.cpp -o main -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+        git clone --branch 3.0.0 https://github.com/SFML/SFML.git
+        cd SFML
+        cmake -B build
+        cmake --build build
+        sudo make install
 
+    - name: Compile Project with SFML 3.0
+      run: g++ -std=c++17 main.cpp -o main -I/usr/local/include -L/usr/local/lib -lsfml-graphics -lsfml-window -lsfml-system
+
+    - name: Verify SFML Version
+      run: sfml-config --version
+      
     # Windows test doesn't work due to missing dependencies error
 #    windows:
 #    runs-on: windows-latest
