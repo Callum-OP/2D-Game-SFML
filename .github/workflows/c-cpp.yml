@@ -16,12 +16,11 @@ jobs:
 
     - name: Install vcpkg
       run: |
-        if (!(Test-Path "C:\vcpkg")) {
+        if not exist C:\vcpkg (
           git clone https://github.com/microsoft/vcpkg C:\vcpkg
           cd C:\vcpkg
           bootstrap-vcpkg.bat
-        }
-
+        )
       
     - name: Cache vcpkg
       uses: actions/cache@v3
@@ -41,7 +40,8 @@ jobs:
       run: vcpkg integrate install
 
     - name: Compile C++ Code with SFML
-      run: cl /EHsc /std:c++17 main.cpp /link sfml-graphics.lib sfml-window.lib sfml-system.lib sfml-audio.lib sfml-network.lib
+      run: |
+        cl /EHsc /std:c++17 /I "C:\vcpkg\installed\x64-windows\include" main.cpp /link "/LIBPATH:C:\vcpkg\installed\x64-windows\lib" sfml-graphics.lib sfml-window.lib sfml-system.lib sfml-audio.lib sfml-network.lib
 
     - name: Run Executable
       run: main.exe
