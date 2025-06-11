@@ -16,11 +16,11 @@ jobs:
 
     - name: Install vcpkg
       run: |
-        if not exist C:\vcpkg (
+        if (!(Test-Path "C:\vcpkg")) {
           git clone https://github.com/microsoft/vcpkg C:\vcpkg
           cd C:\vcpkg
           bootstrap-vcpkg.bat
-        )
+        }
       
     - name: Cache vcpkg
       uses: actions/cache@v3
@@ -35,9 +35,6 @@ jobs:
 
     - name: Setup MSVC Compiler
       uses: ilammy/msvc-dev-cmd@v1.4.1
-    
-    - name: Integrate vcpkg with MSVC
-      run: vcpkg integrate install
 
     - name: Compile C++ Code with SFML
       run: |
