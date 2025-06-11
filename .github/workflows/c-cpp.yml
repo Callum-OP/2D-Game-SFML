@@ -7,68 +7,29 @@ on:
     branches: [ "main" ]
 
 jobs:
-   ubuntu:
-    runs-on: ubuntu-latest
+  windows:
+    runs-on: windows-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      run: sudo apt-get update && sudo apt-get install -y g++ libx11-dev libxrandr-dev libgl1-mesa-dev libfreetype6-dev libjpeg-dev libopenal-dev libxcursor-dev libxi-dev libudev-dev libogg-dev libvorbis-dev libflac-dev libsndfile-dev libpthread-stubs0-dev libsfml-dev
-
-    - name: Clone SFML 3.0
-      run: git clone --branch 3.0.0 https://github.com/SFML/SFML.git
-
-    - name: Build SFML 3.0 Manually
+    - name: Install vcpkg
       run: |
-        cd SFML/src
-        g++ -std=c++17 -c SFML/Window/*.cpp SFML/Graphics/*.cpp SFML/System/*.cpp
-        ar rcs libsfml.a *.o
-        sudo cp libsfml.a /usr/local/lib/
-        sudo cp -r SFML /usr/local/include/
+        git clone https://github.com/microsoft/vcpkg
+        cd vcpkg
+        bootstrap-vcpkg.bat
 
-    - name: Compile C++ Project with SFML
-      run: g++ -std=c++17 main.cpp -o main -I/usr/local/include -L/usr/local/lib -lsfml-graphics -lsfml-window -lsfml-system
+    - name: Install SFML and Dependencies via vcpkg
+      run: |
+        vcpkg install sfml:x64-windows
+        vcpkg install openal-soft:x64-windows vorbis:x64-windows flac:x64-windows
 
-    - name: Verify SFML Version
-      run: sfml-config --version
+    - name: Setup MSVC Compiler
+      uses: ilammy/msvc-dev-cmd@v1.4.1
 
+    - name: Compile C++ Project with MSVC and SFML
+      run: cl /EHsc /std:c++17 /I "C:\vcpkg\installed\x64-windows\include" main.cpp /link "/LIBPATH:C:\vcpkg\installed\x64-windows\lib" sfml-graphics.lib sfml-window.lib sfml-system.lib sfml-audio.lib sfml-network.lib
 
-    # Windows test doesn't work due to missing dependencies error
-#    windows:
-#    runs-on: windows-latest
-#
-#    steps:
-#   - name: Checkout Repository
-#      uses: actions/checkout@v4
-#
-#   - name: Install vcpkg
-#      run: |
-#       if (!(Test-Path "C:\vcpkg")) {
-#          git clone https://github.com/microsoft/vcpkg C:\vcpkg
-#          cd C:\vcpkg
-#          bootstrap-vcpkg.bat
-#        }
-#      
-#    - name: Cache vcpkg
-#      uses: actions/cache@v3
-#      with:
-#        path: C:\vcpkg
-#        key: vcpkg-${{ runner.os }}
-#        restore-keys: vcpkg-
-#
-#    - name: Install SFML via vcpkg
-#      run: |
-#        vcpkg install sfml:x64-windows
-#
-#    - name: Setup MSVC Compiler
-#      uses: ilammy/msvc-dev-cmd@v1.4.1
-#
-#    - name: Compile C++ Code with SFML
-#      run: |
-#        cl /EHsc /std:c++17 /I "C:\vcpkg\installed\x64-windows\include" main.cpp /link "/LIBPATH:C:\vcpkg\installed\x64-windows\lib" sfml-graphics.lib sfml-window.lib sfml-system.lib sfml-audio.lib sfml-network.lib
-#
-#    - name: Run Executable
-#      run: main.exe
-#      shell: cmd
+    - name: Verify SFML Installation
+      run: dir C:\vcpkg\installed\x64-windows\lib | findstr sfml
