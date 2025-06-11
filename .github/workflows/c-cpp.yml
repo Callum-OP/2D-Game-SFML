@@ -17,12 +17,18 @@ jobs:
     - name: Install Dependencies
       run: sudo apt-get update && sudo apt-get install -y cmake g++ libx11-dev libxrandr-dev libgl1-mesa-dev libfreetype6-dev libjpeg-dev libopenal-dev libxcursor-dev libxi-dev libudev-dev libogg-dev libvorbis-dev libflac-dev libsndfile-dev libpthread-stubs0-dev
 
+    - name: Clone SFML 3.0
+      run: git clone --branch 3.0.0 https://github.com/SFML/SFML.git
+
+    - name: Configure CMake with Install Support
+      run: |
+        cd SFML
+        cmake -B build -DCMAKE_INSTALL_PREFIX=/usr/local
+
     - name: Build SFML 3.0 from Source
       run: |
-        git clone --branch 3.0.0 https://github.com/SFML/SFML.git
         cd SFML
-        cmake -B build
-        cmake --build build
+        cmake --build build -- -j$(nproc)
         sudo make install
 
     - name: Compile Project with SFML 3.0
