@@ -11,12 +11,27 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Install SFML
-      run: choco install sfml
-    - name: Check SFML installation
-      run: where sfml-graphics.lib
-    - name: Check SFML installation
-      run: where sfml-graphics.lib || echo "SFML not found!"
-    - name: Compile with MSVC
-      run: cl /EHsc /std:c++17 /I "C:\C++ Libraries\SFML-3.0.0-windows-vc17-32-bit\SFML-3.0.0\include" main.cpp /link where sfml-graphics.lib sfml-graphics.lib sfml-window.lib sfml-system.lib
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg
+        cd vcpkg
+        bootstrap-vcpkg.bat
+
+    - name: Install SFML via vcpkg
+      run: |
+        vcpkg install sfml:x64-windows
+
+    - name: Setup MSVC Compiler
+      uses: ilammy/msvc-dev-cmd@v1.4.1
+
+    - name: Compile C++ Code with SFML
+      run: |
+        cl /EHsc /std:c++17 /I "C:\vcpkg\installed\x64-windows\include" main.cpp /link "/LIBPATH:C:\vcpkg\installed\x64-windows\lib" sfml-graphics.lib sfml-window.lib sfml-system.lib
+
+    - name: Run Executable
+      run: main.exe
+      shell: cmd
+
