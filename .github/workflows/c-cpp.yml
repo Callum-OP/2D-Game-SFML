@@ -23,7 +23,7 @@ jobs:
     - name: Install SFML and Dependencies via vcpkg
       run: |
         vcpkg install sfml:x64-windows
-        vcpkg install openal-soft:x64-windows vorbis:x64-windows flac:x64-windows
+        vcpkg install openal-soft:x64-windows libvorbis:x64-windows libflac:x64-windows
 
     - name: Setup MSVC Compiler
       uses: ilammy/msvc-dev-cmd@v1.4.1
