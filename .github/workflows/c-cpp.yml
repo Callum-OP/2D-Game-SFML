@@ -16,11 +16,12 @@ jobs:
 
     - name: Install vcpkg
       run: |
-        if not exist C:\vcpkg (
+        if (!(Test-Path "C:\vcpkg")) {
           git clone https://github.com/microsoft/vcpkg C:\vcpkg
           cd C:\vcpkg
           bootstrap-vcpkg.bat
-        )
+        }
+
       
     - name: Cache vcpkg
       uses: actions/cache@v3
