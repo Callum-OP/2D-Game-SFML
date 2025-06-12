@@ -63,37 +63,32 @@ void Player::handleInput() {
         // Will wait for set amount of time
         if (timer >= timerMax) {
             textureX += 242;
-            // If behind walking down textures, go to start
-            if(textureY == 727) {
-                if(textureX < 485) {
-                    textureX = 485;
-                }
-            }
-            // If gone past walking down textures, go back to start
-            if(textureY == 969) {
-                if(textureX > 727) {
-                    textureY = 727;
-                    textureX = 485;
-                }
-            }
-            // If not within walking down textures, go to start
-            if(textureY < 727 || textureY > 969) {
-                textureX = 485;
-                textureY = 727; 
-            }
-            // If texture width reached end of spritesheet
-            if(textureX > 1211) {
-                textureX = 1;
-                textureY += 242; 
-            }
-            // If texture width valid, then change current sprite texture
-            if(textureX <= 1211) {
-                sprite.setTextureRect({{textureX,textureY},{240,240}});
-            }
+            // Call animate function to play the walking down animation
+            animate(walkingDownXStart, walkingDownXEnd, 
+                walkingDownYStart, walkingDownYEnd, finalColumn);
             timer = 0.0f;
         }
     }
 }
+
+// Reusable function for animating player
+void Player::animate(int xStart, int xEnd, int yStart, int yEnd, int finalCol) {
+    // If current texture coordinates outside of expected values then use start coordinates
+    if(textureY == yStart) {if(textureX < xStart) {textureX = xStart;}}
+    if(textureY == yEnd) {if(textureX > xEnd) {textureY = yStart; textureX = xStart;}}
+    if(textureY < yStart || textureY > yEnd) {textureX = xStart; textureY = yStart;}
+
+    // If x is at final column, switch to next row
+    if (textureX > finalCol) { 
+        textureX = 1; textureY += 242;
+    }
+
+    // If x value is valid, then change current sprite texture coordinates
+    if (textureX <= finalCol) {
+        sprite.setTextureRect({{textureX, textureY}, {240, 240}});
+    }
+}
+
 
 void Player::update() {
     

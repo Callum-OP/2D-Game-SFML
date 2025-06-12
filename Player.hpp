@@ -9,6 +9,7 @@ public:
     void handleInput();
     void update();
     void draw(sf::RenderWindow& window);
+    void animate(int xStart, int xEnd, int yStart, int yEnd, int finalCol);
     private:
     sf::Texture texture;
     sf::Sprite sprite;
