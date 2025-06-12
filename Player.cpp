@@ -63,7 +63,7 @@ void Player::handleInput() {
         sprite.move({-horizontalSpeed, 0.0f});
 
         // Walking left animation
-        timer += 0.05f;
+        timer += 0.08f;
         // Will wait for set amount of time
         if (timer >= timerMax) {
             textureX += 242;
@@ -78,7 +78,7 @@ void Player::handleInput() {
         sprite.move({horizontalSpeed, 0.0f});
 
         // Walking right animation
-        timer += 0.05f;
+        timer += 0.08f;
         // Will wait for set amount of time
         if (timer >= timerMax) {
             textureX += 242;
@@ -93,7 +93,7 @@ void Player::handleInput() {
         sprite.move({0.0f, -verticalSpeed});
 
         // Walking up animation
-        timer += 0.1f;
+        timer += 0.08f;
         // Will wait for set amount of time
         if (timer >= timerMax) {
             textureX += 242;
@@ -108,7 +108,7 @@ void Player::handleInput() {
         sprite.move({0.0f, verticalSpeed});
 
         // Walking down animation
-        timer += 0.1f;
+        timer += 0.08f;
         // Will wait for set amount of time
         if (timer >= timerMax) {
             textureX += 242;
