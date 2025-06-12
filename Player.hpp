@@ -19,6 +19,9 @@ public:
     float verticalSpeed, horizontalSpeed;
     int finalColumn;
     int walkingDownXStart, walkingDownYStart, walkingDownXEnd, walkingDownYEnd;
+    int walkingUpXStart, walkingUpYStart, walkingUpXEnd, walkingUpYEnd;
+    int walkingLeftXStart, walkingLeftYStart, walkingLeftXEnd, walkingLeftYEnd;
+    int walkingRightXStart, walkingRightYStart, walkingRightXEnd, walkingRightYEnd;
 };
 
 #endif // PLAYER_HPP
