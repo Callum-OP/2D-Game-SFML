@@ -17,6 +17,7 @@ Player::Player()
     sf::Vector2<float> position(275.f, 200.f); // Set coordinates
     sprite.setPosition(position); // Place sprite at coordinates
     sprite.setScale({1.0f,1.0f});
+    //sprite.setColor(sf::Color::White);
 
     // Default movement speed
     verticalSpeed = 2.0f;
@@ -59,7 +60,7 @@ Player::Player()
 void Player::handleInput() {
 
     // If left key pressed then move character left
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
         sprite.move({-horizontalSpeed, 0.0f});
 
         // Walking left animation
@@ -74,7 +75,7 @@ void Player::handleInput() {
         }
     }
     // If right key pressed then move character right
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         sprite.move({horizontalSpeed, 0.0f});
 
         // Walking right animation
@@ -89,7 +90,7 @@ void Player::handleInput() {
         }
     }
     // If up key pressed then move character up
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({0.0f, -verticalSpeed});
 
         // Walking up animation
@@ -104,7 +105,7 @@ void Player::handleInput() {
         }
     }
     // If down key pressed then move character down
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({0.0f, verticalSpeed});
 
         // Walking down animation
