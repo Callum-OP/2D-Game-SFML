@@ -50,14 +50,41 @@ Player::Player()
 }
 
 void Player::handleInput() {
-
-        // If left key pressed then move character left
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
-        sprite.move({-horizontalSpeed, 0.0f});
-        // Waits for set amount of time then plays jogging west animation
+    // If both right and up key pressed then move character right and up at same time
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
+        sprite.move({horizontalSpeed, 0.0f});
+        sprite.move({0.0f, -verticalSpeed});
+        // Waits for set amount of time then plays jogging north east animation
         timer += 0.08f;
-        if (timer >= timerMax) {textureX += 240; animate(joggingWestXStart, joggingWestXEnd, 
-            joggingWestYStart, joggingWestYEnd); timer = 0.0f;}
+        if (timer >= timerMax) {textureX += 240; animate(joggingNorthEastXStart, joggingNorthEastXEnd, 
+            joggingNorthEastYStart, joggingNorthEastYEnd); timer = 0.0f;}
+    }
+    // If both right and down key pressed then move character right and down at same time
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
+        sprite.move({horizontalSpeed, 0.0f});
+        sprite.move({0.0f, verticalSpeed});
+        // Waits for set amount of time then plays jogging south east animation
+        timer += 0.08f;
+        if (timer >= timerMax) {textureX += 240; animate(joggingSouthEastXStart, joggingSouthEastXEnd, 
+            joggingSouthEastYStart, joggingSouthEastYEnd); timer = 0.0f;}
+    }
+    // If both left and up key pressed then move character left and up at same time
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
+        sprite.move({-horizontalSpeed, 0.0f});
+        sprite.move({0.0f, -verticalSpeed});
+        // Waits for set amount of time then plays jogging north west animation
+        timer += 0.08f;
+        if (timer >= timerMax) {textureX += 240; animate(joggingNorthWestXStart, joggingNorthWestXEnd, 
+            joggingNorthWestYStart, joggingNorthWestYEnd); timer = 0.0f;}
+    }
+    // If both left and down key pressed then move character left and down at same time
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
+        sprite.move({-horizontalSpeed, 0.0f});
+        sprite.move({0.0f, verticalSpeed});
+        // Waits for set amount of time then plays jogging south west animation
+        timer += 0.08f;
+        if (timer >= timerMax) {textureX += 240; animate(joggingSouthWestXStart, joggingSouthWestXEnd, 
+            joggingSouthWestYStart, joggingSouthWestYEnd); timer = 0.0f;}
     }
     // If right key pressed then move character right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
@@ -82,6 +109,14 @@ void Player::handleInput() {
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingSouthXStart, joggingSouthXEnd, 
             joggingSouthYStart, joggingSouthYEnd); timer = 0.0f;}
+    }
+    // If left key pressed then move character left
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
+        sprite.move({-horizontalSpeed, 0.0f});
+        // Waits for set amount of time then plays jogging west animation
+        timer += 0.08f;
+        if (timer >= timerMax) {textureX += 240; animate(joggingWestXStart, joggingWestXEnd, 
+            joggingWestYStart, joggingWestYEnd); timer = 0.0f;}
     }
 }
 
