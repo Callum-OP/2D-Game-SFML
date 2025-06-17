@@ -22,6 +22,7 @@ Player::Player()
     // Default movement speed
     verticalSpeed = 2.0f;
     horizontalSpeed = 2.0f;
+    moving = false;
 
     // Coordinates for current texture in spritesheet
     textureX = 0;
@@ -38,6 +39,15 @@ Player::Player()
     // Start and end coordinates for animation textures in spritesheet
     // These values will need to be changed if the spritesheet changes
 
+    standingEastX = 0; standingEastY = 0;
+    standingNorthX = 240; standingNorthY = 0;
+    standingNorthEastX = 480; standingNorthEastY = 0;
+    standingNorthWestX = 720; standingNorthWestY = 0;
+    standingSouthX = 960; standingSouthY = 0;
+    standingSouthEastX = 1200; standingSouthEastY = 0;
+    standingSouthWestX = 1440; standingSouthWestY = 0;
+    standingWestX = 1680; standingWestY = 0;
+
     joggingEastXStart = 1920; joggingEastYStart = 0; joggingEastXEnd = 720; joggingEastYEnd = 240;
     joggingNorthXStart = 960; joggingNorthYStart = 240; joggingNorthXEnd = 2160; joggingNorthYEnd = 240;
     joggingNorthEastXStart = 0; joggingNorthEastYStart = 480; joggingNorthEastXEnd = 1200; joggingNorthEastYEnd = 480;
@@ -52,8 +62,9 @@ Player::Player()
 void Player::handleInput() {
     // If both right and up key pressed then move character right and up at same time
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        sprite.move({horizontalSpeed, 0.0f});
-        sprite.move({0.0f, -verticalSpeed});
+        moving = true; northEast = true;
+        north = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
+        sprite.move({horizontalSpeed, 0.0f}); sprite.move({0.0f, -verticalSpeed});
         // Waits for set amount of time then plays jogging north east animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingNorthEastXStart, joggingNorthEastXEnd, 
@@ -61,8 +72,9 @@ void Player::handleInput() {
     }
     // If both right and down key pressed then move character right and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        sprite.move({horizontalSpeed, 0.0f});
-        sprite.move({0.0f, verticalSpeed});
+        moving = true; southEast = true;
+        north = false; northEast = false; east = false; south = false; southWest = false; west = false; northWest = false;
+        sprite.move({horizontalSpeed, 0.0f}); sprite.move({0.0f, verticalSpeed});
         // Waits for set amount of time then plays jogging south east animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingSouthEastXStart, joggingSouthEastXEnd, 
@@ -70,8 +82,9 @@ void Player::handleInput() {
     }
     // If both left and up key pressed then move character left and up at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        sprite.move({-horizontalSpeed, 0.0f});
-        sprite.move({0.0f, -verticalSpeed});
+        sprite.move({-horizontalSpeed, 0.0f}); sprite.move({0.0f, -verticalSpeed});
+        moving = true; northWest = true;
+        north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; west = false;
         // Waits for set amount of time then plays jogging north west animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingNorthWestXStart, joggingNorthWestXEnd, 
@@ -79,8 +92,9 @@ void Player::handleInput() {
     }
     // If both left and down key pressed then move character left and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        sprite.move({-horizontalSpeed, 0.0f});
-        sprite.move({0.0f, verticalSpeed});
+        sprite.move({-horizontalSpeed, 0.0f}); sprite.move({0.0f, verticalSpeed});
+        moving = true; southWest = true;
+        north = false; northEast = false; east = false; southEast = false; south = false; west = false; northWest = false;
         // Waits for set amount of time then plays jogging south west animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingSouthWestXStart, joggingSouthWestXEnd, 
@@ -89,6 +103,8 @@ void Player::handleInput() {
     // If right key pressed then move character right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         sprite.move({horizontalSpeed, 0.0f});
+        moving = true; east = true;
+        north = false; northEast = false; southEast = false; south = false ;southWest = false; west = false; northWest = false;
         // Waits for set amount of time then plays jogging east animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingEastXStart, joggingEastXEnd, 
@@ -97,6 +113,8 @@ void Player::handleInput() {
     // If up key pressed then move character up
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({0.0f, -verticalSpeed});
+        moving = true; north = true;
+        northEast = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
         // Waits for set amount of time then plays jogging north animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingNorthXStart, joggingNorthXEnd, 
@@ -105,6 +123,8 @@ void Player::handleInput() {
     // If down key pressed then move character down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({0.0f, verticalSpeed});
+        moving = true; south = true;
+        north = false; northEast = false; east = false; southEast = false; southWest = false; west = false; northWest = false;
         // Waits for set amount of time then plays jogging south animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingSouthXStart, joggingSouthXEnd, 
@@ -113,10 +133,14 @@ void Player::handleInput() {
     // If left key pressed then move character left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
         sprite.move({-horizontalSpeed, 0.0f});
+        moving = true; west = true;
+        north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; northWest = false;
         // Waits for set amount of time then plays jogging west animation
         timer += 0.08f;
         if (timer >= timerMax) {textureX += 240; animate(joggingWestXStart, joggingWestXEnd, 
             joggingWestYStart, joggingWestYEnd); timer = 0.0f;}
+    } else {
+        moving = false;
     }
 }
 
@@ -139,9 +163,20 @@ void Player::animate(int xStart, int xEnd, int yStart, int yEnd) {
     }
 }
 
-
+// Checking for changes to player
 void Player::update() {
-    
+    // If player is not moving then change player to standing pose
+    if (moving == false) {
+        if (east) {textureX = standingEastX; textureY = standingEastY;}
+        if (north) {textureX = standingNorthX; textureY = standingNorthY;}
+        if (northEast) {textureX = standingNorthEastX; textureY = standingNorthEastY;}
+        if (northWest) {textureX = standingNorthWestX; textureY = standingNorthWestY;}
+        if (south) {textureX = standingSouthX; textureY = standingSouthY;}
+        if (southEast) {textureX = standingSouthEastX; textureY = standingSouthEastY;}
+        if (southWest) {textureX = standingSouthWestX; textureY = standingSouthWestY;}
+        if (west) {textureX = standingWestX; textureY = standingWestY;}
+        sprite.setTextureRect({{textureX, textureY}, {240, 240}});
+    }
 }
 
 void Player::draw(sf::RenderWindow& window) {

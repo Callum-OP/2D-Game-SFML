@@ -18,6 +18,11 @@ public:
     float timer, timerMax;
     float verticalSpeed, horizontalSpeed;
     int finalColumn, finalRow;
+    bool moving, north, northEast, east, southEast, south, southWest, west, northWest;
+    int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
+    standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 
+    standingSouthEastX, standingSouthEastY, standingSouthX, standingSouthY,
+    standingSouthWestX, standingSouthWestY, standingWestX, standingWestY;
     int joggingNorthXStart, joggingNorthYStart, joggingNorthXEnd, joggingNorthYEnd;
     int joggingNorthEastXStart, joggingNorthEastYStart, joggingNorthEastXEnd, joggingNorthEastYEnd;
     int joggingEastXStart, joggingEastYStart, joggingEastXEnd, joggingEastYEnd;
