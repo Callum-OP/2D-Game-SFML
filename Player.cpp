@@ -51,65 +51,37 @@ Player::Player()
 
 void Player::handleInput() {
 
-    // If left key pressed then move character left
+        // If left key pressed then move character left
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
         sprite.move({-horizontalSpeed, 0.0f});
-
-        // jogging left animation
+        // Waits for set amount of time then plays jogging west animation
         timer += 0.08f;
-        // Will wait for set amount of time
-        if (timer >= timerMax) {
-            textureX += 240;
-            // Call animate function to play the jogging left animation
-            animate(joggingWestXStart, joggingWestXEnd, 
-                joggingWestYStart, joggingWestYEnd);
-            timer = 0.0f;
-        }
+        if (timer >= timerMax) {textureX += 240; animate(joggingWestXStart, joggingWestXEnd, 
+            joggingWestYStart, joggingWestYEnd); timer = 0.0f;}
     }
     // If right key pressed then move character right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         sprite.move({horizontalSpeed, 0.0f});
-
-        // jogging right animation
+        // Waits for set amount of time then plays jogging east animation
         timer += 0.08f;
-        // Will wait for set amount of time
-        if (timer >= timerMax) {
-            textureX += 240;
-            // Call animate function to play the jogging right animation
-            animate(joggingEastXStart, joggingEastXEnd, 
-                joggingEastYStart, joggingEastYEnd);
-            timer = 0.0f;
-        }
+        if (timer >= timerMax) {textureX += 240; animate(joggingEastXStart, joggingEastXEnd, 
+            joggingEastYStart, joggingEastYEnd); timer = 0.0f;}
     }
     // If up key pressed then move character up
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({0.0f, -verticalSpeed});
-
-        // jogging up animation
+        // Waits for set amount of time then plays jogging north animation
         timer += 0.08f;
-        // Will wait for set amount of time
-        if (timer >= timerMax) {
-            textureX += 240;
-            // Call animate function to play the jogging up animation
-            animate(joggingNorthXStart, joggingNorthXEnd, 
-                joggingNorthYStart, joggingNorthYEnd);
-            timer = 0.0f;
-        }
+        if (timer >= timerMax) {textureX += 240; animate(joggingNorthXStart, joggingNorthXEnd, 
+            joggingNorthYStart, joggingNorthYEnd); timer = 0.0f;}
     }
     // If down key pressed then move character down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({0.0f, verticalSpeed});
-
-        // jogging down animation
+        // Waits for set amount of time then plays jogging south animation
         timer += 0.08f;
-        // Will wait for set amount of time
-        if (timer >= timerMax) {
-            textureX += 240;
-            // Call animate function to play the jogging down animation
-            animate(joggingSouthXStart, joggingSouthXEnd, 
-                joggingSouthYStart, joggingSouthYEnd);
-            timer = 0.0f;
-        }
+        if (timer >= timerMax) {textureX += 240; animate(joggingSouthXStart, joggingSouthXEnd, 
+            joggingSouthYStart, joggingSouthYEnd); timer = 0.0f;}
     }
 }
 
