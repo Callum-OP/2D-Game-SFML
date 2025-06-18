@@ -6,4 +6,5 @@ To run the app on Windows I am using MSVC, the command to run the app is somethi
 cl /EHsc /std:c++17 /I 'C:\C++ Libraries\SFML-3.0.0-windows-vc17-32-bit\SFML-3.0.0\include' C:\Users\callu\2D-Game-C++\main.cpp /link '/LIBPATH:C:\C++ Libraries\SFML-3.0.0-windows-vc17-32-bit\SFML-3.0.0\lib' sfml-graphics.lib sfml-window.lib sfml-system.lib
 
 Below is a screenshot of the game in its current state.
+
 <img width="395" alt="2D Game SFML" src="https://github.com/user-attachments/assets/78444bac-4418-441f-b92b-858ecac660cd" />
