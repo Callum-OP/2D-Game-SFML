@@ -19,7 +19,7 @@ public:
     float timer, timerMax;
     float verticalSpeed, horizontalSpeed;
     int finalColumn, finalRow;
-    bool moving, sprinting, north, northEast, east, southEast, south, southWest, west, northWest;
+    bool moving, sprinting, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
 
     int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
     standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 
@@ -43,6 +43,15 @@ public:
     int sprintingSouthWestXStart, sprintingSouthWestYStart, sprintingSouthWestXEnd, sprintingSouthWestYEnd;
     int sprintingWestXStart, sprintingWestYStart, sprintingWestXEnd, sprintingWestYEnd;
     int sprintingNorthWestXStart, sprintingNorthWestYStart, sprintingNorthWestXEnd, sprintingNorthWestYEnd;
+
+    int attackNorthXStart, attackNorthYStart, attackNorthXEnd, attackNorthYEnd;
+    int attackNorthEastXStart, attackNorthEastYStart, attackNorthEastXEnd, attackNorthEastYEnd;
+    int attackEastXStart, attackEastYStart, attackEastXEnd, attackEastYEnd;
+    int attackSouthEastXStart, attackSouthEastYStart, attackSouthEastXEnd, attackSouthEastYEnd;
+    int attackSouthXStart, attackSouthYStart, attackSouthXEnd, attackSouthYEnd;
+    int attackSouthWestXStart, attackSouthWestYStart, attackSouthWestXEnd, attackSouthWestYEnd;
+    int attackWestXStart, attackWestYStart, attackWestXEnd, attackWestYEnd;
+    int attackNorthWestXStart, attackNorthWestYStart, attackNorthWestXEnd, attackNorthWestYEnd;
 };
 
 #endif // PLAYER_HPP

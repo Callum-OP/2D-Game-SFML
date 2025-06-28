@@ -66,6 +66,16 @@ Player::Player()
     sprintingSouthEastXStart = 1440; sprintingSouthEastYStart = 1920; sprintingSouthEastXEnd = 240; sprintingSouthEastYEnd = 2160;
     sprintingSouthWestXStart = 480; sprintingSouthWestYStart = 2160; sprintingSouthWestXEnd = 1680; sprintingSouthWestYEnd = 2160;
     sprintingWestXStart = 1920; sprintingWestYStart = 2160; sprintingWestXEnd = 720; sprintingWestYEnd = 2400;
+
+    sprinting = false;
+    attackEastXStart = 1440; attackEastYStart = 1200; attackEastXEnd = 240; attackEastYEnd = 1440;
+    attackNorthXStart = 480; attackNorthYStart = 1440; attackNorthXEnd = 1680; attackNorthYEnd = 1440;
+    attackNorthEastXStart = 1920; attackNorthEastYStart = 1440; attackNorthEastXEnd = 720; attackNorthEastYEnd = 1680;
+    attackNorthWestXStart = 960; attackNorthWestYStart = 1680; attackNorthWestXEnd = 2160; attackNorthWestYEnd = 1680;
+    attackSouthXStart = 0; attackSouthYStart = 1920; attackSouthXEnd = 1200; attackSouthYEnd = 1920;
+    attackSouthEastXStart = 1440; attackSouthEastYStart = 1920; attackSouthEastXEnd = 240; attackSouthEastYEnd = 2160;
+    attackSouthWestXStart = 480; attackSouthWestYStart = 2160; attackSouthWestXEnd = 1680; attackSouthWestYEnd = 2160;
+    attackWestXStart = 1920; attackWestYStart = 2160; attackWestXEnd = 720; attackWestYEnd = 2400;
 }
 
 void Player::handleInput() {
@@ -183,6 +193,47 @@ void Player::handleInput() {
     } else {
         moving = false;
     }
+    // If space pressed then attack and change to attack animation
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Space)) {
+        attacking = true;
+        timer += 0.08f;
+        // Check direction user is facing
+        if (north) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackNorthXStart, attackNorthXEnd, 
+                attackNorthYStart, attackNorthYEnd); timer = 0.0f;}
+        } else if (northEast) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackNorthEastXStart, attackNorthEastXEnd, 
+                attackNorthEastYStart, attackNorthEastYEnd); timer = 0.0f;}
+        } else if (east) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackEastXStart, attackEastXEnd, 
+                attackEastYStart, attackEastYEnd); timer = 0.0f;}
+        } else if (southEast) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackSouthEastXStart, attackSouthEastXEnd, 
+                attackSouthEastYStart, attackSouthEastYEnd); timer = 0.0f;}
+        } else if (south) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackSouthXStart, attackSouthXEnd, 
+                attackSouthYStart, attackSouthYEnd); timer = 0.0f;}
+        } else if (southWest) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackSouthWestXStart, attackSouthWestXEnd, 
+                attackSouthWestYStart, attackSouthWestYEnd); timer = 0.0f;}
+        } else if (west) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackWestXStart, attackWestXEnd, 
+                attackWestYStart, attackWestYEnd); timer = 0.0f;}
+        } else if (northWest) {
+            // Attack animation
+            if (timer >= timerMax) {textureX += 240; animate(attackNorthWestXStart, attackNorthWestXEnd, 
+                attackNorthWestYStart, attackNorthWestYEnd); timer = 0.0f;}
+        }
+    } else {
+        attacking = false;
+    }
 }
 
 // Reusable function for animating player
@@ -216,7 +267,7 @@ void Player::sprint(bool sprint) {
 // Checking for changes to player
 void Player::update() {
     // If player is not moving then change player to standing pose
-    if (moving == false) {
+    if (moving == false && attacking == false) {
         if (east) {textureX = standingEastX; textureY = standingEastY;}
         if (north) {textureX = standingNorthX; textureY = standingNorthY;}
         if (northEast) {textureX = standingNorthEastX; textureY = standingNorthEastY;}
