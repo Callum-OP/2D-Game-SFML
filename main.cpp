@@ -34,7 +34,6 @@ int main()
         if (keyPressed.scancode == sf::Keyboard::Scancode::Escape) {
             window.close();
         }
-        lastDirection = keyPressed.scancode; // Key that was last clicked
     };
     // Check when key is released
     const auto onKeyReleased = [&window, &player, &clock, &lastClickTime, &doubleClickTime, &lastDirection](const sf::Event::KeyReleased& keyPressed) {
@@ -66,7 +65,7 @@ int main()
 
         // Handle player controls
         player.handleInput();
-        player.update();
+        player.update(window);
 
         // Create new window with sprite drawn in
         window.clear(sf::Color::White);

@@ -8,12 +8,13 @@ public:
     Player();
     void handleInput();
     void Player::sprint(bool sprint);
-    void update();
+    void update(sf::RenderWindow& window);
     void draw(sf::RenderWindow& window);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
     private:
     sf::Texture texture;
     sf::Sprite sprite;
+    std::string direction;
 
     int textureX, textureY;
     float timer, timerMax;
