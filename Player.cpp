@@ -82,49 +82,49 @@ void Player::handleInput() {
     // If both right and up key pressed then move character north east
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({horizontalSpeed / 1.5f, -verticalSpeed / 1.5f});
-        if (sprinting) {sprite.move({horizontalSpeed / 1.5f, -verticalSpeed / 1.5f});}
+        if (sprinting) {sprite.move({horizontalSpeed / 1.5f * 1.5f, -verticalSpeed / 1.5f * 1.5f});}
         moving = true;
     }
     // If both right and down key pressed then move character south east
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({horizontalSpeed / 1.5f, verticalSpeed / 1.5f});
-        if (sprinting) {sprite.move({(horizontalSpeed / 1.5f) * 3, (verticalSpeed / 1.5f) * 3});}
+        if (sprinting) {sprite.move({(horizontalSpeed / 1.5f) * 1.5f, (verticalSpeed / 1.5f) * 1.5f});}
         moving = true;
     }
     // If both left and up key pressed then move character north west
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f});
-        if (sprinting) {sprite.move({-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f});}
+        if (sprinting) {sprite.move({-horizontalSpeed / 1.5f * 1.5f, -verticalSpeed / 1.5f * 1.5f});}
         moving = true;
     }
     // If both left and down key pressed then move character south west
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({-horizontalSpeed / 1.5f, verticalSpeed / 1.5f});
-        if (sprinting) {sprite.move({(-horizontalSpeed / 1.5f) * 3, (verticalSpeed / 1.5f) * 3});}
+        if (sprinting) {sprite.move({(-horizontalSpeed / 1.5f) * 1.5f, (verticalSpeed / 1.5f) * 1.5f});}
         moving = true;
     }
     // If right key pressed then move character east
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         sprite.move({horizontalSpeed, 0.0f});
-        if (sprinting) {sprite.move({horizontalSpeed * 3, 0.0f});}
+        if (sprinting) {sprite.move({horizontalSpeed * 1.5f, 0.0f});}
         moving = true;
     }
     // If up key pressed then move character north
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({0.0f, -verticalSpeed});
-        if (sprinting) {sprite.move({0.0f, -verticalSpeed * 3});}
+        if (sprinting) {sprite.move({0.0f, -verticalSpeed * 1.5f});}
         moving = true;
     }
     // If down key pressed then move character south
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({0.0f, verticalSpeed});
-        if (sprinting) {sprite.move({0.0f, verticalSpeed * 3});}
+        if (sprinting) {sprite.move({0.0f, verticalSpeed * 1.5f});}
         moving = true;
     }
     // If left key pressed then move character west
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
         sprite.move({-horizontalSpeed, 0.0f});
-        if (sprinting) {sprite.move({-horizontalSpeed * 3, 0.0f});}
+        if (sprinting) {sprite.move({-horizontalSpeed * 1.5f, 0.0f});}
         moving = true;
     } else {
         moving = false;
