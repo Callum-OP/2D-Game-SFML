@@ -312,31 +312,31 @@ void Player::update(sf::RenderWindow& window) {
         south = false; southWest = false; west = false; northWest = false;
     } else if (angle < 67.5f) {
         southEast = true;
-        north = false; northEast = false; east = true;
+        north = false; northEast = false; east = false;
         south = false; southWest = false; west = false; northWest = false;
     } else if (angle < 112.5f) {
         south = true;
-        north = false; northEast = false; east = true; southEast = false; 
+        north = false; northEast = false; east = false; southEast = false; 
         southWest = false; west = false; northWest = false;
     } else if (angle < 157.5f) {
         southWest = true;
-        north = false; northEast = false; east = true; southEast = false; 
+        north = false; northEast = false; east = false; southEast = false; 
         south = false; west = false; northWest = false;
     } else if (angle < 202.5f) {
         west = true;
-        north = false; northEast = false; east = true; southEast = false; 
+        north = false; northEast = false; east = false; southEast = false; 
         south = false; southWest = false; northWest = false;
     } else if (angle < 247.5f) {
         northWest = true;
-        north = false; northEast = false; east = true; southEast = false; 
+        north = false; northEast = false; east = false; southEast = false; 
         south = false; southWest = false; west = false;
     } else if (angle < 292.5f) {
         north = true;
-        northEast = false; east = true; southEast = false; 
+        northEast = false; east = false; southEast = false; 
         south = false; southWest = false; west = false; northWest = false;
     } else {
         northEast = true;
-        north = false; east = true; southEast = false; 
+        north = false; east = false; southEast = false; 
         south = false; southWest = false; west = false; northWest = false;
     }
 }
