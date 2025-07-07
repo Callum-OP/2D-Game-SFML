@@ -1,4 +1,4 @@
-This a 2D top down game using C++ and SFML 3.0, includes 8 directional movement and animation, it is still a work in progress but is planned to have combat, health and enemies and be similar to top down zelda games. I am very new to SFML so I'm learning as I go.
+This is an ambitious 2D top down game made using C++ and SFML 3.0, includes 8 directional movement and animation, it is still a work in progress but is planned to have combat, health and enemies and be similar to top down zelda games. I am very new to SFML so I'm learning as I go. This version allows players to turn and face a direction usng their mouse, while allowing the player to move in the opposite direction.
 
 This app requires the SMFL 3.0 library to work, specifically the graphics, window and system components.
 
