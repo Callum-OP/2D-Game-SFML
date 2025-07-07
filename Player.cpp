@@ -78,7 +78,12 @@ Player::Player()
     attackWestXStart = 1920; attackWestYStart = 2160; attackWestXEnd = 720; attackWestYEnd = 2400;
 }
 
+// ----- Handle player input such as movement and combat -----
+
 void Player::handleInput() {
+
+    // ----- Movement input ------
+
     // If both right and up key pressed then move character north east
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({horizontalSpeed / 1.5f, -verticalSpeed / 1.5f});
@@ -106,13 +111,19 @@ void Player::handleInput() {
     // If right key pressed then move character east
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         sprite.move({horizontalSpeed, 0.0f});
-        if (sprinting) {sprite.move({horizontalSpeed * 1.5f, 0.0f});}
+        if (sprinting) {sprite.move({horizontalSpeed * 1.5f, 0.0f});
+        east = true;
+        north = false; northEast = false; southEast = false; 
+        south = false; southWest = false; west = false; northWest = false;}
         moving = true;
     }
     // If up key pressed then move character north
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({0.0f, -verticalSpeed});
-        if (sprinting) {sprite.move({0.0f, -verticalSpeed * 1.5f});}
+        if (sprinting) {sprite.move({0.0f, -verticalSpeed * 1.5f});
+        north = true;
+        northEast = false; east = false; southEast = false; 
+        south = false; southWest = false; west = false; northWest = false;}
         moving = true;
     }
     // If down key pressed then move character south
@@ -129,6 +140,9 @@ void Player::handleInput() {
     } else {
         moving = false;
     }
+
+    // ----- Attack input ------
+
     // If space pressed then attack and change to attack animation
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Space)) {
         attacking = true;
@@ -172,6 +186,8 @@ void Player::handleInput() {
     }
 }
 
+// ----- Handle animations -----
+
 // Reusable function for animating player
 void Player::animate(int xStart, int xEnd, int yStart, int yEnd) {
     // If current texture coordinates outside of expected values then use start coordinates
@@ -191,6 +207,8 @@ void Player::animate(int xStart, int xEnd, int yStart, int yEnd) {
     }
 }
 
+// ----- Check for double tap input from main -----
+
 // Sprint movement boolean, to be called true in main when user double tabs movement keys
 void Player::sprint(bool sprint) {
     if (sprint) {
@@ -200,8 +218,13 @@ void Player::sprint(bool sprint) {
     }
 }
 
+// ----- Handle updates such as player animations and mouse tracking -----
+
 // Checking for changes to player (such as animation)
 void Player::update(sf::RenderWindow& window) {
+
+    // ----- Handle player animations -----
+
     // If player is not moving then change player to standing pose
     if (moving == false && attacking == false) {
         if (east) {textureX = standingEastX; textureY = standingEastY;}
@@ -297,6 +320,8 @@ void Player::update(sf::RenderWindow& window) {
         }
     }
 
+    // ----- Handle mouse tracking -----
+
     // Get mouse position relative to window
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
@@ -308,7 +333,7 @@ void Player::update(sf::RenderWindow& window) {
     // Get direction of mouse
     if (angle >= 337.5f || angle < 22.5f) {
         east = true;
-        north = false; northEast = false; east = true; southEast = false; 
+        north = false; northEast = false; southEast = false; 
         south = false; southWest = false; west = false; northWest = false;
     } else if (angle < 67.5f) {
         southEast = true;
@@ -340,6 +365,8 @@ void Player::update(sf::RenderWindow& window) {
         south = false; southWest = false; west = false; northWest = false;
     }
 }
+
+// ----- Draw player sprite in provided window -----
 
 void Player::draw(sf::RenderWindow& window) {
     window.draw(sprite);
