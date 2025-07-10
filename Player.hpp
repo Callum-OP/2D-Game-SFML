@@ -26,14 +26,14 @@ public:
     standingSouthEastX, standingSouthEastY, standingSouthX, standingSouthY,
     standingSouthWestX, standingSouthWestY, standingWestX, standingWestY;
 
-    int joggingNorthXStart, joggingNorthYStart, joggingNorthXEnd, joggingNorthYEnd;
-    int joggingNorthEastXStart, joggingNorthEastYStart, joggingNorthEastXEnd, joggingNorthEastYEnd;
-    int joggingEastXStart, joggingEastYStart, joggingEastXEnd, joggingEastYEnd;
-    int joggingSouthEastXStart, joggingSouthEastYStart, joggingSouthEastXEnd, joggingSouthEastYEnd;
-    int joggingSouthXStart, joggingSouthYStart, joggingSouthXEnd, joggingSouthYEnd;
-    int joggingSouthWestXStart, joggingSouthWestYStart, joggingSouthWestXEnd, joggingSouthWestYEnd;
-    int joggingWestXStart, joggingWestYStart, joggingWestXEnd, joggingWestYEnd;
-    int joggingNorthWestXStart, joggingNorthWestYStart, joggingNorthWestXEnd, joggingNorthWestYEnd;
+    int JogNorthXStart, JogNorthYStart, JogNorthXEnd, JogNorthYEnd;
+    int JogNorthEastXStart, JogNorthEastYStart, JogNorthEastXEnd, JogNorthEastYEnd;
+    int JogEastXStart, JogEastYStart, JogEastXEnd, JogEastYEnd;
+    int JogSouthEastXStart, JogSouthEastYStart, JogSouthEastXEnd, JogSouthEastYEnd;
+    int JogSouthXStart, JogSouthYStart, JogSouthXEnd, JogSouthYEnd;
+    int JogSouthWestXStart, JogSouthWestYStart, JogSouthWestXEnd, JogSouthWestYEnd;
+    int JogWestXStart, JogWestYStart, JogWestXEnd, JogWestYEnd;
+    int JogNorthWestXStart, JogNorthWestYStart, JogNorthWestXEnd, JogNorthWestYEnd;
 
     int sprintingNorthXStart, sprintingNorthYStart, sprintingNorthXEnd, sprintingNorthYEnd;
     int sprintingNorthEastXStart, sprintingNorthEastYStart, sprintingNorthEastXEnd, sprintingNorthEastYEnd;

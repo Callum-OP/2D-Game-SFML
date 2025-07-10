@@ -33,8 +33,8 @@ Player::Player()
     timerMax = 0.5f;
 
     // When x coordinates have reached the final column
-    finalColumn = 2160;
-    finalRow = 2400;
+    finalColumn = 2880;
+    finalRow = 3120;
 
     // Start and end coordinates for animation textures in spritesheet
     // These values will need to be changed if the spritesheet changes
@@ -48,34 +48,34 @@ Player::Player()
     standingSouthWestX = 1440; standingSouthWestY = 0;
     standingWestX = 1680; standingWestY = 0;
 
-    joggingEastXStart = 1920; joggingEastYStart = 0; joggingEastXEnd = 720; joggingEastYEnd = 240;
-    joggingNorthXStart = 960; joggingNorthYStart = 240; joggingNorthXEnd = 2160; joggingNorthYEnd = 240;
-    joggingNorthEastXStart = 0; joggingNorthEastYStart = 480; joggingNorthEastXEnd = 1200; joggingNorthEastYEnd = 480;
-    joggingNorthWestXStart = 1440; joggingNorthWestYStart = 480; joggingNorthWestXEnd = 240; joggingNorthWestYEnd = 720;
-    joggingSouthXStart = 480; joggingSouthYStart = 720; joggingSouthXEnd = 1680; joggingSouthYEnd = 720;
-    joggingSouthEastXStart = 1920; joggingSouthEastYStart = 720; joggingSouthEastXEnd = 720; joggingSouthEastYEnd = 960;
-    joggingSouthWestXStart = 960; joggingSouthWestYStart = 960; joggingSouthWestXEnd = 2160; joggingSouthWestYEnd = 960;
-    joggingWestXStart = 0; joggingWestYStart = 1200; joggingWestXEnd = 1200; joggingWestYEnd = 1200;
+    JogEastXStart = 1920; JogEastYStart = 0; JogEastXEnd = 0; JogEastYEnd = 240;
+    JogNorthXStart = 240; JogNorthYStart = 240; JogNorthXEnd = 1440; JogNorthYEnd = 240;
+    JogNorthEastXStart = 1680; JogNorthEastYStart = 240; JogNorthEastXEnd = 2880; JogNorthEastYEnd = 240;
+    JogNorthWestXStart = 0; JogNorthWestYStart = 480; JogNorthWestXEnd = 1200; JogNorthWestYEnd = 480;
+    JogSouthXStart = 1440; JogSouthYStart = 480; JogSouthXEnd = 2640; JogSouthYEnd = 480;
+    JogSouthEastXStart = 2880; JogSouthEastYStart = 480; JogSouthEastXEnd = 960; JogSouthEastYEnd = 720;
+    JogSouthWestXStart = 1200; JogSouthWestYStart = 720; JogSouthWestXEnd = 2400; JogSouthWestYEnd = 720;
+    JogWestXStart = 2640; JogWestYStart = 720; JogWestXEnd = 720; JogWestYEnd = 960;
+
+    attacking = false;
+    attackEastXStart = 1680; attackEastYStart = 1200; attackEastXEnd = 0; attackEastYEnd = 1440;
+    attackNorthXStart = 240; attackNorthYStart = 1440; attackNorthXEnd = 1680; attackNorthYEnd = 1440;
+    attackNorthEastXStart = 1920; attackNorthEastYStart = 1440; attackNorthEastXEnd = 240; attackNorthEastYEnd = 1680;
+    attackNorthWestXStart = 480; attackNorthWestYStart = 1680; attackNorthWestXEnd = 1920; attackNorthWestYEnd = 1680;
+    attackSouthXStart = 2160; attackSouthYStart = 1680; attackSouthXEnd = 480; attackSouthYEnd = 1920;
+    attackSouthEastXStart = 720; attackSouthEastYStart = 1920; attackSouthEastXEnd = 2160; attackSouthEastYEnd = 1920;
+    attackSouthWestXStart = 2400; attackSouthWestYStart = 1920; attackSouthWestXEnd = 720; attackSouthWestYEnd = 2160;
+    attackWestXStart = 960; attackWestYStart = 2160; attackWestXEnd = 2400; attackWestYEnd = 2160;
 
     sprinting = false;
-    sprintingEastXStart = 1440; sprintingEastYStart = 1200; sprintingEastXEnd = 240; sprintingEastYEnd = 1440;
-    sprintingNorthXStart = 480; sprintingNorthYStart = 1440; sprintingNorthXEnd = 1680; sprintingNorthYEnd = 1440;
-    sprintingNorthEastXStart = 1920; sprintingNorthEastYStart = 1440; sprintingNorthEastXEnd = 720; sprintingNorthEastYEnd = 1680;
-    sprintingNorthWestXStart = 960; sprintingNorthWestYStart = 1680; sprintingNorthWestXEnd = 2160; sprintingNorthWestYEnd = 1680;
-    sprintingSouthXStart = 0; sprintingSouthYStart = 1920; sprintingSouthXEnd = 1200; sprintingSouthYEnd = 1920;
-    sprintingSouthEastXStart = 1440; sprintingSouthEastYStart = 1920; sprintingSouthEastXEnd = 240; sprintingSouthEastYEnd = 2160;
-    sprintingSouthWestXStart = 480; sprintingSouthWestYStart = 2160; sprintingSouthWestXEnd = 1680; sprintingSouthWestYEnd = 2160;
-    sprintingWestXStart = 1920; sprintingWestYStart = 2160; sprintingWestXEnd = 720; sprintingWestYEnd = 2400;
-
-    sprinting = false;
-    attackEastXStart = 1440; attackEastYStart = 1200; attackEastXEnd = 240; attackEastYEnd = 1440;
-    attackNorthXStart = 480; attackNorthYStart = 1440; attackNorthXEnd = 1680; attackNorthYEnd = 1440;
-    attackNorthEastXStart = 1920; attackNorthEastYStart = 1440; attackNorthEastXEnd = 720; attackNorthEastYEnd = 1680;
-    attackNorthWestXStart = 960; attackNorthWestYStart = 1680; attackNorthWestXEnd = 2160; attackNorthWestYEnd = 1680;
-    attackSouthXStart = 0; attackSouthYStart = 1920; attackSouthXEnd = 1200; attackSouthYEnd = 1920;
-    attackSouthEastXStart = 1440; attackSouthEastYStart = 1920; attackSouthEastXEnd = 240; attackSouthEastYEnd = 2160;
-    attackSouthWestXStart = 480; attackSouthWestYStart = 2160; attackSouthWestXEnd = 1680; attackSouthWestYEnd = 2160;
-    attackWestXStart = 1920; attackWestYStart = 2160; attackWestXEnd = 720; attackWestYEnd = 2400;
+    sprintingEastXStart = 2640; sprintingEastYStart = 2160; sprintingEastXEnd = 720; sprintingEastYEnd = 2400;
+    sprintingNorthXStart = 960; sprintingNorthYStart = 2400; sprintingNorthXEnd = 2160; sprintingNorthYEnd = 2400;
+    sprintingNorthEastXStart = 2400; sprintingNorthEastYStart = 2400; sprintingNorthEastXEnd = 480; sprintingNorthEastYEnd = 2640;
+    sprintingNorthWestXStart = 720; sprintingNorthWestYStart = 2640; sprintingNorthWestXEnd = 1920; sprintingNorthWestYEnd = 2640;
+    sprintingSouthXStart = 2160; sprintingSouthYStart = 2640; sprintingSouthXEnd = 240; sprintingSouthYEnd = 2880;
+    sprintingSouthEastXStart = 480; sprintingSouthEastYStart = 2880; sprintingSouthEastXEnd = 1680; sprintingSouthEastYEnd = 2880;
+    sprintingSouthWestXStart = 1920; sprintingSouthWestYStart = 2880; sprintingSouthWestXEnd = 0; sprintingSouthWestYEnd = 3120;
+    sprintingWestXStart = 240; sprintingWestYStart = 3120; sprintingWestXEnd = 1440; sprintingWestYEnd = 3120;
 }
 
 void Player::handleInput() {
@@ -84,112 +84,112 @@ void Player::handleInput() {
         moving = true; northEast = true;
         north = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
         sprite.move({horizontalSpeed / 1.5f, -verticalSpeed / 1.5f});
-        // Waits for set amount of time then plays jogging north east animation
+        // Waits for set amount of time then plays Jog north east animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({horizontalSpeed / 1.5f, -verticalSpeed / 1.5f}); textureX += 240; animate(sprintingNorthEastXStart, sprintingNorthEastXEnd, 
             sprintingNorthEastYStart, sprintingNorthEastYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingNorthEastXStart, joggingNorthEastXEnd, 
-            joggingNorthEastYStart, joggingNorthEastYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogNorthEastXStart, JogNorthEastXEnd, 
+            JogNorthEastYStart, JogNorthEastYEnd); timer = 0.0f;}
     }
     // If both right and down key pressed then move character right and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         moving = true; southEast = true;
         north = false; northEast = false; east = false; south = false; southWest = false; west = false; northWest = false;
         sprite.move({horizontalSpeed / 1.5f, verticalSpeed / 1.5f});
-        // Waits for set amount of time then plays jogging south east animation
+        // Waits for set amount of time then plays Jog south east animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({(horizontalSpeed / 1.5f) * 3, (verticalSpeed / 1.5f) * 3}); textureX += 240; animate(sprintingSouthEastXStart, sprintingSouthEastXEnd, 
             sprintingSouthEastYStart, sprintingSouthEastYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingSouthEastXStart, joggingSouthEastXEnd, 
-            joggingSouthEastYStart, joggingSouthEastYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogSouthEastXStart, JogSouthEastXEnd, 
+            JogSouthEastYStart, JogSouthEastYEnd); timer = 0.0f;}
     }
     // If both left and up key pressed then move character left and up at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f});
         moving = true; northWest = true;
         north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; west = false;
-        // Waits for set amount of time then plays jogging north west animation
+        // Waits for set amount of time then plays Jog north west animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f}); textureX += 240; animate(sprintingNorthWestXStart, sprintingNorthWestXEnd, 
             sprintingNorthWestYStart, sprintingNorthWestYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingNorthWestXStart, joggingNorthWestXEnd, 
-            joggingNorthWestYStart, joggingNorthWestYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogNorthWestXStart, JogNorthWestXEnd, 
+            JogNorthWestYStart, JogNorthWestYEnd); timer = 0.0f;}
     }
     // If both left and down key pressed then move character left and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({-horizontalSpeed / 1.5f, verticalSpeed / 1.5f});
         moving = true; southWest = true;
         north = false; northEast = false; east = false; southEast = false; south = false; west = false; northWest = false;
-        // Waits for set amount of time then plays jogging south west animation
+        // Waits for set amount of time then plays Jog south west animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({(-horizontalSpeed / 1.5f) * 3, (verticalSpeed / 1.5f) * 3}); textureX += 240; animate(sprintingSouthWestXStart, sprintingSouthWestXEnd, 
             sprintingSouthWestYStart, sprintingSouthWestYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingSouthWestXStart, joggingSouthWestXEnd, 
-            joggingSouthWestYStart, joggingSouthWestYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogSouthWestXStart, JogSouthWestXEnd, 
+            JogSouthWestYStart, JogSouthWestYEnd); timer = 0.0f;}
     }
     // If right key pressed then move character right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         sprite.move({horizontalSpeed, 0.0f});
         moving = true; east = true;
         north = false; northEast = false; southEast = false; south = false ;southWest = false; west = false; northWest = false;
-        // Waits for set amount of time then plays jogging east animation
+        // Waits for set amount of time then plays Jog east animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({horizontalSpeed * 3, 0.0f}); textureX += 240; animate(sprintingEastXStart, sprintingEastXEnd, 
             sprintingEastYStart, sprintingEastYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingEastXStart, joggingEastXEnd, 
-            joggingEastYStart, joggingEastYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogEastXStart, JogEastXEnd, 
+            JogEastYStart, JogEastYEnd); timer = 0.0f;}
     }
     // If up key pressed then move character up
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         sprite.move({0.0f, -verticalSpeed});
         moving = true; north = true;
         northEast = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
-        // Waits for set amount of time then plays jogging north animation
+        // Waits for set amount of time then plays Jog north animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({0.0f, -verticalSpeed * 3}); textureX += 240; animate(sprintingNorthXStart, sprintingNorthXEnd, 
             sprintingNorthYStart, sprintingNorthYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingNorthXStart, joggingNorthXEnd, 
-            joggingNorthYStart, joggingNorthYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogNorthXStart, JogNorthXEnd, 
+            JogNorthYStart, JogNorthYEnd); timer = 0.0f;}
     }
     // If down key pressed then move character down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         sprite.move({0.0f, verticalSpeed});
         moving = true; south = true;
         north = false; northEast = false; east = false; southEast = false; southWest = false; west = false; northWest = false;
-        // Waits for set amount of time then plays jogging south animation
+        // Waits for set amount of time then plays Jog south animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({0.0f, verticalSpeed * 3}); textureX += 240; animate(sprintingSouthXStart, sprintingSouthXEnd, 
             sprintingSouthYStart, sprintingSouthYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingSouthXStart, joggingSouthXEnd, 
-            joggingSouthYStart, joggingSouthYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogSouthXStart, JogSouthXEnd, 
+            JogSouthYStart, JogSouthYEnd); timer = 0.0f;}
     }
     // If left key pressed then move character left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
         sprite.move({-horizontalSpeed, 0.0f});
         moving = true; west = true;
         north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; northWest = false;
-        // Waits for set amount of time then plays jogging west animation
+        // Waits for set amount of time then plays Jog west animation
         timer += 0.08f;
         // Sprinting animation
         if (timer >= timerMax && sprinting) {sprite.move({-horizontalSpeed * 3, 0.0f}); textureX += 240; animate(sprintingWestXStart, sprintingWestXEnd, 
             sprintingWestYStart, sprintingWestYEnd); timer = 0.0f;}
-        // Jogging animation
-        else if (timer >= timerMax) {textureX += 240; animate(joggingWestXStart, joggingWestXEnd, 
-            joggingWestYStart, joggingWestYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogWestXStart, JogWestXEnd, 
+            JogWestYStart, JogWestYEnd); timer = 0.0f;}
     } else {
         moving = false;
     }
