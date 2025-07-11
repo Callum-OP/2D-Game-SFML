@@ -16,3 +16,7 @@ This app requires the SMFL 3.0 library to work, specifically the graphics, windo
 Below is a screenshot of the game in its current state.
 
 <img width="395" alt="2D Game SFML" src="https://github.com/user-attachments/assets/78444bac-4418-441f-b92b-858ecac660cd" />
+
+https://github.com/user-attachments/assets/3b898ba7-c6e2-4ca1-a04f-c4b483474c91
+
+
