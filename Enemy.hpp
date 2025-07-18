@@ -1,25 +1,23 @@
-#ifndef PLAYER_HPP
-#define PLAYER_HPP
+#ifndef ENEMY_HPP
+#define ENEMY_HPP
 
 #include <SFML/Graphics.hpp>
 
-class Player {
+class Enemy {
 public:
-    Player();
-    void handleInput();
-    void Player::sprint(bool sprint);
-    void update();
+    Enemy();
+    void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition);
     sf::Vector2f getPosition();
-    void draw(sf::RenderWindow& window);
-    void animate(int xStart, int xEnd, int yStart, int yEnd);
+    void Enemy::draw(sf::RenderWindow& window);
+    void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd);
     sf::Texture texture;
     sf::Sprite sprite;
 
     int textureX, textureY;
     float timer, timerMax;
-    float verticalSpeed, horizontalSpeed;
+    float speed;
     int finalColumn, finalRow;
-    bool moving, sprinting, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
+    bool moving, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
 
     int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
     standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 
@@ -35,15 +33,6 @@ public:
     int JogWestXStart, JogWestYStart, JogWestXEnd, JogWestYEnd;
     int JogNorthWestXStart, JogNorthWestYStart, JogNorthWestXEnd, JogNorthWestYEnd;
 
-    int sprintingNorthXStart, sprintingNorthYStart, sprintingNorthXEnd, sprintingNorthYEnd;
-    int sprintingNorthEastXStart, sprintingNorthEastYStart, sprintingNorthEastXEnd, sprintingNorthEastYEnd;
-    int sprintingEastXStart, sprintingEastYStart, sprintingEastXEnd, sprintingEastYEnd;
-    int sprintingSouthEastXStart, sprintingSouthEastYStart, sprintingSouthEastXEnd, sprintingSouthEastYEnd;
-    int sprintingSouthXStart, sprintingSouthYStart, sprintingSouthXEnd, sprintingSouthYEnd;
-    int sprintingSouthWestXStart, sprintingSouthWestYStart, sprintingSouthWestXEnd, sprintingSouthWestYEnd;
-    int sprintingWestXStart, sprintingWestYStart, sprintingWestXEnd, sprintingWestYEnd;
-    int sprintingNorthWestXStart, sprintingNorthWestYStart, sprintingNorthWestXEnd, sprintingNorthWestYEnd;
-
     int attackNorthXStart, attackNorthYStart, attackNorthXEnd, attackNorthYEnd;
     int attackNorthEastXStart, attackNorthEastYStart, attackNorthEastXEnd, attackNorthEastYEnd;
     int attackEastXStart, attackEastYStart, attackEastXEnd, attackEastYEnd;
@@ -54,4 +43,4 @@ public:
     int attackNorthWestXStart, attackNorthWestYStart, attackNorthWestXEnd, attackNorthWestYEnd;
 };
 
-#endif // PLAYER_HPP
+#endif // ENEMY_HPP

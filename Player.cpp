@@ -255,7 +255,7 @@ void Player::animate(int xStart, int xEnd, int yStart, int yEnd) {
     }
 }
 
-// Sprint movement boolean, to be called true in main when user double tabs movement keys
+// Sprint movement boolean, to be called true from main when user double tabs movement keys
 void Player::sprint(bool sprint) {
     if (sprint) {
         sprinting = true;
@@ -280,6 +280,12 @@ void Player::update() {
     }
 }
 
+// Get position of player in main
+sf::Vector2f Player::getPosition() {
+    return sprite.getPosition();
+}
+
+// For drawing player in main
 void Player::draw(sf::RenderWindow& window) {
     window.draw(sprite);
 }

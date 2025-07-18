@@ -9,10 +9,16 @@
 #include "Player.cpp"
 #include "Player.hpp"
 
+#include "Enemy.cpp"
+#include "Enemy.hpp"
+
 int main()
 {
     // Create a player sprite
     Player player;
+
+    // Create a enemy sprite
+    Enemy enemy;
 
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
@@ -62,15 +68,23 @@ int main()
 
     // Game loop
     while (window.isOpen()) {
+        sf::Time delta = clock.restart(); // Time since last frame
+        float deltaTime = delta.asSeconds(); // Convert to seconds
+
+
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
 
         // Handle player controls
         player.handleInput();
         player.update();
+        enemy.update(deltaTime, player.getPosition());
 
         // Create new window with sprite drawn in
         window.clear(sf::Color::White);
+
         player.draw(window);
+        enemy.draw(window);
+        
         window.display();
     }
     return 0;
