@@ -84,6 +84,9 @@ int main()
 
         player.draw(window);
         enemy.draw(window);
+
+        std::cout << "Player: " << player.getPosition().x << ", " << player.getPosition().y << "\n";
+        std::cout << "Enemy: " << enemy.getPosition().x << ", " << enemy.getPosition().y << "\n";
         
         window.display();
     }

@@ -16,9 +16,12 @@ Enemy::Enemy()
     {
 
     // Create a enemy sprite
-    sprite.setTextureRect({{485, 1}, {240, 240}});
-    sprite.setPosition({275.f, 200.f}); // Place sprite at coordinates
-    sprite.setScale({1.f, 1.f});
+    sprite.setTexture(texture);
+    sprite.setTextureRect({{485,1}, {240,240}});
+    sprite.setOrigin({sprite.getTextureRect().size.x / 2.0f, sprite.getTextureRect().size.y / 2.0f});
+    sf::Vector2<float> position(275.f, 200.f); // Set coordinates
+    sprite.setPosition(position); // Place sprite at coordinates
+    sprite.setScale({1.0f,1.0f});
     sprite.setColor(sf::Color::Red);
 
     // Default movement speed
@@ -93,13 +96,10 @@ void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition) {
     sf::Vector2f position = sprite.getPosition();
     sf::Vector2f direction = playerPosition - position;
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-    // Avoid division by zero
-    if (length != 0.f) {
+    if (length != 0.f) { // Avoid division by zero
         sf::Vector2f normalized = direction / length;
-        position += normalized * speed * deltaTime;
+        sprite.move(normalized * speed * deltaTime); // Move enemy sprite
         direction = normalized; // Set direction
-        sprite.setPosition(position);
     }
 
     // Calculate current direction
