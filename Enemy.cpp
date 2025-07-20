@@ -94,12 +94,29 @@ void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd) {
 void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition) {
     // Chase player
     sf::Vector2f position = sprite.getPosition();
-    sf::Vector2f direction = playerPosition - position;
+    sf::Vector2f direction = playerPosition - position; // Calculate direction
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (length != 0.f) { // Avoid division by zero
-        sf::Vector2f normalized = direction / length;
-        sprite.move(normalized * speed * deltaTime); // Move enemy sprite
-        direction = normalized; // Set direction
+    float distance = std::sqrt(std::pow(playerPosition.x - position.x, 2) + std::pow(playerPosition.y - position.y, 2)); // Calculate distance from player
+    float stopRadius = 500.0f; // When to stop chasing
+    float attackRadius = 60.0f; // When to attack
+    // Chase player, if not too close or far away
+    if (distance > attackRadius && distance < stopRadius) {
+        if (length != 0.f) { // Avoid division by zero
+            moving = true;
+            attacking = false;
+            sf::Vector2f normalized = direction / length;
+            sprite.move(normalized * speed * deltaTime); // Move enemy sprite
+            direction = normalized; // Set direction
+        }
+    // Stop if too close to player
+    } else if (distance <= attackRadius) {
+        attacking = true;
+        moving = false;
+    // Stop if too far away from player
+    } else if (distance >= stopRadius) {
+        attacking = false;
+        moving = false;
+
     }
 
     // Calculate current direction
@@ -128,22 +145,39 @@ void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition) {
     timer += 0.08f;
     if (timer >= timerMax) {
         textureX += 240;
+        // Check direction and whether enemy is moving or attacking or standing still
         if (currentDirection == "north") {
-            animate(JogNorthXStart, JogNorthXEnd, JogNorthYStart, JogNorthYEnd);
+            if (moving) {animate(JogNorthXStart, JogNorthXEnd, JogNorthYStart, JogNorthYEnd);}
+            else if (attacking) {animate(attackNorthXStart, attackNorthXEnd, attackNorthYStart, attackNorthYEnd);}
+            else {sprite.setTextureRect({{standingNorthX, standingNorthY}, {240, 240}});}
         } else if (currentDirection == "northEast") {
-            animate(JogNorthEastXStart, JogNorthEastXEnd, JogNorthEastYStart, JogNorthEastYEnd);
+            if (moving) {animate(JogNorthEastXStart, JogNorthEastXEnd, JogNorthEastYStart, JogNorthEastYEnd);}
+            else if (attacking) {animate(attackNorthEastXStart, attackNorthEastXEnd, attackNorthEastYStart, attackNorthEastYEnd);}
+            else {sprite.setTextureRect({{standingNorthEastX, standingNorthEastY}, {240, 240}});}
         } else if (currentDirection == "east") {
-            animate(JogEastXStart, JogEastXEnd, JogEastYStart, JogEastYEnd);
+            if (moving) {animate(JogEastXStart, JogEastXEnd, JogEastYStart, JogEastYEnd);}
+            else if (attacking) {animate(attackEastXStart, attackEastXEnd, attackEastYStart, attackEastYEnd);}
+            else {sprite.setTextureRect({{standingEastX, standingEastY}, {240, 240}});}
         } else if (currentDirection == "southEast") {
-            animate(JogSouthEastXStart, JogSouthEastXEnd, JogSouthEastYStart, JogSouthEastYEnd);
+            if (moving) {animate(JogSouthEastXStart, JogSouthEastXEnd, JogSouthEastYStart, JogSouthEastYEnd);}
+            else if (attacking) {animate(attackSouthEastXStart, attackSouthEastXEnd, attackSouthEastYStart, attackSouthEastYEnd);}
+            else {sprite.setTextureRect({{standingSouthEastX, standingSouthEastY}, {240, 240}});}
         } else if (currentDirection == "south") {
-            animate(JogSouthXStart, JogSouthXEnd, JogSouthYStart, JogSouthYEnd);
+            if (moving) {animate(JogSouthXStart, JogSouthXEnd, JogSouthYStart, JogSouthYEnd);}
+            else if (attacking) {animate(attackSouthXStart, attackSouthXEnd, attackSouthYStart, attackSouthYEnd);}
+            else {sprite.setTextureRect({{standingSouthX, standingSouthY}, {240, 240}});}
         } else if (currentDirection == "southWest") {
-            animate(JogSouthWestXStart, JogSouthWestXEnd, JogSouthWestYStart, JogSouthWestYEnd);
+            if (moving) {animate(JogSouthWestXStart, JogSouthWestXEnd, JogSouthWestYStart, JogSouthWestYEnd);}
+            else if (attacking) {animate(attackSouthWestXStart, attackSouthWestXEnd, attackSouthWestYStart, attackSouthWestYEnd);}
+            else {sprite.setTextureRect({{standingSouthWestX, standingSouthWestY}, {240, 240}});}
         } else if (currentDirection == "west") {
-            animate(JogWestXStart, JogWestXEnd, JogWestYStart, JogWestYEnd);
+            if (moving) {animate(JogWestXStart, JogWestXEnd, JogWestYStart, JogWestYEnd);}
+            else if (attacking) {animate(attackWestXStart, attackWestXEnd, attackWestYStart, attackWestYEnd);}
+            else {sprite.setTextureRect({{standingWestX, standingWestY}, {240, 240}});}
         } else if (currentDirection == "northWest") {
-            animate(JogNorthWestXStart, JogNorthWestXEnd, JogNorthWestYStart, JogNorthWestYEnd);
+            if (moving) {animate(JogNorthWestXStart, JogNorthWestXEnd, JogNorthWestYStart, JogNorthWestYEnd);}
+            else if (attacking) {animate(attackNorthWestXStart, attackNorthWestXEnd, attackNorthWestYStart, attackNorthWestYEnd);}
+            else {sprite.setTextureRect({{standingNorthWestX, standingNorthWestY}, {240, 240}});}
         } else {
             sprite.setTextureRect({{standingSouthX, standingSouthY}, {240, 240}});
         }
