@@ -10,15 +10,16 @@
 #include "Player.hpp"
 
 #include "Enemy.cpp"
-#include "Enemy.hpp"
+#include "Enemy.hpp"  
 
 int main()
 {
-    // Create a player sprite
+    // Create a player
     Player player;
 
-    // Create a enemy sprite
+    // Create a enemy
     Enemy enemy;
+    std::vector<Enemy> enemies;
 
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
@@ -74,19 +75,15 @@ int main()
 
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
 
-        // Handle player controls
+        // Handle player controls and enemy updates
         player.handleInput();
         player.update();
-        enemy.update(deltaTime, player.getPosition());
+        enemy.update(deltaTime, player.getPosition(), player.attacking);
 
-        // Create new window with sprite drawn in
+        // Create new window with sprites drawn in
         window.clear(sf::Color::White);
-
         player.draw(window);
         enemy.draw(window);
-
-        std::cout << "Player: " << player.getPosition().x << ", " << player.getPosition().y << "\n";
-        std::cout << "Enemy: " << enemy.getPosition().x << ", " << enemy.getPosition().y << "\n";
         
         window.display();
     }

@@ -91,7 +91,7 @@ void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd) {
     }
 }
 
-void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition) {
+void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition, bool playerAttacking) {
     // Chase player
     sf::Vector2f position = sprite.getPosition();
     sf::Vector2f direction = playerPosition - position; // Calculate direction
@@ -108,6 +108,9 @@ void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition) {
             sprite.move(normalized * speed * deltaTime); // Move enemy sprite
             direction = normalized; // Set direction
         }
+    }
+    else if (distance <= attackRadius * 1.5 && playerAttacking) {
+        dead = true;
     // Stop if too close to player
     } else if (distance <= attackRadius) {
         attacking = true;
@@ -116,7 +119,6 @@ void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition) {
     } else if (distance >= stopRadius) {
         attacking = false;
         moving = false;
-
     }
 
     // Calculate current direction

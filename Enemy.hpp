@@ -6,7 +6,7 @@
 class Enemy {
 public:
     Enemy();
-    void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition);
+    void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition, bool playerAttacking);
     sf::Vector2f getPosition();
     void Enemy::draw(sf::RenderWindow& window);
     void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd);
@@ -41,6 +41,8 @@ public:
     int attackSouthWestXStart, attackSouthWestYStart, attackSouthWestXEnd, attackSouthWestYEnd;
     int attackWestXStart, attackWestYStart, attackWestXEnd, attackWestYEnd;
     int attackNorthWestXStart, attackNorthWestYStart, attackNorthWestXEnd, attackNorthWestYEnd;
+
+    bool dead = false;
 };
 
 #endif // ENEMY_HPP
