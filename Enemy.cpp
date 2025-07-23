@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-Enemy::Enemy()
+Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour)
     : texture{},
         sprite( // Create a enemy sprite
             [this]() {
@@ -19,10 +19,9 @@ Enemy::Enemy()
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {240,240}});
     sprite.setOrigin({sprite.getTextureRect().size.x / 2.0f, sprite.getTextureRect().size.y / 2.0f});
-    sf::Vector2<float> position(275.f, 200.f); // Set coordinates
-    sprite.setPosition(position); // Place sprite at coordinates
+    sprite.setPosition(startPosition); // Place sprite at coordinates
     sprite.setScale({1.0f,1.0f});
-    sprite.setColor(sf::Color::Red);
+    sprite.setColor(startColour);
 
     // Default movement speed
     speed = 80.0f;

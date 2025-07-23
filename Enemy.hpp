@@ -5,7 +5,7 @@
 
 class Enemy {
 public:
-    Enemy();
+    Enemy(sf::Vector2f startPosition, sf::Color startColour);
     void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition, bool playerAttacking);
     sf::Vector2f getPosition();
     void Enemy::draw(sf::RenderWindow& window);

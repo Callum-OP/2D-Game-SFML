@@ -18,8 +18,21 @@ int main()
     Player player;
 
     // Create a enemy
-    Enemy enemy;
     std::vector<Enemy> enemies;
+    sf::Vector2<float> position1(275.f, 200.f);
+    Enemy enemy1(position1, sf::Color::Red);
+    enemies.push_back(enemy1);
+    sf::Vector2<float> position2(255.f, 220.f);
+    Enemy enemy2(position2, sf::Color::Red);
+    enemies.push_back(enemy2);
+
+    // Create walls
+    std::vector<sf::RectangleShape> walls;
+    sf::RectangleShape wall(sf::Vector2f(50.f, 50.f));
+    sf::Vector2<float> position(275.f, 200.f); // Set coordinates
+    wall.setPosition(position);
+    wall.setFillColor(sf::Color::Red);
+    walls.push_back(wall);
 
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
@@ -78,13 +91,21 @@ int main()
         // Handle player controls and enemy updates
         player.handleInput();
         player.update();
-        enemy.update(deltaTime, player.getPosition(), player.attacking);
 
         // Create new window with sprites drawn in
         window.clear(sf::Color::White);
         player.draw(window);
-        enemy.draw(window);
-        
+
+        // Display walls
+        for (const auto& wall : walls) {
+            window.draw(wall);
+        }
+        // Display and update enemies
+        for (auto& enemy : enemies) {
+            enemy.update(deltaTime, player.getPosition(), player.attacking);
+            enemy.draw(window);
+        }
+
         window.display();
     }
     return 0;
