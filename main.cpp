@@ -17,22 +17,37 @@ int main()
     // Create a player
     Player player;
 
-    // Create a enemy
+    // Create enemies
     std::vector<Enemy> enemies;
-    sf::Vector2<float> position1(275.f, 200.f);
+    // Create enemy 1
+    sf::Vector2<float> position1(275.f, 200.f); // Set coordinates
     Enemy enemy1(position1, sf::Color::Red);
     enemies.push_back(enemy1);
-    sf::Vector2<float> position2(255.f, 220.f);
+    // Create enemy 2
+    sf::Vector2<float> position2(255.f, 210.f); // Set coordinates
     Enemy enemy2(position2, sf::Color::Red);
     enemies.push_back(enemy2);
 
     // Create walls
     std::vector<sf::RectangleShape> walls;
-    sf::RectangleShape wall(sf::Vector2f(50.f, 50.f));
-    sf::Vector2<float> position(275.f, 200.f); // Set coordinates
-    wall.setPosition(position);
-    wall.setFillColor(sf::Color::Red);
-    walls.push_back(wall);
+    // Create wall 1
+    sf::Vector2<float> wallPos1(275.f, 200.f); // Set coordinates
+    sf::RectangleShape wall1(wallPos1);
+    wall1.setOrigin(wall1.getLocalBounds().size / 2.f);
+    wall1.setPosition(wallPos1);
+    wall1.setFillColor(sf::Color::Red);
+    wall1.setScale({0.5f,0.5f});
+    walls.push_back(wall1);
+    // Create wall 2
+    sf::Vector2<float> wallPos2(255.f, 180.f); // Set coordinates
+    sf::RectangleShape wall2(wallPos2);
+    wall2.setOrigin(wall2.getLocalBounds().size / 2.f);
+    wall2.setPosition(wallPos2);
+    wall2.setFillColor(sf::Color::Red);
+    wall2.setScale({0.5f,0.5f});
+    walls.push_back(wall2);
+
+    std::vector<sf::FloatRect> wallBounds;
 
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
@@ -89,7 +104,7 @@ int main()
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
 
         // Handle player controls and enemy updates
-        player.handleInput();
+        player.handleInput(wallBounds);
         player.update();
 
         // Create new window with sprites drawn in
@@ -99,6 +114,9 @@ int main()
         // Display walls
         for (const auto& wall : walls) {
             window.draw(wall);
+            sf::FloatRect bounds = wall.getGlobalBounds();
+            bounds.size = wall.getGlobalBounds().size *= 0.2f;
+            wallBounds.push_back(bounds);
         }
         // Display and update enemies
         for (auto& enemy : enemies) {
