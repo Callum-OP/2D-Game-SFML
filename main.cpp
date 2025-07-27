@@ -124,6 +124,14 @@ int main()
             enemy.draw(window);
         }
 
+        // Delete dead enemies
+        enemies.erase(
+            std::remove_if(enemies.begin(), enemies.end(),
+                [](const Enemy& enemy) { return enemy.dead; }),
+            enemies.end()
+        );
+
+
         window.display();
     }
     return 0;
