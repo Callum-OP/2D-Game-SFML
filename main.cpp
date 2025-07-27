@@ -31,17 +31,17 @@ int main()
     // Create walls
     std::vector<sf::RectangleShape> walls;
     // Create wall 1
-    sf::Vector2<float> wallPos1(275.f, 200.f); // Set coordinates
+    sf::Vector2<float> wallPos1(575.f, 200.f); // Set coordinates
     sf::RectangleShape wall1(wallPos1);
-    wall1.setOrigin(wall1.getLocalBounds().size / 2.f);
+    wall1.setOrigin({wall1.getTextureRect().size.x / 2.0f, wall1.getTextureRect().size.y / 2.0f});
     wall1.setPosition(wallPos1);
     wall1.setFillColor(sf::Color::Red);
     wall1.setScale({0.5f,0.5f});
     walls.push_back(wall1);
     // Create wall 2
-    sf::Vector2<float> wallPos2(255.f, 180.f); // Set coordinates
+    sf::Vector2<float> wallPos2(400.f, 100.f); // Set coordinates
     sf::RectangleShape wall2(wallPos2);
-    wall2.setOrigin(wall2.getLocalBounds().size / 2.f);
+    wall2.setOrigin({wall2.getTextureRect().size.x / 2.0f, wall2.getTextureRect().size.y / 2.0f});
     wall2.setPosition(wallPos2);
     wall2.setFillColor(sf::Color::Red);
     wall2.setScale({0.5f,0.5f});
@@ -116,7 +116,7 @@ int main()
             window.draw(wall);
             sf::FloatRect bounds = wall.getGlobalBounds();
             bounds.size = wall.getGlobalBounds().size *= 0.2f;
-            wallBounds.push_back(bounds);
+            wallBounds.push_back(wall.getGlobalBounds());
         }
         // Display and update enemies
         for (auto& enemy : enemies) {
