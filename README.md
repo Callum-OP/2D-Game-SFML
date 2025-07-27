@@ -4,12 +4,13 @@ To run the game on Windows I am using MSVC, the command will be similar to:
   
 However the command changes based on the file path of where the SFML 3.0 library is installed on your computer.
 If you have MSVC and SFML 3.0 installed and edited the command to have the right sfml file path then you should be able to run the game.
-
 You only need to run the main file.
 You may want to edit the c_cpp_properties.json file with the correct sfml file path.
 
+This may change in the future.
+
 # About the app
-This a 2D top down game using C++ and SFML 3.0, includes 8 directional movement and animation, it is still a work in progress but is planned to have combat, health and enemies and be similar to top down zelda games. I am very new to SFML so I'm learning as I go.
+This a 2D top down game using C++ and SFML 3.0, includes 8 directional movement, combat, animation and enemies, it is still a work in progress, but is planned to be similar to top down zelda games. I am very new to SFML so I'm learning as I go.
 
 This app requires the SMFL 3.0 library to work, specifically the graphics, window and system components.
 
