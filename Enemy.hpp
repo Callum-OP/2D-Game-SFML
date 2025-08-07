@@ -1,6 +1,7 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
+#include "Physics.hpp"
 #include <SFML/Graphics.hpp>
 
 class Enemy {
@@ -12,6 +13,7 @@ public:
     void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd);
     sf::Texture texture;
     sf::Sprite sprite;
+    Object collider;
 
     int textureX, textureY;
     float timer, timerMax;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.hpp"
+#include "Physics.hpp"
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
@@ -16,10 +17,11 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour)
     {
 
     // Create a enemy sprite
+    collider = { Vec2(startPosition.x, startPosition.y), { Vec2(-10, -10), Vec2(10, 10) } };
+    sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
+    sprite.setPosition(toSF(collider.pos));
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {240,240}});
-    sprite.setOrigin({sprite.getTextureRect().size.x / 2.0f, sprite.getTextureRect().size.y / 2.0f});
-    sprite.setPosition(startPosition); // Place sprite at coordinates
     sprite.setScale({1.0f,1.0f});
     sprite.setColor(startColour);
 
@@ -104,7 +106,10 @@ void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition, bool pla
             moving = true;
             attacking = false;
             sf::Vector2f normalized = direction / length;
-            sprite.move(normalized * speed * deltaTime); // Move enemy sprite
+            sf::Vector2f movement = (normalized * speed * deltaTime);
+            sprite.move(movement); // Move enemy sprite
+            collider.pos.x += movement.x;
+            collider.pos.y += movement.y;
             direction = normalized; // Set direction
         }
     }

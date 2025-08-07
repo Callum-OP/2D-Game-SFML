@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -7,6 +8,7 @@
 #include <SFML/Network.hpp>
 
 #include "Physics.cpp"
+#include "Physics.hpp"
 
 #include "Player.cpp"
 #include "Player.hpp"
@@ -16,6 +18,9 @@
 
 int main()
 {
+    // Create colliders list
+    std::vector<Object*> wallColliders;
+
     // Create a player
     Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
     Player player;
@@ -23,24 +28,26 @@ int main()
     player.sprite.setPosition(toSF(playerCollider.pos));
 
     // Create enemies
+    std::vector<Object> enemyColliders;
     std::vector<Enemy> enemies;
     // Create enemy 1
-    sf::Vector2<float> position1(275.f, 200.f); // Set coordinates
+    sf::Vector2<float> position1(775.f, 400.f); // Set coordinates
     Enemy enemy1(position1, sf::Color::Red);
-    enemy1.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
-    enemies.push_back(enemy1);
     // Create enemy 2
-    sf::Vector2<float> position2(255.f, 210.f); // Set coordinates
+    sf::Vector2<float> position2(735.f, 240.f); // Set coordinates
     Enemy enemy2(position2, sf::Color::Red);
-    enemy2.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
+    // Set up enemy lists
+    enemies.push_back(enemy1);
     enemies.push_back(enemy2);
+    for (auto& enemy : enemies) {
+        wallColliders.push_back(&enemy.collider);
+    }
 
     std::vector<Object> pickupColliders;
     std::vector<sf::CircleShape> pickups;
 
     // I should put the walls code into a seperate file later
     // Create walls
-    std::vector<Object> wallColliders;
     std::vector<sf::RectangleShape> walls;
     // Create wall 1
     Object wall1Collider = { Vec2(520, 270), { Vec2(-50, -50), Vec2(50, 50) } };
@@ -59,8 +66,8 @@ int main()
     wall2.setOutlineColor(sf::Color::Black);
     wall2.setFillColor(sf::Color::Transparent);
     // Set up wall objects list
-    wallColliders.push_back(wall1Collider);
-    wallColliders.push_back(wall2Collider);
+    wallColliders.push_back(&wall1Collider);
+    wallColliders.push_back(&wall2Collider);
     walls.push_back(wall1);
     walls.push_back(wall2);
 
@@ -124,14 +131,14 @@ int main()
         // Create new window with sprites drawn in
         window.clear(sf::Color::White);
 
-                // Try movement
+        // Try movement
         Vec2 originalPos = playerCollider.pos;
         // --- X axis ---
         float originalX = playerCollider.pos.x;
         playerCollider.pos.x += player.movement.x;
         // Stop if colliding with object
         for (auto& obj : wallColliders) {
-            Manifold m = { &playerCollider, &obj };
+            Manifold m = { &playerCollider, obj };
             if (AABBvsAABB(&m)) {
                 playerCollider.pos.x = originalX;
                 break;
@@ -142,7 +149,7 @@ int main()
         playerCollider.pos.y += player.movement.y;
         // Stop if colliding with object
         for (auto& obj : wallColliders) {
-            Manifold m = { &playerCollider, &obj };
+            Manifold m = { &playerCollider, obj };
             if (AABBvsAABB(&m)) {
                 playerCollider.pos.y = originalY;
                 break;
@@ -176,10 +183,21 @@ int main()
         player.draw(window);
         // Draw and update enemies
         for (auto& enemy : enemies) {
+            enemy.sprite.setPosition(toSF(enemy.collider.pos));
             enemy.update(deltaTime, player.getPosition(), player.attacking);
             enemy.draw(window);
         }
         // Delete dead enemies
+        // First, collect indices or pointers to dead enemies
+        for (const Enemy& enemy : enemies) {
+            if (enemy.dead) {
+                auto it = std::find(wallColliders.begin(), wallColliders.end(), &enemy.collider);
+                if (it != wallColliders.end()) {
+                    wallColliders.erase(it);
+                }
+            }
+        }
+        // Finally, remove the enemies
         enemies.erase(
             std::remove_if(enemies.begin(), enemies.end(),
                 [](const Enemy& enemy) { return enemy.dead; }),
