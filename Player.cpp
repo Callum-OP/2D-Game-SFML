@@ -16,15 +16,13 @@ Player::Player()
     {
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {240,240}});
-    sprite.setOrigin({sprite.getTextureRect().size.x / 2.0f, sprite.getTextureRect().size.y / 2.0f});
-    sf::Vector2<float> position(275.f, 200.f); // Set coordinates
-    sprite.setPosition(position); // Place sprite at coordinates
     sprite.setScale({1.0f,1.0f});
     //sprite.setColor(sf::Color::White);
 
     // Default movement speed
     verticalSpeed = 3.0f;
     horizontalSpeed = 3.0f;
+    movement = {horizontalSpeed, 0};
     moving = false;
 
     // Coordinates for current texture in spritesheet
@@ -81,138 +79,129 @@ Player::Player()
     sprintingWestXStart = 240; sprintingWestYStart = 3120; sprintingWestXEnd = 1440; sprintingWestYEnd = 3120;
 }
 
-void Player::handleInput(std::vector<sf::FloatRect> wallBounds) {
-    // Predict future collision
-    sf::FloatRect nextBounds = sprite.getGlobalBounds();
 
+void Player::handleInput() {
     // If both right and up key pressed then move character right and up at same time
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         moving = true; northEast = true;
         north = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
-        sf::Vector2f movement{horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog north east animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingNorthEastXStart, sprintingNorthEastXEnd, 
-                sprintingNorthEastYStart, sprintingNorthEastYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogNorthEastXStart, JogNorthEastXEnd, 
-                JogNorthEastYStart, JogNorthEastYEnd); timer = 0.0f;}
-        }
+        movement = {horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog north east animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingNorthEastXStart, sprintingNorthEastXEnd, 
+            sprintingNorthEastYStart, sprintingNorthEastYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogNorthEastXStart, JogNorthEastXEnd, 
+            JogNorthEastYStart, JogNorthEastYEnd); timer = 0.0f;}
     }
     // If both right and down key pressed then move character right and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         moving = true; southEast = true;
         north = false; northEast = false; east = false; south = false; southWest = false; west = false; northWest = false;
-        sf::Vector2f movement{horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog south east animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingSouthEastXStart, sprintingSouthEastXEnd, 
-                sprintingSouthEastYStart, sprintingSouthEastYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogSouthEastXStart, JogSouthEastXEnd, 
-                JogSouthEastYStart, JogSouthEastYEnd); timer = 0.0f;}
-        }
+        movement = {horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog south east animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingSouthEastXStart, sprintingSouthEastXEnd, 
+            sprintingSouthEastYStart, sprintingSouthEastYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogSouthEastXStart, JogSouthEastXEnd, 
+            JogSouthEastYStart, JogSouthEastYEnd); timer = 0.0f;}
     }
     // If both left and up key pressed then move character left and up at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         moving = true; northWest = true;
         north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; west = false;
-        sf::Vector2f movement{-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog north west animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingNorthWestXStart, sprintingNorthWestXEnd, 
-                sprintingNorthWestYStart, sprintingNorthWestYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogNorthWestXStart, JogNorthWestXEnd, 
-                JogNorthWestYStart, JogNorthWestYEnd); timer = 0.0f;}
-        }
+        movement = {-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog north west animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingNorthWestXStart, sprintingNorthWestXEnd, 
+            sprintingNorthWestYStart, sprintingNorthWestYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogNorthWestXStart, JogNorthWestXEnd, 
+            JogNorthWestYStart, JogNorthWestYEnd); timer = 0.0f;}
     }
     // If both left and down key pressed then move character left and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         moving = true; southWest = true;
         north = false; northEast = false; east = false; southEast = false; south = false; west = false; northWest = false;
-        sf::Vector2f movement{-horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog south west animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingSouthWestXStart, sprintingSouthWestXEnd, 
-                sprintingSouthWestYStart, sprintingSouthWestYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogSouthWestXStart, JogSouthWestXEnd, 
-                JogSouthWestYStart, JogSouthWestYEnd); timer = 0.0f;}
-        }
+        movement = {-horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog south west animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, movement.y * 3}); textureX += 240; animate(sprintingSouthWestXStart, sprintingSouthWestXEnd, 
+            sprintingSouthWestYStart, sprintingSouthWestYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogSouthWestXStart, JogSouthWestXEnd, 
+            JogSouthWestYStart, JogSouthWestYEnd); timer = 0.0f;}
     }
     // If right key pressed then move character right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
         moving = true; east = true;
         north = false; northEast = false; southEast = false; south = false ;southWest = false; west = false; northWest = false;
-        sf::Vector2f movement{horizontalSpeed, 0.0f};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog east animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, 0.0f}); textureX += 240; animate(sprintingEastXStart, sprintingEastXEnd, 
-                sprintingEastYStart, sprintingEastYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogEastXStart, JogEastXEnd, 
-                JogEastYStart, JogEastYEnd); timer = 0.0f;}
-        }
+        movement = {horizontalSpeed, 0.0f};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog east animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, 0.0f}); textureX += 240; animate(sprintingEastXStart, sprintingEastXEnd, 
+            sprintingEastYStart, sprintingEastYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogEastXStart, JogEastXEnd, 
+            JogEastYStart, JogEastYEnd); timer = 0.0f;}
     }
     // If up key pressed then move character up
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
         moving = true; north = true;
         northEast = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
-        sf::Vector2f movement{0.0f, -verticalSpeed};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog north animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({0.0f, movement.y * 3}); textureX += 240; animate(sprintingNorthXStart, sprintingNorthXEnd, 
-                sprintingNorthYStart, sprintingNorthYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogNorthXStart, JogNorthXEnd, 
-                JogNorthYStart, JogNorthYEnd); timer = 0.0f;}
-        }
+        movement = {0.0f, -verticalSpeed};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog north animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({0.0f, -movement.y * 3}); textureX += 240; animate(sprintingNorthXStart, sprintingNorthXEnd, 
+            sprintingNorthYStart, sprintingNorthYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogNorthXStart, JogNorthXEnd, 
+            JogNorthYStart, JogNorthYEnd); timer = 0.0f;}
     }
     // If down key pressed then move character down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
         moving = true; south = true;
         north = false; northEast = false; east = false; southEast = false; southWest = false; west = false; northWest = false;
-        sf::Vector2f movement{0.0f, verticalSpeed};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog south animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({0.0f, movement.y * 3}); textureX += 240; animate(sprintingSouthXStart, sprintingSouthXEnd, 
-                sprintingSouthYStart, sprintingSouthYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogSouthXStart, JogSouthXEnd, 
-                JogSouthYStart, JogSouthYEnd); timer = 0.0f;}
-        }
+        movement = {0.0f, verticalSpeed};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog south animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({0.0f, movement.y * 3}); textureX += 240; animate(sprintingSouthXStart, sprintingSouthXEnd, 
+            sprintingSouthYStart, sprintingSouthYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogSouthXStart, JogSouthXEnd, 
+            JogSouthYStart, JogSouthYEnd); timer = 0.0f;}
     }
     // If left key pressed then move character left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
         moving = true; west = true;
         north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; northWest = false;
-        sf::Vector2f movement{-horizontalSpeed, 0.0f};
-        if (!handleCollision(movement, nextBounds, wallBounds)) {
-            // Waits for set amount of time then plays Jog west animation
-            timer += 0.08f;
-            // Sprinting animation
-            if (timer >= timerMax && sprinting) {sprite.move({movement.x * 3, 0.0f}); textureX += 240; animate(sprintingWestXStart, sprintingWestXEnd, 
-                sprintingWestYStart, sprintingWestYEnd); timer = 0.0f;}
-            // Jog animation
-            else if (timer >= timerMax) {textureX += 240; animate(JogWestXStart, JogWestXEnd, 
-                JogWestYStart, JogWestYEnd); timer = 0.0f;}
-        }
+        movement = {-horizontalSpeed, 0.0f};
+        sprite.move(movement);
+        // Waits for set amount of time then plays Jog west animation
+        timer += 0.08f;
+        // Sprinting animation
+        if (timer >= timerMax && sprinting) {sprite.move({-movement.x * 3, 0.0f}); textureX += 240; animate(sprintingWestXStart, sprintingWestXEnd, 
+            sprintingWestYStart, sprintingWestYEnd); timer = 0.0f;}
+        // Jog animation
+        else if (timer >= timerMax) {textureX += 240; animate(JogWestXStart, JogWestXEnd, 
+            JogWestYStart, JogWestYEnd); timer = 0.0f;}
     } else {
+        movement = {0.0f, 0.0f};
         moving = false;
     }
     // If space pressed then attack and change to attack animation
@@ -258,38 +247,6 @@ void Player::handleInput(std::vector<sf::FloatRect> wallBounds) {
     }
 }
 
-bool Player::handleCollision(sf::Vector2f movement, sf::FloatRect nextBounds, std::vector<sf::FloatRect> wallBounds) {
-// Full movement prediction
-    nextBounds.position += movement;
-
-    for (const auto& wall : wallBounds) {
-        if (nextBounds.findIntersection(wall).has_value()) {
-            // Try horizontal-only movement
-            sf::Rect<float> horizontalBounds = nextBounds;
-            horizontalBounds.position.x -= movement.x; // Undo x movement
-
-            if (!horizontalBounds.findIntersection(wall).has_value()) {
-                sprite.move({0.f, movement.y}); // Slide vertically
-                return true;
-            }
-
-            // Try vertical-only movement
-            sf::Rect<float> verticalBounds = nextBounds;
-            verticalBounds.position.y -= movement.y; // Undo y movement
-
-            if (!verticalBounds.findIntersection(wall).has_value()) {
-                sprite.move({movement.x, 0.f}); // Slide horizontally
-                return true;
-            }
-
-            std::cout << "Blocked from all sides\n";
-            return true; // Fully blocked
-        }
-    }
-    // No collision — move freely
-    sprite.move(movement);
-    return false;
-}
 
 // Reusable function for animating player
 void Player::animate(int xStart, int xEnd, int yStart, int yEnd) {

@@ -6,12 +6,11 @@
 class Player {
 public:
     Player();
-    void handleInput(std::vector<sf::FloatRect> wallBounds);
+    void handleInput();
     void Player::sprint(bool sprint);
     void update();
     sf::Vector2f getPosition();
     void draw(sf::RenderWindow& window);
-    bool handleCollision(sf::Vector2f movement, sf::FloatRect nextBounds, std::vector<sf::FloatRect> wallBounds);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
     sf::Texture texture;
     sf::Sprite sprite;
@@ -19,6 +18,7 @@ public:
     int textureX, textureY;
     float timer, timerMax;
     float verticalSpeed, horizontalSpeed;
+    sf::Vector2f movement;
     int finalColumn, finalRow;
     bool moving, sprinting, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
 

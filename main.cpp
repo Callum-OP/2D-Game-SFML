@@ -6,6 +6,8 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+#include "Physics.cpp"
+
 #include "Player.cpp"
 #include "Player.hpp"
 
@@ -15,7 +17,11 @@
 int main()
 {
     // Create a player
+    Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
     Player player;
+    sf::FloatRect bounds = player.sprite.getLocalBounds();
+    player.sprite.setOrigin({player.sprite.getTextureRect().size.x / 2.0f, player.sprite.getTextureRect().size.y / 2.0f});
+    player.sprite.setPosition(toSF(playerCollider.pos));
 
     // Create enemies
     std::vector<Enemy> enemies;
@@ -28,26 +34,32 @@ int main()
     Enemy enemy2(position2, sf::Color::Red);
     enemies.push_back(enemy2);
 
+    std::vector<Object> pickupColliders;
+    std::vector<sf::CircleShape> pickups;
+
+    // I should put the walls code into a seperate file later
     // Create walls
+    std::vector<Object> wallColliders;
     std::vector<sf::RectangleShape> walls;
     // Create wall 1
-    sf::Vector2<float> wallPos1(575.f, 200.f); // Set coordinates
-    sf::RectangleShape wall1(wallPos1);
-    wall1.setOrigin({wall1.getTextureRect().size.x / 2.0f, wall1.getTextureRect().size.y / 2.0f});
-    wall1.setPosition(wallPos1);
-    wall1.setFillColor(sf::Color::Red);
-    wall1.setScale({0.5f,0.5f});
-    walls.push_back(wall1);
+    Object wall1Collider = { Vec2(520, 270), { Vec2(-50, -50), Vec2(50, 50) } };
+    sf::RectangleShape wall1(sf::Vector2f(100, 100));
+    wall1.setPosition(toSF(wall1Collider.pos));
+    wall1.setOutlineThickness(2);
+    wall1.setOutlineColor(sf::Color::Black);
+    wall1.setFillColor(sf::Color::Transparent);
     // Create wall 2
-    sf::Vector2<float> wallPos2(400.f, 100.f); // Set coordinates
-    sf::RectangleShape wall2(wallPos2);
-    wall2.setOrigin({wall2.getTextureRect().size.x / 2.0f, wall2.getTextureRect().size.y / 2.0f});
-    wall2.setPosition(wallPos2);
-    wall2.setFillColor(sf::Color::Red);
-    wall2.setScale({0.5f,0.5f});
+    Object wall2Collider = { Vec2(420, 120), { Vec2(-50, -50), Vec2(50, 50) } };
+    sf::RectangleShape wall2(sf::Vector2f(100, 100));
+    wall2.setPosition(toSF(wall2Collider.pos));
+    wall2.setOutlineThickness(2);
+    wall2.setOutlineColor(sf::Color::Black);
+    wall2.setFillColor(sf::Color::Transparent);
+    // Set up wall objects list
+    wallColliders.push_back(wall1Collider);
+    wallColliders.push_back(wall2Collider);
+    walls.push_back(wall1);
     walls.push_back(wall2);
-
-    std::vector<sf::FloatRect> wallBounds;
 
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
@@ -100,30 +112,70 @@ int main()
         sf::Time delta = clock.restart(); // Time since last frame
         float deltaTime = delta.asSeconds(); // Convert to seconds
 
-
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
 
         // Handle player controls and enemy updates
-        player.handleInput(wallBounds);
+        player.handleInput();
         player.update();
 
         // Create new window with sprites drawn in
         window.clear(sf::Color::White);
-        player.draw(window);
 
-        // Display walls
-        for (const auto& wall : walls) {
-            window.draw(wall);
-            sf::FloatRect bounds = wall.getGlobalBounds();
-            bounds.size = wall.getGlobalBounds().size *= 0.2f;
-            wallBounds.push_back(wall.getGlobalBounds());
+                // Try movement
+        Vec2 originalPos = playerCollider.pos;
+        // --- X axis ---
+        float originalX = playerCollider.pos.x;
+        playerCollider.pos.x += player.movement.x;
+        // Stop if colliding with object
+        for (auto& obj : wallColliders) {
+            Manifold m = { &playerCollider, &obj };
+            if (AABBvsAABB(&m)) {
+                playerCollider.pos.x = originalX;
+                break;
+            }
         }
-        // Display and update enemies
+        // --- Y axis ---
+        float originalY = playerCollider.pos.y;
+        playerCollider.pos.y += player.movement.y;
+        // Stop if colliding with object
+        for (auto& obj : wallColliders) {
+            Manifold m = { &playerCollider, &obj };
+            if (AABBvsAABB(&m)) {
+                playerCollider.pos.y = originalY;
+                break;
+            }
+        }
+        // Delete pickup if collided with
+        for (auto it = pickupColliders.begin(); it != pickupColliders.end(); ) {
+            Manifold m = {&playerCollider, &(*it)};
+            if (AABBvsAABB(&m)) {
+                pickups.erase(std::remove_if(pickups.begin(), pickups.end(),
+                  [&](const sf::CircleShape& shape) {
+                      return shape.getPosition() == toSF(it->pos);
+                  }), pickups.end());
+                it = pickupColliders.erase(it);
+                break;
+            } else {
+                ++it;
+            }
+        }
+
+        // Draw walls
+        for (const auto& wall : walls) {
+          window.draw(wall);
+        }
+        // Draw pickups
+        for (const auto& pickup : pickups) {
+          window.draw(pickup);
+        }
+        // Draw player
+        player.sprite.setPosition(toSF(playerCollider.pos));
+        player.draw(window);
+        // Draw and update enemies
         for (auto& enemy : enemies) {
             enemy.update(deltaTime, player.getPosition(), player.attacking);
             enemy.draw(window);
         }
-
         // Delete dead enemies
         enemies.erase(
             std::remove_if(enemies.begin(), enemies.end(),
