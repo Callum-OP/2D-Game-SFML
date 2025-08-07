@@ -19,8 +19,7 @@ int main()
     // Create a player
     Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
     Player player;
-    sf::FloatRect bounds = player.sprite.getLocalBounds();
-    player.sprite.setOrigin({player.sprite.getTextureRect().size.x / 2.0f, player.sprite.getTextureRect().size.y / 2.0f});
+    player.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
     player.sprite.setPosition(toSF(playerCollider.pos));
 
     // Create enemies
@@ -28,10 +27,12 @@ int main()
     // Create enemy 1
     sf::Vector2<float> position1(275.f, 200.f); // Set coordinates
     Enemy enemy1(position1, sf::Color::Red);
+    enemy1.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
     enemies.push_back(enemy1);
     // Create enemy 2
     sf::Vector2<float> position2(255.f, 210.f); // Set coordinates
     Enemy enemy2(position2, sf::Color::Red);
+    enemy2.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
     enemies.push_back(enemy2);
 
     std::vector<Object> pickupColliders;
@@ -44,6 +45,7 @@ int main()
     // Create wall 1
     Object wall1Collider = { Vec2(520, 270), { Vec2(-50, -50), Vec2(50, 50) } };
     sf::RectangleShape wall1(sf::Vector2f(100, 100));
+    wall1.setOrigin({100.0f / 2.0f, 100.0f / 2.0f});
     wall1.setPosition(toSF(wall1Collider.pos));
     wall1.setOutlineThickness(2);
     wall1.setOutlineColor(sf::Color::Black);
@@ -51,6 +53,7 @@ int main()
     // Create wall 2
     Object wall2Collider = { Vec2(420, 120), { Vec2(-50, -50), Vec2(50, 50) } };
     sf::RectangleShape wall2(sf::Vector2f(100, 100));
+    wall2.setOrigin({100.0f / 2.0f, 100.0f / 2.0f});
     wall2.setPosition(toSF(wall2Collider.pos));
     wall2.setOutlineThickness(2);
     wall2.setOutlineColor(sf::Color::Black);
