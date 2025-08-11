@@ -30,23 +30,6 @@ int main()
     player.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
     player.sprite.setPosition(toSF(playerCollider.pos));
 
-    // Future work, add enemies to tilemap
-    // Create enemies
-    std::vector<Object> enemyColliders;
-    std::vector<Enemy> enemies;
-    // Create enemy 1
-    sf::Vector2<float> position1(775.f, 400.f); // Set coordinates
-    Enemy enemy1(position1, sf::Color::Red);
-    enemies.push_back(enemy1);
-    // Create enemy 2
-    sf::Vector2<float> position2(735.f, 240.f); // Set coordinates
-    Enemy enemy2(position2, sf::Color::Red);
-    enemies.push_back(enemy2);
-    // Set up collider lists
-    for (auto& enemy : enemies) {
-        colliders.push_back(&enemy.collider);
-    }
-
     // Create tilemap
     MapLoader map;
     TileMapRenderer renderer;
@@ -56,32 +39,46 @@ int main()
     std::vector<Object> wallObjects;
     std::vector<Object*> pickupColliders;
     std::vector<Object> pickupObjects;
+    std::vector<Enemy> enemies;
+    sf::Texture enemyTex;
+    if (!enemyTex.loadFromFile("playerSpritesheet.png"))
+        throw std::runtime_error("Failed to load Wall.png");
     sf::Vector2i size = map.getSize();
     for (int y = 0; y < size.y; ++y) { // height
         for (int x = 0; x < size.x; ++x) { // width
+            // Walls
             if (map.getTile(x, y) == '#') {
                 wallObjects.reserve(size.x * size.y);
                 Object wall;
                 wall.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 wall.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
                 wall.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
-
                 // Add to colliders
                 wallObjects.push_back(wall);
                 colliders.push_back(&wallObjects.back());
             }
+            // Pickups
             if (map.getTile(x, y) == 'P') {
                 pickupObjects.reserve(size.x * size.y);
                 Object pickup;
                 pickup.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 pickup.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
                 pickup.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
-
                 // Add to colliders
                 pickupObjects.push_back(pickup);
                 pickupColliders.push_back(&pickupObjects.back());
             }
+            // Enemies
+            if (map.getTile(x, y) == 'E') {
+                Vec2 pos(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
+                Enemy enemy(toSF(pos), sf::Color::Red, enemyTex);
+                enemies.push_back(enemy);
+            }
         }
+    }
+    // Add enemies to colliders
+    for (auto& enemy : enemies) {
+        colliders.push_back(&enemy.collider);
     }
 
     // Create game window

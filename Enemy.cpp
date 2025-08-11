@@ -5,15 +5,9 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour)
-    : texture{},
-        sprite( // Create a enemy sprite
-            [this]() {
-              if (!texture.loadFromFile("playerSpritesheet.png"))
-                  throw std::runtime_error("Failed to load sprite sheet");
-              return sf::Sprite(texture);
-            }()
-        )
+Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour, sf::Texture& texture)
+    : texture(texture), // Store reference to texture
+      sprite(texture)   // Initialize sprite with texture
     {
 
     // Create a enemy sprite
