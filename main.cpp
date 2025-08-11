@@ -22,6 +22,7 @@ int main()
 {
     // Create colliders list
     std::vector<Object*> colliders;
+    const int TILE_SIZE = 96;
 
     // Create a player
     Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
@@ -50,14 +51,15 @@ int main()
     TileMapRenderer renderer;
     map.loadFromFile("level.txt");
 
-    // Set up wall colliders
+    // Set up wall and pickup colliders
     std::vector<Object> wallObjects;
+    std::vector<Object*> pickupColliders;
+    std::vector<Object> pickupObjects;
     sf::Vector2i size = map.getSize();
     for (int y = 0; y < size.y; ++y) { // height
         for (int x = 0; x < size.x; ++x) { // width
             if (map.getTile(x, y) == '#') {
                 wallObjects.reserve(size.x * size.y);
-                const int TILE_SIZE = 96;
                 Object wall;
                 wall.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 wall.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
@@ -67,12 +69,19 @@ int main()
                 wallObjects.push_back(wall);
                 colliders.push_back(&wallObjects.back());
             }
+            if (map.getTile(x, y) == 'P') {
+                pickupObjects.reserve(size.x * size.y);
+                Object pickup;
+                pickup.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
+                pickup.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
+                pickup.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
+
+                // Add to colliders
+                pickupObjects.push_back(pickup);
+                pickupColliders.push_back(&pickupObjects.back());
+            }
         }
     }
-
-    // Future work: I should create pickup objects and have them in a seperate file later
-    std::vector<Object> pickupColliders;
-    std::vector<sf::CircleShape> pickups;
 
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
@@ -160,12 +169,19 @@ int main()
         }
         // Delete pickup if collided with
         for (auto it = pickupColliders.begin(); it != pickupColliders.end(); ) {
-            Manifold m = {&playerCollider, &(*it)};
+            Manifold m = {&playerCollider, *it};
             if (AABBvsAABB(&m)) {
-                pickups.erase(std::remove_if(pickups.begin(), pickups.end(),
-                  [&](const sf::CircleShape& shape) {
-                      return shape.getPosition() == toSF(it->pos);
-                  }), pickups.end());
+                // Remove pickup from tilemap
+                Vec2 pos = (*it)->pos;
+                int tileX = static_cast<int>(pos.x) / TILE_SIZE;
+                int tileY = static_cast<int>(pos.y) / TILE_SIZE;
+                map.setTile(tileX, tileY, '.');
+                // Remove pickup from objects and colliders
+                Object* collidedPickup = *it;
+                pickupObjects.erase(std::remove_if(pickupObjects.begin(), pickupObjects.end(),
+                    [&](const Object& shape) {
+                        return &shape == collidedPickup;
+                    }), pickupObjects.end());
                 it = pickupColliders.erase(it);
                 break;
             } else {
@@ -173,12 +189,8 @@ int main()
             }
         }
 
-        // Draw walls
+        // Draw tilemap with walls and pickups
         renderer.draw(window, map);
-        // Draw pickups
-        for (const auto& pickup : pickups) {
-          window.draw(pickup);
-        }
         // Draw player
         player.sprite.setPosition(toSF(playerCollider.pos));
         player.draw(window);

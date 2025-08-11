@@ -13,6 +13,7 @@
 
 const int TILE_SIZE = 96;
 
+// Load map from file
 class MapLoader {
 public:
     std::vector<std::vector<char>> tileData;
@@ -32,19 +33,27 @@ public:
     sf::Vector2i getSize() const {
         return { static_cast<int>(tileData[0].size()), static_cast<int>(tileData.size()) };
     }
+
+    void setTile(int x, int y, char value) {
+        tileData[y][x] = value;
+    }   
 };
 
+// Tilemap renderer
 class TileMapRenderer {
     sf::Texture wallTex;
     sf::Texture floorTex;
-
+    sf::Texture pickupTex;
     sf::Sprite wallSprite;
     sf::Sprite floorSprite;
+    sf::Sprite pickupSprite;
 
 public:
+    // Get tilemap textures
     TileMapRenderer()
         : wallTex{},
           floorTex{},
+          pickupTex{},
           wallSprite([this]() {
               if (!wallTex.loadFromFile("Wall.png"))
                   throw std::runtime_error("Failed to load Wall.png");
@@ -54,16 +63,30 @@ public:
               if (!floorTex.loadFromFile("Floor.png"))
                   throw std::runtime_error("Failed to load Floor.png");
               return sf::Sprite(floorTex);
+          }()),
+          pickupSprite([this]() {
+              if (!pickupTex.loadFromFile("Pickup.png"))
+                  throw std::runtime_error("Failed to load Floor.png");
+              return sf::Sprite(pickupTex);
           }())
     {}
 
+    // Draw tilemap
     void draw(sf::RenderWindow& window, const MapLoader& map) {
         for (int y = 0; y < map.getSize().y; ++y) {
             for (int x = 0; x < map.getSize().x; ++x) {
                 sf::Sprite* sprite = nullptr;
                 char tile = map.getTile(x, y);
+
+                // Always draw floor if it's not a wall
+                if (tile != '#') {
+                    floorSprite.setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
+                    window.draw(floorSprite);
+                }
+
+                // Draw other tilemap objects
                 if (tile == '#') sprite = &wallSprite;
-                else if (tile == '.') sprite = &floorSprite;
+                else if (tile == 'P') sprite = &pickupSprite;
 
                 if (sprite) {
                     sprite->setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
