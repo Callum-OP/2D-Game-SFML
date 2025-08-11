@@ -10,6 +10,8 @@
 #include "Physics.cpp"
 #include "Physics.hpp"
 
+#include "TileMap.cpp"
+
 #include "Player.cpp"
 #include "Player.hpp"
 
@@ -19,7 +21,7 @@
 int main()
 {
     // Create colliders list
-    std::vector<Object*> wallColliders;
+    std::vector<Object*> colliders;
 
     // Create a player
     Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
@@ -33,20 +35,46 @@ int main()
     // Create enemy 1
     sf::Vector2<float> position1(775.f, 400.f); // Set coordinates
     Enemy enemy1(position1, sf::Color::Red);
+    enemies.push_back(enemy1);
     // Create enemy 2
     sf::Vector2<float> position2(735.f, 240.f); // Set coordinates
     Enemy enemy2(position2, sf::Color::Red);
-    // Set up enemy lists
-    enemies.push_back(enemy1);
     enemies.push_back(enemy2);
+    // Set up collider lists
     for (auto& enemy : enemies) {
-        wallColliders.push_back(&enemy.collider);
+        colliders.push_back(&enemy.collider);
     }
 
+    // Create tilemap
+    MapLoader map;
+    TileMapRenderer renderer;
+    map.loadFromFile("level.txt");
+
+    // Set up wall colliders
+    std::vector<Object> wallObjects;
+    sf::Vector2i size = map.getSize();
+    for (int y = 0; y < size.y; ++y) { // height
+        for (int x = 0; x < size.x; ++x) { // width
+            if (map.getTile(x, y) == '#') {
+                wallObjects.reserve(size.x * size.y);
+                const int TILE_SIZE = 96;
+                Object wall;
+                wall.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
+                wall.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
+                wall.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
+
+                // Add to colliders
+                wallObjects.push_back(wall);
+                colliders.push_back(&wallObjects.back());
+            }
+        }
+    }
+
+    // Future work: I should create pickup objects and have them in a seperate file later
     std::vector<Object> pickupColliders;
     std::vector<sf::CircleShape> pickups;
 
-    // I should put the walls code into a seperate file later
+    // Future work: I should put the walls code into a seperate file later
     // Create walls
     std::vector<sf::RectangleShape> walls;
     // Create wall 1
@@ -66,8 +94,8 @@ int main()
     wall2.setOutlineColor(sf::Color::Black);
     wall2.setFillColor(sf::Color::Transparent);
     // Set up wall objects list
-    wallColliders.push_back(&wall1Collider);
-    wallColliders.push_back(&wall2Collider);
+    colliders.push_back(&wall1Collider);
+    colliders.push_back(&wall2Collider);
     walls.push_back(wall1);
     walls.push_back(wall2);
 
@@ -137,7 +165,7 @@ int main()
         float originalX = playerCollider.pos.x;
         playerCollider.pos.x += player.movement.x;
         // Stop if colliding with object
-        for (auto& obj : wallColliders) {
+        for (auto& obj : colliders) {
             Manifold m = { &playerCollider, obj };
             if (AABBvsAABB(&m)) {
                 playerCollider.pos.x = originalX;
@@ -148,7 +176,7 @@ int main()
         float originalY = playerCollider.pos.y;
         playerCollider.pos.y += player.movement.y;
         // Stop if colliding with object
-        for (auto& obj : wallColliders) {
+        for (auto& obj : colliders) {
             Manifold m = { &playerCollider, obj };
             if (AABBvsAABB(&m)) {
                 playerCollider.pos.y = originalY;
@@ -171,6 +199,7 @@ int main()
         }
 
         // Draw walls
+        renderer.draw(window, map);
         for (const auto& wall : walls) {
           window.draw(wall);
         }
@@ -188,22 +217,21 @@ int main()
             enemy.draw(window);
         }
         // Delete dead enemies
-        // First, collect indices or pointers to dead enemies
+        // First, delete enemy colliders
         for (const Enemy& enemy : enemies) {
             if (enemy.dead) {
-                auto it = std::find(wallColliders.begin(), wallColliders.end(), &enemy.collider);
-                if (it != wallColliders.end()) {
-                    wallColliders.erase(it);
+                auto it = std::find(colliders.begin(), colliders.end(), &enemy.collider);
+                if (it != colliders.end()) {
+                    colliders.erase(it);
                 }
             }
         }
-        // Finally, remove the enemies
+        // Then, remove the enemies themselves
         enemies.erase(
             std::remove_if(enemies.begin(), enemies.end(),
                 [](const Enemy& enemy) { return enemy.dead; }),
             enemies.end()
         );
-
 
         window.display();
     }
