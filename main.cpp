@@ -74,31 +74,6 @@ int main()
     std::vector<Object> pickupColliders;
     std::vector<sf::CircleShape> pickups;
 
-    // Future work: I should put the walls code into a seperate file later
-    // Create walls
-    std::vector<sf::RectangleShape> walls;
-    // Create wall 1
-    Object wall1Collider = { Vec2(520, 270), { Vec2(-50, -50), Vec2(50, 50) } };
-    sf::RectangleShape wall1(sf::Vector2f(100, 100));
-    wall1.setOrigin({100.0f / 2.0f, 100.0f / 2.0f});
-    wall1.setPosition(toSF(wall1Collider.pos));
-    wall1.setOutlineThickness(2);
-    wall1.setOutlineColor(sf::Color::Black);
-    wall1.setFillColor(sf::Color::Transparent);
-    // Create wall 2
-    Object wall2Collider = { Vec2(420, 120), { Vec2(-50, -50), Vec2(50, 50) } };
-    sf::RectangleShape wall2(sf::Vector2f(100, 100));
-    wall2.setOrigin({100.0f / 2.0f, 100.0f / 2.0f});
-    wall2.setPosition(toSF(wall2Collider.pos));
-    wall2.setOutlineThickness(2);
-    wall2.setOutlineColor(sf::Color::Black);
-    wall2.setFillColor(sf::Color::Transparent);
-    // Set up wall objects list
-    colliders.push_back(&wall1Collider);
-    colliders.push_back(&wall2Collider);
-    walls.push_back(wall1);
-    walls.push_back(wall2);
-
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
@@ -200,9 +175,6 @@ int main()
 
         // Draw walls
         renderer.draw(window, map);
-        for (const auto& wall : walls) {
-          window.draw(wall);
-        }
         // Draw pickups
         for (const auto& pickup : pickups) {
           window.draw(pickup);
