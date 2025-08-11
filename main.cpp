@@ -30,6 +30,7 @@ int main()
     player.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
     player.sprite.setPosition(toSF(playerCollider.pos));
 
+    // Future work, add enemies to tilemap
     // Create enemies
     std::vector<Object> enemyColliders;
     std::vector<Enemy> enemies;
@@ -86,6 +87,13 @@ int main()
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
+
+    // Create game camera
+    sf::View camera;
+    sf::Vector2u winSize = window.getSize();
+    camera.setSize(sf::Vector2f(winSize.x, winSize.y));
+    camera.setCenter(player.getPosition());
+    window.setView(camera);
 
     // Timers and keys used for detecting double taps
     sf::Clock clock;
@@ -194,6 +202,8 @@ int main()
         // Draw player
         player.sprite.setPosition(toSF(playerCollider.pos));
         player.draw(window);
+        camera.setCenter(player.getPosition());
+        window.setView(camera);
         // Draw and update enemies
         for (auto& enemy : enemies) {
             enemy.sprite.setPosition(toSF(enemy.collider.pos));
