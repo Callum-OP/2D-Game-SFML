@@ -97,21 +97,43 @@ int main()
     sf::Time lastClickTime; // The last click of each key
     const sf::Time doubleClickTime = sf::milliseconds(500); // Expected time limit for second click to happen
     sf::Keyboard::Scancode lastDirection = sf::Keyboard::Scancode::Unknown; // The direction of last key press
+    std::map<sf::Keyboard::Scancode, bool> keyHeld; // Check if key is held
+    bool sprint; // Boolean for if sprint is true or not
 
     // Ensures window closes properly when closed
     const auto onClose = [&window](const sf::Event::Closed&) {
         window.close();
     };
+
     // Check when key is pressed
-    const auto onKeyPressed = [&window, &lastDirection](const sf::Event::KeyPressed& keyPressed) {
+    const auto onKeyPressed = [&window, &player, &clock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint](const sf::Event::KeyPressed& keyPressed) {
         // Ensure window is closed when Escape key is pressed
         if (keyPressed.scancode == sf::Keyboard::Scancode::Escape) {
             window.close();
         }
-        lastDirection = keyPressed.scancode; // Key that was last clicked
+
+        if (!keyHeld[keyPressed.scancode]) {
+            // Update key held
+            keyHeld[keyPressed.scancode] = true;
+            sf::Time now = clock.getElapsedTime();
+            // Sprint only if within expected click time and facing same direction as last click
+            bool isDoubleTap = (keyPressed.scancode == lastDirection) &&
+                (now - lastClickTime < doubleClickTime) &&
+                !sprint;
+            player.sprint(isDoubleTap);
+            if (isDoubleTap) {
+                sprint = true; // Consume the double-tap
+            } else {
+                sprint = false; // Reset if not a valid double-tap
+            }
+            lastDirection = keyPressed.scancode; // Key that was last clicked
+            lastClickTime = now; // Time user last clicked
+        }
     };
+
+    
     // Check when key is released
-    const auto onKeyReleased = [&window, &player, &clock, &lastClickTime, &doubleClickTime, &lastDirection](const sf::Event::KeyReleased& keyPressed) {
+    const auto onKeyReleased = [&window, &keyHeld](const sf::Event::KeyReleased& keyPressed) {
         // If double tap movement keys, tell player to sprint
         if (keyPressed.scancode == sf::Keyboard::Scan::Right || 
             keyPressed.scancode == sf::Keyboard::Scan::D || 
@@ -121,17 +143,9 @@ int main()
             keyPressed.scancode == sf::Keyboard::Scan::W || 
             keyPressed.scancode == sf::Keyboard::Scan::Down || 
             keyPressed.scancode == sf::Keyboard::Scan::S) {
-            
-            sf::Time now = clock.getElapsedTime(); // Current time
-            // Sprint only if within expected click time and facing same direction as last click
-            if (now - lastClickTime < doubleClickTime && keyPressed.scancode == lastDirection) {
-                player.sprint(true);
-            } else {
-                player.sprint(false);
-            }
-            lastDirection = keyPressed.scancode; // Key that was last clicked
-            lastClickTime = now; // Time user last clicked
         }
+        // Update key held
+        keyHeld[keyPressed.scancode] = false;
     };
 
     // Game loop
