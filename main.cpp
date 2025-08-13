@@ -40,10 +40,15 @@ int main()
         Object pickup;
         Object* collider() { return &pickup; }
     };
+    std::vector<Pickup> pickups;
+    // Set enemy list
+    struct Enem {
+        Enemy enemy;
+        Object* collider() { return &enemy.collider; }
+    };
+    std::vector<Enem> enemies;
 
     std::vector<Object> wallObjects;
-    std::vector<Pickup> pickups;
-    std::vector<Enemy> enemies;
     sf::Texture enemyTex;
     if (!enemyTex.loadFromFile("playerSpritesheet.png"))
         throw std::runtime_error("Failed to load Wall.png");
@@ -74,13 +79,9 @@ int main()
             if (map.getTile(x, y) == 'E') {
                 Vec2 pos(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 Enemy enemy(toSF(pos), sf::Color::Red, enemyTex);
-                enemies.push_back(enemy);
+                enemies.push_back(Enem{enemy});
             }
         }
-    }
-    // Add enemies to colliders
-    for (auto& enemy : enemies) {
-        colliders.push_back(&enemy.collider);
     }
 
     // Create game window
@@ -170,6 +171,13 @@ int main()
         float originalX = playerCollider.pos.x;
         playerCollider.pos.x += player.movement.x;
         // Stop if colliding with object
+        for (auto& enem : enemies) {
+            Manifold m = { &playerCollider, enem.collider()};
+            if (AABBvsAABB({&m})) {
+                playerCollider.pos.x = originalX;
+                break;
+            }
+        }
         for (auto& obj : colliders) {
             Manifold m = { &playerCollider, obj };
             if (AABBvsAABB(&m)) {
@@ -181,6 +189,13 @@ int main()
         float originalY = playerCollider.pos.y;
         playerCollider.pos.y += player.movement.y;
         // Stop if colliding with object
+        for (auto& enem : enemies) {
+            Manifold m = { &playerCollider, enem.collider()};
+            if (AABBvsAABB({&m})) {
+                playerCollider.pos.y = originalY;
+                break;
+            }
+        }
         for (auto& obj : colliders) {
             Manifold m = { &playerCollider, obj };
             if (AABBvsAABB(&m)) {
@@ -213,28 +228,23 @@ int main()
         camera.setCenter(player.getPosition());
         window.setView(camera);
         // Draw and update enemies
-        for (auto& enemy : enemies) {
-            enemy.sprite.setPosition(toSF(enemy.collider.pos));
-            enemy.update(deltaTime, player.getPosition(), player.attacking);
-            enemy.draw(window);
+        for (auto& enem : enemies) {
+            enem.enemy.sprite.setPosition(toSF(enem.enemy.collider.pos));
+            enem.enemy.update(deltaTime, player.getPosition(), player.attacking);
+            enem.enemy.draw(window);
         }
         // Delete dead enemies
         // First, delete enemy colliders
-        for (const Enemy& enemy : enemies) {
-            if (enemy.dead) {
-                auto it = std::find(colliders.begin(), colliders.end(), &enemy.collider);
-                if (it != colliders.end()) {
-                    colliders.erase(it);
-                }
+        for (const Enem& enem : enemies) {
+            if (enem.enemy.dead) {
+                enemies.erase(
+                    std::remove_if(enemies.begin(), enemies.end(), [](const Enem& e) {
+                        return e.enemy.dead;
+                    }),
+                    enemies.end()
+                );
             }
         }
-        // Then, remove the enemies themselves
-        enemies.erase(
-            std::remove_if(enemies.begin(), enemies.end(),
-                [](const Enemy& enemy) { return enemy.dead; }),
-            enemies.end()
-        );
-
         window.display();
     }
     return 0;
