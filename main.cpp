@@ -36,19 +36,23 @@ int main()
     map.loadFromFile("level.txt");
 
     // Set up wall and pickup colliders
+    struct Pickup {
+        Object pickup;
+        Object* collider() { return &pickup; }
+    };
+
     std::vector<Object> wallObjects;
-    std::vector<Object*> pickupColliders;
-    std::vector<Object> pickupObjects;
+    std::vector<Pickup> pickups;
     std::vector<Enemy> enemies;
     sf::Texture enemyTex;
     if (!enemyTex.loadFromFile("playerSpritesheet.png"))
         throw std::runtime_error("Failed to load Wall.png");
     sf::Vector2i size = map.getSize();
+    wallObjects.reserve(size.x * size.y);
     for (int y = 0; y < size.y; ++y) { // height
         for (int x = 0; x < size.x; ++x) { // width
             // Walls
             if (map.getTile(x, y) == '#') {
-                wallObjects.reserve(size.x * size.y);
                 Object wall;
                 wall.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 wall.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
@@ -59,14 +63,13 @@ int main()
             }
             // Pickups
             if (map.getTile(x, y) == 'P') {
-                pickupObjects.reserve(size.x * size.y);
+                std::cout << "P" << std::endl;
                 Object pickup;
                 pickup.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 pickup.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
                 pickup.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
-                // Add to colliders
-                pickupObjects.push_back(pickup);
-                pickupColliders.push_back(&pickupObjects.back());
+                // Add to list
+                pickups.push_back(Pickup{pickup});
             }
             // Enemies
             if (map.getTile(x, y) == 'E') {
@@ -187,21 +190,17 @@ int main()
             }
         }
         // Delete pickup if collided with
-        for (auto it = pickupColliders.begin(); it != pickupColliders.end(); ) {
-            Manifold m = {&playerCollider, *it};
+        for (auto it = pickups.begin(); it != pickups.end(); ) {
+            Manifold m = {&playerCollider, it->collider()};
             if (AABBvsAABB(&m)) {
+                std::cout << "Collision detected!" << std::endl;
                 // Remove pickup from tilemap
-                Vec2 pos = (*it)->pos;
+                Vec2 pos = (it)->pickup.pos;
                 int tileX = static_cast<int>(pos.x) / TILE_SIZE;
                 int tileY = static_cast<int>(pos.y) / TILE_SIZE;
                 map.setTile(tileX, tileY, '.');
                 // Remove pickup from objects and colliders
-                Object* collidedPickup = *it;
-                pickupObjects.erase(std::remove_if(pickupObjects.begin(), pickupObjects.end(),
-                    [&](const Object& shape) {
-                        return &shape == collidedPickup;
-                    }), pickupObjects.end());
-                it = pickupColliders.erase(it);
+                it = pickups.erase(it);
                 break;
             } else {
                 ++it;
