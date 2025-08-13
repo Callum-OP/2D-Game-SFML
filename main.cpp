@@ -20,6 +20,8 @@
 
 int main()
 {
+    sf::Clock clock;
+
     // Create colliders list
     std::vector<Object*> colliders;
     const int TILE_SIZE = 96;
@@ -96,12 +98,12 @@ int main()
     window.setView(camera);
 
     // Timers and keys used for detecting double taps
-    sf::Clock clock;
     sf::Time lastClickTime; // The last click of each key
     const sf::Time doubleClickTime = sf::milliseconds(500); // Expected time limit for second click to happen
     sf::Keyboard::Scancode lastDirection = sf::Keyboard::Scancode::Unknown; // The direction of last key press
     std::map<sf::Keyboard::Scancode, bool> keyHeld; // Check if key is held
-    bool sprint; // Boolean for if sprint is true or not
+    bool sprint; // If player should sprint or not
+    bool isDoubleTap = false; // If use has double tapped or not
 
     // Ensures window closes properly when closed
     const auto onClose = [&window](const sf::Event::Closed&) {
@@ -109,29 +111,31 @@ int main()
     };
 
     // Check when key is pressed
-    const auto onKeyPressed = [&window, &player, &clock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint](const sf::Event::KeyPressed& keyPressed) {
+    const auto onKeyPressed = [&window, &player, &clock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint, &isDoubleTap](const sf::Event::KeyPressed& keyPressed) {
         // Ensure window is closed when Escape key is pressed
         if (keyPressed.scancode == sf::Keyboard::Scancode::Escape) {
             window.close();
         }
-
+        sf::Time now = clock.getElapsedTime();
+        // Check for double tap
         if (!keyHeld[keyPressed.scancode]) {
             // Update key held
             keyHeld[keyPressed.scancode] = true;
-            sf::Time now = clock.getElapsedTime();
             // Sprint only if within expected click time and facing same direction as last click
-            bool isDoubleTap = (keyPressed.scancode == lastDirection) &&
-                (now - lastClickTime < doubleClickTime) &&
-                !sprint;
+            if ((keyPressed.scancode == lastDirection) && (now - lastClickTime < doubleClickTime) && (!sprint)) {
+                isDoubleTap = true;
+            } else {
+                isDoubleTap = false;
+            }
             player.sprint(isDoubleTap);
             if (isDoubleTap) {
-                sprint = true; // Consume the double-tap
+                sprint = true;
             } else {
-                sprint = false; // Reset if not a valid double-tap
+                sprint = false;
             }
-            lastDirection = keyPressed.scancode; // Key that was last clicked
-            lastClickTime = now; // Time user last clicked
         }
+        lastDirection = keyPressed.scancode; // Key that was last clicked
+        lastClickTime = now; // Time user last clicked
     };
 
     
@@ -153,7 +157,7 @@ int main()
 
     // Game loop
     while (window.isOpen()) {
-        sf::Time delta = clock.restart(); // Time since last frame
+        sf::Time delta = clock.getElapsedTime(); // Time since last frame
         float deltaTime = delta.asSeconds(); // Convert to seconds
 
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
