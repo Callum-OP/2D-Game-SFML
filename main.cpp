@@ -63,7 +63,6 @@ int main()
             }
             // Pickups
             if (map.getTile(x, y) == 'P') {
-                std::cout << "P" << std::endl;
                 Object pickup;
                 pickup.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 pickup.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
@@ -193,7 +192,6 @@ int main()
         for (auto it = pickups.begin(); it != pickups.end(); ) {
             Manifold m = {&playerCollider, it->collider()};
             if (AABBvsAABB(&m)) {
-                std::cout << "Collision detected!" << std::endl;
                 // Remove pickup from tilemap
                 Vec2 pos = (it)->pickup.pos;
                 int tileX = static_cast<int>(pos.x) / TILE_SIZE;
