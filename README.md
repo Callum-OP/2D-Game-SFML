@@ -14,10 +14,12 @@ This a 2D top down game using C++ and SFML 3.0, includes 8 directional movement,
 
 This app requires the SMFL 3.0 library to work, specifically the graphics, window and system components.
 
-Below is a screenshot of the game in its current state, further below is a video.
+Below is a video of the game in its current state. I am using temporary assets that will be replaced later.
 
-<img width="395" alt="2D Game SFML" src="https://github.com/user-attachments/assets/78444bac-4418-441f-b92b-858ecac660cd" />
 
-![video3279694462](https://github.com/user-attachments/assets/a0c55427-53c4-4239-acf4-ca926e631543)
+
+https://github.com/user-attachments/assets/e9994bfb-2083-4616-9bdd-a497b24958c0
+
+
 
 
