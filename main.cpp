@@ -21,6 +21,7 @@
 int main()
 {
     sf::Clock clock;
+    sf::Clock sprintClock;
 
     // Create colliders list
     std::vector<Object*> colliders;
@@ -111,12 +112,12 @@ int main()
     };
 
     // Check when key is pressed
-    const auto onKeyPressed = [&window, &player, &clock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint, &isDoubleTap](const sf::Event::KeyPressed& keyPressed) {
+    const auto onKeyPressed = [&window, &player, &sprintClock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint, &isDoubleTap](const sf::Event::KeyPressed& keyPressed) {
         // Ensure window is closed when Escape key is pressed
         if (keyPressed.scancode == sf::Keyboard::Scancode::Escape) {
             window.close();
         }
-        sf::Time now = clock.getElapsedTime();
+        sf::Time now = sprintClock.getElapsedTime();
         // Check for double tap
         if (!keyHeld[keyPressed.scancode]) {
             // Update key held
@@ -157,7 +158,7 @@ int main()
 
     // Game loop
     while (window.isOpen()) {
-        sf::Time delta = clock.getElapsedTime(); // Time since last frame
+        sf::Time delta = clock.restart(); // Time since last frame
         float deltaTime = delta.asSeconds(); // Convert to seconds
 
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
@@ -238,17 +239,13 @@ int main()
             enem.enemy.draw(window);
         }
         // Delete dead enemies
-        // First, delete enemy colliders
-        for (const Enem& enem : enemies) {
-            if (enem.enemy.dead) {
-                enemies.erase(
-                    std::remove_if(enemies.begin(), enemies.end(), [](const Enem& e) {
-                        return e.enemy.dead;
-                    }),
-                    enemies.end()
-                );
-            }
-        }
+        enemies.erase(
+            std::remove_if(enemies.begin(), enemies.end(), [](const Enem& e) {
+                return e.enemy.dead;
+            }),
+            enemies.end()
+        );
+
         window.display();
     }
     return 0;
