@@ -18,7 +18,10 @@ Below is a video of the game in its current state. I am using temporary assets t
 
 
 
-https://github.com/user-attachments/assets/e9994bfb-2083-4616-9bdd-a497b24958c0
+https://github.com/user-attachments/assets/bcdcdc1e-d377-426c-b32a-6c03af6905ff
+
+
+
 
 
 
