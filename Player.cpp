@@ -12,6 +12,13 @@ Player::Player()
                   throw std::runtime_error("Failed to load sprite sheet");
               return sf::Sprite(texture);
             }()
+        ),
+        heartSprite( // Create a player sprite
+            [this]() {
+              if (!heartFull.loadFromFile("HeartFull.png"))
+                  throw std::runtime_error("Failed to load health textures");
+              return sf::Sprite(heartFull);
+            }()
         )
     {
     // Set up sprite
@@ -20,9 +27,16 @@ Player::Player()
     sprite.setScale({1.0f,1.0f});
     //sprite.setColor(sf::Color::White);
 
+    // Health textures
+    heartSprite.setScale({0.2f, 0.2f});
+    if (!heartFull.loadFromFile("HeartFull.png") ||
+        !heartEmpty.loadFromFile("HeartEmpty.png")) {
+        throw std::runtime_error("Failed to load health textures");
+    }
+
     // Set health values
-    maxHealth = 100;
-    health = 100;
+    maxHealth = 5;
+    health = 5;
 
     // Default movement speed
     verticalSpeed = 3.0f;
@@ -316,6 +330,16 @@ sf::Vector2f Player::getPosition() {
 }
 
 // For drawing player in main
-void Player::draw(sf::RenderWindow& window) {
+void Player::draw(sf::RenderWindow& window, const sf::View& camera) {
     window.draw(sprite);
+    // Draw health bar at top left of camera
+    sf::Vector2f cameraTopLeft = camera.getCenter() - (camera.getSize() / 2.f);
+    for (int i = 0; i < maxHealth; ++i) {
+        heartSprite.setTexture(i < health ? heartFull : heartEmpty);
+        heartSprite.setPosition({
+            cameraTopLeft.x + 10.f + i * 60.f,
+            cameraTopLeft.y + 10.f
+        });
+        window.draw(heartSprite);
+    }
 }

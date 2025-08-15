@@ -10,7 +10,7 @@ public:
     void Player::sprint(bool sprint);
     void update();
     sf::Vector2f getPosition();
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window, const sf::View& view);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
     void Player::takeDamage(int amount);
     void Player::heal(int amount);
@@ -19,6 +19,8 @@ public:
     bool Player::isDead() const { return health <= 0; };
     sf::Texture texture;
     sf::Sprite sprite;
+    sf::Texture heartFull, heartEmpty;
+    sf::Sprite heartSprite;
     sf::Clock damageClock;
     sf::Time damageCooldown = sf::seconds(1.f); // 1 second cooldown
 
