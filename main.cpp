@@ -179,6 +179,9 @@ int main()
         for (auto& enem : enemies) {
             Manifold m = { &playerCollider, enem.collider()};
             if (AABBvsAABB({&m})) {
+                if (enem.enemy.attacking) {
+                    player.takeDamage(25);
+                }
                 playerCollider.pos.x = originalX;
                 break;
             }
@@ -197,6 +200,9 @@ int main()
         for (auto& enem : enemies) {
             Manifold m = { &playerCollider, enem.collider()};
             if (AABBvsAABB({&m})) {
+                if (enem.enemy.attacking) {
+                    player.takeDamage(25);
+                }
                 playerCollider.pos.y = originalY;
                 break;
             }
@@ -212,6 +218,8 @@ int main()
         for (auto it = pickups.begin(); it != pickups.end(); ) {
             Manifold m = {&playerCollider, it->collider()};
             if (AABBvsAABB(&m)) {
+                // Heal player
+                player.heal(25);
                 // Remove pickup from tilemap
                 Vec2 pos = (it)->pickup.pos;
                 int tileX = static_cast<int>(pos.x) / TILE_SIZE;
@@ -232,6 +240,11 @@ int main()
         player.draw(window);
         camera.setCenter(player.getPosition());
         window.setView(camera);
+        if (player.isDead()) {
+            std::cout << "You are dead" << std::endl;
+        }
+
+
         // Draw and update enemies
         for (auto& enem : enemies) {
             enem.enemy.sprite.setPosition(toSF(enem.enemy.collider.pos));
@@ -247,6 +260,7 @@ int main()
         );
 
         window.display();
+        std::cout << "Health: " << player.health << std::endl;
     }
     return 0;
 }

@@ -14,10 +14,15 @@ Player::Player()
             }()
         )
     {
+    // Set up sprite
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {240,240}});
     sprite.setScale({1.0f,1.0f});
     //sprite.setColor(sf::Color::White);
+
+    // Set health values
+    maxHealth = 100;
+    health = 100;
 
     // Default movement speed
     verticalSpeed = 3.0f;
@@ -79,6 +84,19 @@ Player::Player()
     sprintingWestXStart = 240; sprintingWestYStart = 3120; sprintingWestXEnd = 1440; sprintingWestYEnd = 3120;
 }
 
+// Take damage until no health left, with a 1 second delay between damage
+void Player::takeDamage(int amount) {
+        if (damageClock.getElapsedTime() >= damageCooldown) {
+            health -= amount;
+            damageClock.restart();
+        }
+    }
+
+// Heal player until max health
+void Player::heal(int amount) {
+    health += amount;
+    if (health > maxHealth) health = maxHealth;
+}
 
 void Player::handleInput() {
     // If both right and up key pressed then move character right and up at same time

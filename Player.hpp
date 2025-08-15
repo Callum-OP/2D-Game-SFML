@@ -12,8 +12,15 @@ public:
     sf::Vector2f getPosition();
     void draw(sf::RenderWindow& window);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
+    void Player::takeDamage(int amount);
+    void Player::heal(int amount);
+    int Player::getHealth() const { return health; };
+    int Player::getMaxHealth() const { return maxHealth; };
+    bool Player::isDead() const { return health <= 0; };
     sf::Texture texture;
     sf::Sprite sprite;
+    sf::Clock damageClock;
+    sf::Time damageCooldown = sf::seconds(1.f); // 1 second cooldown
 
     int textureX, textureY;
     float timer, timerMax;
@@ -21,6 +28,9 @@ public:
     sf::Vector2f movement;
     int finalColumn, finalRow;
     bool moving, sprinting, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
+
+    int maxHealth;
+    int health;
 
     int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
     standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 
