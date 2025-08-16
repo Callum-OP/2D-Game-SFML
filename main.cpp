@@ -218,15 +218,17 @@ int main()
         for (auto it = pickups.begin(); it != pickups.end(); ) {
             Manifold m = {&playerCollider, it->collider()};
             if (AABBvsAABB(&m)) {
-                // Heal player
-                player.heal(1);
-                // Remove pickup from tilemap
-                Vec2 pos = (it)->pickup.pos;
-                int tileX = static_cast<int>(pos.x) / TILE_SIZE;
-                int tileY = static_cast<int>(pos.y) / TILE_SIZE;
-                map.setTile(tileX, tileY, '.');
-                // Remove pickup from objects and colliders
-                it = pickups.erase(it);
+                if (player.getHealth() < player.getMaxHealth()) {
+                    // Heal player
+                    player.heal(1);
+                    // Remove pickup from tilemap
+                    Vec2 pos = (it)->pickup.pos;
+                    int tileX = static_cast<int>(pos.x) / TILE_SIZE;
+                    int tileY = static_cast<int>(pos.y) / TILE_SIZE;
+                    map.setTile(tileX, tileY, '.');
+                    // Remove pickup from objects and colliders
+                    it = pickups.erase(it);
+                }
                 break;
             } else {
                 ++it;
