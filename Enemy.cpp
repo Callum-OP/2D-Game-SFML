@@ -19,6 +19,10 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour, sf::Texture& tex
     sprite.setScale({1.0f,1.0f});
     sprite.setColor(startColour);
 
+    // Set health values
+    maxHealth = 3;
+    health = 3;
+
     // Default movement speed
     speed = 80.0f;
     moving = false;
@@ -67,6 +71,20 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour, sf::Texture& tex
     attackWestXStart = 960; attackWestYStart = 2160; attackWestXEnd = 2400; attackWestYEnd = 2160;
 }
 
+// Take damage until no health left, with half a second delay between damage
+void Enemy::takeDamage(int amount) {
+        if (damageClock.getElapsedTime() >= damageCooldown) {
+            health -= amount;
+            damageClock.restart();
+        }
+    }
+
+// Heal enemy until max health
+void Enemy::heal(int amount) {
+    health += amount;
+    if (health > maxHealth) health = maxHealth;
+}
+
 // Reusable function for animating enemy
 void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd) {
     // If current texture coordinates outside of expected values then use start coordinates
@@ -108,7 +126,7 @@ void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition, bool pla
         }
     }
     else if (distance <= attackRadius * 1.5 && playerAttacking) {
-        dead = true;
+        Enemy::takeDamage(1);
     // Stop if too close to player
     } else if (distance <= attackRadius) {
         attacking = true;

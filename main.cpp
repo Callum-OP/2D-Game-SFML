@@ -243,7 +243,6 @@ int main()
         if (player.isDead()) {
         }
 
-
         // Draw and update enemies
         for (auto& enem : enemies) {
             enem.enemy.sprite.setPosition(toSF(enem.enemy.collider.pos));
@@ -252,8 +251,8 @@ int main()
         }
         // Delete dead enemies
         enemies.erase(
-            std::remove_if(enemies.begin(), enemies.end(), [](const Enem& e) {
-                return e.enemy.dead;
+            std::remove_if(enemies.begin(), enemies.end(), [](const Enem& enem) {
+                return enem.enemy.isDead();
             }),
             enemies.end()
         );

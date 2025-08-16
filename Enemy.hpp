@@ -14,12 +14,22 @@ public:
     sf::Texture texture;
     sf::Sprite sprite;
     Object collider;
+    void Enemy::takeDamage(int amount);
+    void Enemy::heal(int amount);
+    int Enemy::getHealth() const { return health; };
+    int Enemy::getMaxHealth() const { return maxHealth; };
+    bool Enemy::isDead() const { return health <= 0; };
+    sf::Clock damageClock;
+    sf::Time damageCooldown = sf::seconds(0.5f); // 1 second cooldown
 
     int textureX, textureY;
     float timer, timerMax;
     float speed;
     int finalColumn, finalRow;
     bool moving, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
+
+    int maxHealth;
+    int health;
 
     int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
     standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 
@@ -43,8 +53,6 @@ public:
     int attackSouthWestXStart, attackSouthWestYStart, attackSouthWestXEnd, attackSouthWestYEnd;
     int attackWestXStart, attackWestYStart, attackWestXEnd, attackWestYEnd;
     int attackNorthWestXStart, attackNorthWestYStart, attackNorthWestXEnd, attackNorthWestYEnd;
-
-    bool dead = false;
 };
 
 #endif // ENEMY_HPP
