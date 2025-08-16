@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour, sf::Texture& texture)
+Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture)
     : texture(texture), // Store reference to texture
       sprite(texture)   // Initialize sprite with texture
     {
@@ -17,7 +17,7 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Color startColour, sf::Texture& tex
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {240,240}});
     sprite.setScale({1.0f,1.0f});
-    sprite.setColor(startColour);
+    sprite.setColor(sf::Color::White);
 
     // Set health values
     maxHealth = 3;
@@ -200,6 +200,13 @@ void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition, bool pla
             sprite.setTextureRect({{standingSouthX, standingSouthY}, {240, 240}});
         }
         timer = 0.0f;
+    }
+
+    // Indicate damage by turning sprite red
+    if (damageClock.getElapsedTime() >= damageCooldown - sf::seconds(0.3f)) {
+        sprite.setColor(sf::Color::White);
+    } else {
+        sprite.setColor(sf::Color::Red);
     }
 }
 

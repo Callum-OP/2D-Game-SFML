@@ -81,7 +81,7 @@ int main()
             // Enemies
             if (map.getTile(x, y) == 'E') {
                 Vec2 pos(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
-                Enemy enemy(toSF(pos), sf::Color::Red, enemyTex);
+                Enemy enemy(toSF(pos), enemyTex);
                 enemies.push_back(Enem{enemy});
             }
         }

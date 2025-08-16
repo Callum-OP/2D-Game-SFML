@@ -322,6 +322,13 @@ void Player::update() {
         if (west) {textureX = standingWestX; textureY = standingWestY;}
         sprite.setTextureRect({{textureX, textureY}, {240, 240}});
     }
+
+    // Indicate damage by turning sprite red
+    if (damageClock.getElapsedTime() >= damageCooldown - sf::seconds(0.7f)) {
+        sprite.setColor(sf::Color::White);
+    } else {
+        sprite.setColor(sf::Color::Red);
+    }
 }
 
 // Get position of player in main
