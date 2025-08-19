@@ -53,8 +53,8 @@ Player::Player()
     timerMax = 0.5f;
 
     // When x coordinates have reached the final column
-    finalColumn = 2880;
-    finalRow = 3120;
+    finalColumn = 3840;
+    finalRow = 2400;
 
     // Start and end coordinates for animation textures in spritesheet
     // These values will need to be changed if the spritesheet changes
@@ -68,34 +68,32 @@ Player::Player()
     standingSouthWestX = 1440; standingSouthWestY = 0;
     standingWestX = 1680; standingWestY = 0;
 
-    JogEastXStart = 1920; JogEastYStart = 0; JogEastXEnd = 0; JogEastYEnd = 240;
-    JogNorthXStart = 240; JogNorthYStart = 240; JogNorthXEnd = 1440; JogNorthYEnd = 240;
-    JogNorthEastXStart = 1680; JogNorthEastYStart = 240; JogNorthEastXEnd = 2880; JogNorthEastYEnd = 240;
-    JogNorthWestXStart = 0; JogNorthWestYStart = 480; JogNorthWestXEnd = 1200; JogNorthWestYEnd = 480;
-    JogSouthXStart = 1440; JogSouthYStart = 480; JogSouthXEnd = 2640; JogSouthYEnd = 480;
-    JogSouthEastXStart = 2880; JogSouthEastYStart = 480; JogSouthEastXEnd = 960; JogSouthEastYEnd = 720;
-    JogSouthWestXStart = 1200; JogSouthWestYStart = 720; JogSouthWestXEnd = 2400; JogSouthWestYEnd = 720;
-    JogWestXStart = 2640; JogWestYStart = 720; JogWestXEnd = 720; JogWestYEnd = 960;
+    JogEastXStart = 1920; JogEastYStart = 0; JogEastXEnd = 3120; JogEastYEnd = 0;
+    JogNorthXStart = 3360; JogNorthYStart = 0; JogNorthXEnd = 480; JogNorthYEnd = 240;
+    JogNorthEastXStart = 720; JogNorthEastYStart = 240; JogNorthEastXEnd = 1920; JogNorthEastYEnd = 240;
+    JogNorthWestXStart = 2160; JogNorthWestYStart = 240; JogNorthWestXEnd = 3360; JogNorthWestYEnd = 240;
+    JogSouthXStart = 3600; JogSouthYStart = 240; JogSouthXEnd = 720; JogSouthYEnd = 480;
+    JogSouthEastXStart = 960; JogSouthEastYStart = 480; JogSouthEastXEnd = 2160; JogSouthEastYEnd = 480;
+    JogSouthWestXStart = 2400; JogSouthWestYStart = 480; JogSouthWestXEnd = 3600; JogSouthWestYEnd = 480;
+    JogWestXStart = 3840; JogWestYStart = 480; JogWestXEnd = 960; JogWestYEnd = 720;
 
-    attacking = false;
-    attackEastXStart = 1680; attackEastYStart = 1200; attackEastXEnd = 0; attackEastYEnd = 1440;
-    attackNorthXStart = 240; attackNorthYStart = 1440; attackNorthXEnd = 1680; attackNorthYEnd = 1440;
-    attackNorthEastXStart = 1920; attackNorthEastYStart = 1440; attackNorthEastXEnd = 240; attackNorthEastYEnd = 1680;
-    attackNorthWestXStart = 480; attackNorthWestYStart = 1680; attackNorthWestXEnd = 1920; attackNorthWestYEnd = 1680;
-    attackSouthXStart = 2160; attackSouthYStart = 1680; attackSouthXEnd = 480; attackSouthYEnd = 1920;
-    attackSouthEastXStart = 720; attackSouthEastYStart = 1920; attackSouthEastXEnd = 2160; attackSouthEastYEnd = 1920;
-    attackSouthWestXStart = 2400; attackSouthWestYStart = 1920; attackSouthWestXEnd = 720; attackSouthWestYEnd = 2160;
-    attackWestXStart = 960; attackWestYStart = 2160; attackWestXEnd = 2400; attackWestYEnd = 2160;
+    SlashEastXStart = 960; SlashEastYStart = 960; SlashEastXEnd = 2400; SlashEastYEnd = 960;
+    SlashNorthXStart = 2640; SlashNorthYStart = 960; SlashNorthXEnd = 0; SlashNorthYEnd = 1200;
+    SlashNorthEastXStart = 240; SlashNorthEastYStart = 1200; SlashNorthEastXEnd = 1680; SlashNorthEastYEnd = 1200;
+    SlashNorthWestXStart = 1920; SlashNorthWestYStart = 1200; SlashNorthWestXEnd = 3360; SlashNorthWestYEnd = 1200;
+    SlashSouthXStart = 3600; SlashSouthYStart = 1200; SlashSouthXEnd = 960; SlashSouthYEnd = 1440;
+    SlashSouthEastXStart = 1200; SlashSouthEastYStart = 1440; SlashSouthEastXEnd = 2640; SlashSouthEastYEnd = 1440;
+    SlashSouthWestXStart = 2880; SlashSouthWestYStart = 1440; SlashSouthWestXEnd = 240; SlashSouthWestYEnd = 1680;
+    SlashWestXStart = 480; SlashWestYStart = 1680; SlashWestXEnd = 1920; SlashWestYEnd = 1680;
 
-    sprinting = false;
-    sprintingEastXStart = 2640; sprintingEastYStart = 2160; sprintingEastXEnd = 720; sprintingEastYEnd = 2400;
-    sprintingNorthXStart = 960; sprintingNorthYStart = 2400; sprintingNorthXEnd = 2160; sprintingNorthYEnd = 2400;
-    sprintingNorthEastXStart = 2400; sprintingNorthEastYStart = 2400; sprintingNorthEastXEnd = 480; sprintingNorthEastYEnd = 2640;
-    sprintingNorthWestXStart = 720; sprintingNorthWestYStart = 2640; sprintingNorthWestXEnd = 1920; sprintingNorthWestYEnd = 2640;
-    sprintingSouthXStart = 2160; sprintingSouthYStart = 2640; sprintingSouthXEnd = 240; sprintingSouthYEnd = 2880;
-    sprintingSouthEastXStart = 480; sprintingSouthEastYStart = 2880; sprintingSouthEastXEnd = 1680; sprintingSouthEastYEnd = 2880;
-    sprintingSouthWestXStart = 1920; sprintingSouthWestYStart = 2880; sprintingSouthWestXEnd = 0; sprintingSouthWestYEnd = 3120;
-    sprintingWestXStart = 240; sprintingWestYStart = 3120; sprintingWestXEnd = 1440; sprintingWestYEnd = 3120;
+    SprintEastXStart = 2160; SprintEastYStart = 1680; SprintEastXEnd = 3360; SprintEastYEnd = 1680;
+    SprintNorthXStart = 3600; SprintNorthYStart = 1680; SprintNorthXEnd = 720; SprintNorthYEnd = 1920;
+    SprintNorthEastXStart = 960; SprintNorthEastYStart = 1920; SprintNorthEastXEnd = 2160; SprintNorthEastYEnd = 1920;
+    SprintNorthWestXStart = 2400; SprintNorthWestYStart = 1920; SprintNorthWestXEnd = 3600; SprintNorthWestYEnd = 1920;
+    SprintSouthXStart = 3840; SprintSouthYStart = 1920; SprintSouthXEnd = 960; SprintSouthYEnd = 2160;
+    SprintSouthEastXStart = 1200; SprintSouthEastYStart = 2160; SprintSouthEastXEnd = 2400; SprintSouthEastYEnd = 2160;
+    SprintSouthWestXStart = 2640; SprintSouthWestYStart = 2160; SprintSouthWestXEnd = 3840; SprintSouthWestYEnd = 2160;
+    SprintWestXStart = 0; SprintWestYStart = 2400; SprintWestXEnd = 1200; SprintWestYEnd = 2400;
 }
 
 // Take damage until no health left, with a 1 second delay between damage
@@ -121,8 +119,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog north east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; sprite.move(movement); textureX += 240; animate(sprintingNorthEastXStart, sprintingNorthEastXEnd, 
-            sprintingNorthEastYStart, sprintingNorthEastYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; sprite.move(movement); textureX += 240; animate(SprintNorthEastXStart, SprintNorthEastXEnd, 
+            SprintNorthEastYStart, SprintNorthEastYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogNorthEastXStart, JogNorthEastXEnd, 
             JogNorthEastYStart, JogNorthEastYEnd); timer = 0.0f;}
@@ -136,8 +134,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog south east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += 240; animate(sprintingSouthEastXStart, sprintingSouthEastXEnd, 
-            sprintingSouthEastYStart, sprintingSouthEastYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += 240; animate(SprintSouthEastXStart, SprintSouthEastXEnd, 
+            SprintSouthEastYStart, SprintSouthEastYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogSouthEastXStart, JogSouthEastXEnd, 
             JogSouthEastYStart, JogSouthEastYEnd); timer = 0.0f;}
@@ -151,8 +149,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog north west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; textureX += 240; animate(sprintingNorthWestXStart, sprintingNorthWestXEnd, 
-            sprintingNorthWestYStart, sprintingNorthWestYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; textureX += 240; animate(SprintNorthWestXStart, SprintNorthWestXEnd, 
+            SprintNorthWestYStart, SprintNorthWestYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogNorthWestXStart, JogNorthWestXEnd, 
             JogNorthWestYStart, JogNorthWestYEnd); timer = 0.0f;}
@@ -166,8 +164,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog south west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += 240; animate(sprintingSouthWestXStart, sprintingSouthWestXEnd, 
-            sprintingSouthWestYStart, sprintingSouthWestYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += 240; animate(SprintSouthWestXStart, SprintSouthWestXEnd, 
+            SprintSouthWestYStart, SprintSouthWestYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogSouthWestXStart, JogSouthWestXEnd, 
             JogSouthWestYStart, JogSouthWestYEnd); timer = 0.0f;}
@@ -181,8 +179,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed * 4, 0.0f}; textureX += 240; animate(sprintingEastXStart, sprintingEastXEnd, 
-            sprintingEastYStart, sprintingEastYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed * 4, 0.0f}; textureX += 240; animate(SprintEastXStart, SprintEastXEnd, 
+            SprintEastYStart, SprintEastYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogEastXStart, JogEastXEnd, 
             JogEastYStart, JogEastYEnd); timer = 0.0f;}
@@ -196,8 +194,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog north animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {0.0f, -verticalSpeed * 4}; textureX += 240; animate(sprintingNorthXStart, sprintingNorthXEnd, 
-            sprintingNorthYStart, sprintingNorthYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {0.0f, -verticalSpeed * 4}; textureX += 240; animate(SprintNorthXStart, SprintNorthXEnd, 
+            SprintNorthYStart, SprintNorthYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogNorthXStart, JogNorthXEnd, 
             JogNorthYStart, JogNorthYEnd); timer = 0.0f;}
@@ -211,8 +209,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog south animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {0.0f, verticalSpeed * 4}; textureX += 240; animate(sprintingSouthXStart, sprintingSouthXEnd, 
-            sprintingSouthYStart, sprintingSouthYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {0.0f, verticalSpeed * 4}; textureX += 240; animate(SprintSouthXStart, SprintSouthXEnd, 
+            SprintSouthYStart, SprintSouthYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogSouthXStart, JogSouthXEnd, 
             JogSouthYStart, JogSouthYEnd); timer = 0.0f;}
@@ -226,8 +224,8 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed * 4, 0.0f}; textureX += 240; animate(sprintingWestXStart, sprintingWestXEnd, 
-            sprintingWestYStart, sprintingWestYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed * 4, 0.0f}; textureX += 240; animate(SprintWestXStart, SprintWestXEnd, 
+            SprintWestYStart, SprintWestYEnd); timer = 0.0f;}
         // Jog animation
         else if (timer >= timerMax) {textureX += 240; animate(JogWestXStart, JogWestXEnd, 
             JogWestYStart, JogWestYEnd); timer = 0.0f;}
@@ -243,36 +241,36 @@ void Player::handleInput() {
         // Check direction user is facing
         if (north) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackNorthXStart, attackNorthXEnd, 
-                attackNorthYStart, attackNorthYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashNorthXStart, SlashNorthXEnd, 
+                SlashNorthYStart, SlashNorthYEnd); timer = 0.0f;}
         } else if (northEast) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackNorthEastXStart, attackNorthEastXEnd, 
-                attackNorthEastYStart, attackNorthEastYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashNorthEastXStart, SlashNorthEastXEnd, 
+                SlashNorthEastYStart, SlashNorthEastYEnd); timer = 0.0f;}
         } else if (east) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackEastXStart, attackEastXEnd, 
-                attackEastYStart, attackEastYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashEastXStart, SlashEastXEnd, 
+                SlashEastYStart, SlashEastYEnd); timer = 0.0f;}
         } else if (southEast) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackSouthEastXStart, attackSouthEastXEnd, 
-                attackSouthEastYStart, attackSouthEastYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashSouthEastXStart, SlashSouthEastXEnd, 
+                SlashSouthEastYStart, SlashSouthEastYEnd); timer = 0.0f;}
         } else if (south) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackSouthXStart, attackSouthXEnd, 
-                attackSouthYStart, attackSouthYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashSouthXStart, SlashSouthXEnd, 
+                SlashSouthYStart, SlashSouthYEnd); timer = 0.0f;}
         } else if (southWest) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackSouthWestXStart, attackSouthWestXEnd, 
-                attackSouthWestYStart, attackSouthWestYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashSouthWestXStart, SlashSouthWestXEnd, 
+                SlashSouthWestYStart, SlashSouthWestYEnd); timer = 0.0f;}
         } else if (west) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackWestXStart, attackWestXEnd, 
-                attackWestYStart, attackWestYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashWestXStart, SlashWestXEnd, 
+                SlashWestYStart, SlashWestYEnd); timer = 0.0f;}
         } else if (northWest) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(attackNorthWestXStart, attackNorthWestXEnd, 
-                attackNorthWestYStart, attackNorthWestYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += 240; animate(SlashNorthWestXStart, SlashNorthWestXEnd, 
+                SlashNorthWestYStart, SlashNorthWestYEnd); timer = 0.0f;}
         }
     } else {
         attacking = false;

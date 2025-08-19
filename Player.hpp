@@ -48,23 +48,23 @@ public:
     int JogWestXStart, JogWestYStart, JogWestXEnd, JogWestYEnd;
     int JogNorthWestXStart, JogNorthWestYStart, JogNorthWestXEnd, JogNorthWestYEnd;
 
-    int sprintingNorthXStart, sprintingNorthYStart, sprintingNorthXEnd, sprintingNorthYEnd;
-    int sprintingNorthEastXStart, sprintingNorthEastYStart, sprintingNorthEastXEnd, sprintingNorthEastYEnd;
-    int sprintingEastXStart, sprintingEastYStart, sprintingEastXEnd, sprintingEastYEnd;
-    int sprintingSouthEastXStart, sprintingSouthEastYStart, sprintingSouthEastXEnd, sprintingSouthEastYEnd;
-    int sprintingSouthXStart, sprintingSouthYStart, sprintingSouthXEnd, sprintingSouthYEnd;
-    int sprintingSouthWestXStart, sprintingSouthWestYStart, sprintingSouthWestXEnd, sprintingSouthWestYEnd;
-    int sprintingWestXStart, sprintingWestYStart, sprintingWestXEnd, sprintingWestYEnd;
-    int sprintingNorthWestXStart, sprintingNorthWestYStart, sprintingNorthWestXEnd, sprintingNorthWestYEnd;
+    int SprintNorthXStart, SprintNorthYStart, SprintNorthXEnd, SprintNorthYEnd;
+    int SprintNorthEastXStart, SprintNorthEastYStart, SprintNorthEastXEnd, SprintNorthEastYEnd;
+    int SprintEastXStart, SprintEastYStart, SprintEastXEnd, SprintEastYEnd;
+    int SprintSouthEastXStart, SprintSouthEastYStart, SprintSouthEastXEnd, SprintSouthEastYEnd;
+    int SprintSouthXStart, SprintSouthYStart, SprintSouthXEnd, SprintSouthYEnd;
+    int SprintSouthWestXStart, SprintSouthWestYStart, SprintSouthWestXEnd, SprintSouthWestYEnd;
+    int SprintWestXStart, SprintWestYStart, SprintWestXEnd, SprintWestYEnd;
+    int SprintNorthWestXStart, SprintNorthWestYStart, SprintNorthWestXEnd, SprintNorthWestYEnd;
 
-    int attackNorthXStart, attackNorthYStart, attackNorthXEnd, attackNorthYEnd;
-    int attackNorthEastXStart, attackNorthEastYStart, attackNorthEastXEnd, attackNorthEastYEnd;
-    int attackEastXStart, attackEastYStart, attackEastXEnd, attackEastYEnd;
-    int attackSouthEastXStart, attackSouthEastYStart, attackSouthEastXEnd, attackSouthEastYEnd;
-    int attackSouthXStart, attackSouthYStart, attackSouthXEnd, attackSouthYEnd;
-    int attackSouthWestXStart, attackSouthWestYStart, attackSouthWestXEnd, attackSouthWestYEnd;
-    int attackWestXStart, attackWestYStart, attackWestXEnd, attackWestYEnd;
-    int attackNorthWestXStart, attackNorthWestYStart, attackNorthWestXEnd, attackNorthWestYEnd;
+    int SlashNorthXStart, SlashNorthYStart, SlashNorthXEnd, SlashNorthYEnd;
+    int SlashNorthEastXStart, SlashNorthEastYStart, SlashNorthEastXEnd, SlashNorthEastYEnd;
+    int SlashEastXStart, SlashEastYStart, SlashEastXEnd, SlashEastYEnd;
+    int SlashSouthEastXStart, SlashSouthEastYStart, SlashSouthEastXEnd, SlashSouthEastYEnd;
+    int SlashSouthXStart, SlashSouthYStart, SlashSouthXEnd, SlashSouthYEnd;
+    int SlashSouthWestXStart, SlashSouthWestYStart, SlashSouthWestXEnd, SlashSouthWestYEnd;
+    int SlashWestXStart, SlashWestYStart, SlashWestXEnd, SlashWestYEnd;
+    int SlashNorthWestXStart, SlashNorthWestYStart, SlashNorthWestXEnd, SlashNorthWestYEnd;
 };
 
 #endif // PLAYER_HPP

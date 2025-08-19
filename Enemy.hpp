@@ -30,6 +30,8 @@ public:
 
     int maxHealth;
     int health;
+    
+    int spriteSize;
 
     int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
     standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 

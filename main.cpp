@@ -53,7 +53,7 @@ int main()
 
     std::vector<Object> wallObjects;
     sf::Texture enemyTex;
-    if (!enemyTex.loadFromFile("playerSpritesheet.png"))
+    if (!enemyTex.loadFromFile("enemySpritesheet.png"))
         throw std::runtime_error("Failed to load Wall.png");
     sf::Vector2i size = map.getSize();
     wallObjects.reserve(size.x * size.y);

@@ -1,0 +1,452 @@
+{
+  "frames": {
+    "FaceEast.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "FaceNorth.png": {
+      "frame": {
+        "x": 600,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "FaceNorthEast.png": {
+      "frame": {
+        "x": 1200,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "FaceNorthWest.png": {
+      "frame": {
+        "x": 1800,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "FaceSouth.png": {
+      "frame": {
+        "x": 2400,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "FaceSouthEast.png": {
+      "frame": {
+        "x": 3000,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "FaceSouthWest.png": {
+      "frame": {
+        "x": 3600,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "FaceWest.png": {
+      "frame": {
+        "x": 4200,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogEast1.png": {
+      "frame": {
+        "x": 4800,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogEast2.png": {
+      "frame": {
+        "x": 5400,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogEast3.png": {
+      "frame": {
+        "x": 6000,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogEast4.png": {
+      "frame": {
+        "x": 6600,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogEast5.png": {
+      "frame": {
+        "x": 7200,
+        "y": 0,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogEast6.png": {
+      "frame": {
+        "x": 0,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorth1.png": {
+      "frame": {
+        "x": 600,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorth2.png": {
+      "frame": {
+        "x": 1200,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorth3.png": {
+      "frame": {
+        "x": 1800,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorth4.png": {
+      "frame": {
+        "x": 2400,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorth5.png": {
+      "frame": {
+        "x": 3000,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorth6.png": {
+      "frame": {
+        "x": 3600,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthEast1.png": {
+      "frame": {
+        "x": 4200,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthEast2.png": {
+      "frame": {
+        "x": 4800,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthEast3.png": {
+      "frame": {
+        "x": 5400,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthEast4.png": {
+      "frame": {
+        "x": 6000,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthEast5.png": {
+      "frame": {
+        "x": 6600,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthEast6.png": {
+      "frame": {
+        "x": 7200,
+        "y": 600,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthWest1.png": {
+      "frame": {
+        "x": 0,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthWest2.png": {
+      "frame": {
+        "x": 600,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthWest3.png": {
+      "frame": {
+        "x": 1200,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthWest4.png": {
+      "frame": {
+        "x": 1800,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthWest5.png": {
+      "frame": {
+        "x": 2400,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogNorthWest6.png": {
+      "frame": {
+        "x": 3000,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouth1.png": {
+      "frame": {
+        "x": 3600,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouth2.png": {
+      "frame": {
+        "x": 4200,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouth3.png": {
+      "frame": {
+        "x": 4800,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouth4.png": {
+      "frame": {
+        "x": 5400,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouth5.png": {
+      "frame": {
+        "x": 6000,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouth6.png": {
+      "frame": {
+        "x": 6600,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthEast1.png": {
+      "frame": {
+        "x": 7200,
+        "y": 1200,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthEast2.png": {
+      "frame": {
+        "x": 0,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthEast3.png": {
+      "frame": {
+        "x": 600,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthEast4.png": {
+      "frame": {
+        "x": 1200,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthEast5.png": {
+      "frame": {
+        "x": 1800,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthEast6.png": {
+      "frame": {
+        "x": 2400,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthWest1.png": {
+      "frame": {
+        "x": 3000,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthWest2.png": {
+      "frame": {
+        "x": 3600,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthWest3.png": {
+      "frame": {
+        "x": 4200,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthWest4.png": {
+      "frame": {
+        "x": 4800,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthWest5.png": {
+      "frame": {
+        "x": 5400,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogSouthWest6.png": {
+      "frame": {
+        "x": 6000,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogWest1.png": {
+      "frame": {
+        "x": 6600,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogWest2.png": {
+      "frame": {
+        "x": 7200,
+        "y": 1800,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogWest3.png": {
+      "frame": {
+        "x": 0,
+        "y": 2400,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogWest4.png": {
+      "frame": {
+        "x": 600,
+        "y": 2400,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogWest5.png": {
+      "frame": {
+        "x": 1200,
+        "y": 2400,
+        "w": 600,
+        "h": 600
+      }
+    },
+    "JogWest6.png": {
+      "frame": {
+        "x": 1800,
+        "y": 2400,
+        "w": 600,
+        "h": 600
+      }
+    }
+  }
+}
