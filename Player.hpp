@@ -17,6 +17,10 @@ public:
     int Player::getHealth() const { return health; };
     int Player::getMaxHealth() const { return maxHealth; };
     bool Player::isDead() const { return health <= 0; };
+    int getGold() const { return gold; };;
+    void addGold(int amount);
+    bool spendGold(int amount);
+    void setGold(int amount);
     sf::Texture texture;
     sf::Sprite sprite;
     sf::Texture heartFull, heartEmpty;
@@ -33,6 +37,7 @@ public:
 
     int maxHealth;
     int health;
+    int gold;
 
     int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
     standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 

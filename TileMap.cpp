@@ -43,17 +43,19 @@ public:
 class TileMapRenderer {
     sf::Texture wallTex;
     sf::Texture floorTex;
-    sf::Texture pickupTex;
+    sf::Texture healthPickupTex;
+    sf::Texture goldPickupTex;
     sf::Sprite wallSprite;
     sf::Sprite floorSprite;
-    sf::Sprite pickupSprite;
+    sf::Sprite healthPickupSprite;
+    sf::Sprite goldPickupSprite;
 
 public:
     // Get tilemap textures
     TileMapRenderer()
         : wallTex{},
           floorTex{},
-          pickupTex{},
+          healthPickupTex{},
           wallSprite([this]() {
               if (!wallTex.loadFromFile("Wall.png"))
                   throw std::runtime_error("Failed to load Wall.png");
@@ -64,10 +66,15 @@ public:
                   throw std::runtime_error("Failed to load Floor.png");
               return sf::Sprite(floorTex);
           }()),
-          pickupSprite([this]() {
-              if (!pickupTex.loadFromFile("Pickup.png"))
-                  throw std::runtime_error("Failed to load Floor.png");
-              return sf::Sprite(pickupTex);
+          healthPickupSprite([this]() {
+              if (!healthPickupTex.loadFromFile("HealthPickup.png"))
+                  throw std::runtime_error("Failed to load HealthPickup.png");
+              return sf::Sprite(healthPickupTex);
+          }()),
+          goldPickupSprite([this]() {
+              if (!goldPickupTex.loadFromFile("GoldPickup.png"))
+                  throw std::runtime_error("Failed to load GoldPickup.png");
+              return sf::Sprite(goldPickupTex);
           }())
     {}
 
@@ -86,7 +93,8 @@ public:
 
                 // Draw other tilemap objects
                 if (tile == '#') sprite = &wallSprite;
-                else if (tile == 'P') sprite = &pickupSprite;
+                else if (tile == 'H') sprite = &healthPickupSprite;
+                else if (tile == 'G') sprite = &goldPickupSprite;
 
                 if (sprite) {
                     sprite->setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));

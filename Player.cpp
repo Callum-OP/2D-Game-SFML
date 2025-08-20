@@ -38,6 +38,9 @@ Player::Player()
     maxHealth = 5;
     health = 5;
 
+    // Set gold
+    gold = 0;
+
     // Default movement speed
     verticalSpeed = 3.0f;
     horizontalSpeed = 3.0f;
@@ -109,6 +112,23 @@ void Player::heal(int amount) {
     health += amount;
     if (health > maxHealth) health = maxHealth;
 }
+
+void Player::addGold(int amount) {
+    gold += amount;
+}
+
+bool Player::spendGold(int amount) {
+    if (gold >= amount) {
+        gold -= amount;
+        return true;
+    }
+    return false;
+}
+
+void Player::setGold(int amount) {
+    gold = amount;
+}
+
 
 void Player::handleInput() {
     // If both right and up key pressed then move character right and up at same time

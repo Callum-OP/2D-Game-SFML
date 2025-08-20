@@ -38,19 +38,23 @@ int main()
     TileMapRenderer renderer;
     map.loadFromFile("level.txt");
 
-    // Set up wall and pickup colliders
-    struct Pickup {
-        Object pickup;
-        Object* collider() { return &pickup; }
+    // Set up wall and health pickup colliders
+    struct healthPickup {
+        Object healthPickup;
+        Object* collider() { return &healthPickup; }
     };
-    std::vector<Pickup> pickups;
+    std::vector<healthPickup> healthPickups;
+    struct goldPickup {
+        Object goldPickup;
+        Object* collider() { return &goldPickup; }
+    };
+    std::vector<goldPickup> goldPickups;
     // Set enemy list
     struct Enem {
         Enemy enemy;
         Object* collider() { return &enemy.collider; }
     };
     std::vector<Enem> enemies;
-
     std::vector<Object> wallObjects;
     sf::Texture enemyTex;
     if (!enemyTex.loadFromFile("enemySpritesheet.png"))
@@ -69,14 +73,23 @@ int main()
                 wallObjects.push_back(wall);
                 colliders.push_back(&wallObjects.back());
             }
-            // Pickups
-            if (map.getTile(x, y) == 'P') {
+            // Health pickups
+            if (map.getTile(x, y) == 'H') {
                 Object pickup;
                 pickup.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 pickup.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
                 pickup.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
                 // Add to list
-                pickups.push_back(Pickup{pickup});
+                healthPickups.push_back(healthPickup{pickup});
+            }
+            // Gold pickups
+            if (map.getTile(x, y) == 'G') {
+                Object pickup;
+                pickup.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
+                pickup.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
+                pickup.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
+                // Add to list
+                goldPickups.push_back(goldPickup{pickup});
             }
             // Enemies
             if (map.getTile(x, y) == 'E') {
@@ -214,28 +227,47 @@ int main()
                 break;
             }
         }
-        // Delete pickup if collided with
-        for (auto it = pickups.begin(); it != pickups.end(); ) {
+        // Delete healthPickup if collided with
+        for (auto it = healthPickups.begin(); it != healthPickups.end(); ) {
             Manifold m = {&playerCollider, it->collider()};
             if (AABBvsAABB(&m)) {
                 if (player.getHealth() < player.getMaxHealth()) {
                     // Heal player
                     player.heal(1);
-                    // Remove pickup from tilemap
-                    Vec2 pos = (it)->pickup.pos;
+                    // Remove healthPickup from tilemap
+                    Vec2 pos = (it)->healthPickup.pos;
                     int tileX = static_cast<int>(pos.x) / TILE_SIZE;
                     int tileY = static_cast<int>(pos.y) / TILE_SIZE;
                     map.setTile(tileX, tileY, '.');
-                    // Remove pickup from objects and colliders
-                    it = pickups.erase(it);
+                    // Remove healthPickup from objects and colliders
+                    it = healthPickups.erase(it);
                 }
                 break;
             } else {
                 ++it;
             }
         }
+        // Delete goldPickup if collided with
+        for (auto it = goldPickups.begin(); it != goldPickups.end(); ) {
+            Manifold m = {&playerCollider, it->collider()};
+            if (AABBvsAABB(&m)) {
+                // Add gold
+                player.addGold(25);
+                // Remove healthPickup from tilemap
+                Vec2 pos = (it)->goldPickup.pos;
+                int tileX = static_cast<int>(pos.x) / TILE_SIZE;
+                int tileY = static_cast<int>(pos.y) / TILE_SIZE;
+                map.setTile(tileX, tileY, '.');
+                // Remove healthPickup from objects and colliders
+                it = goldPickups.erase(it);
+                break;
+            } else {
+                ++it;
+            }
+        }
+        std::cout << "Gold:" << player.getGold() << std::endl;
 
-        // Draw tilemap with walls and pickups
+        // Draw tilemap with walls and healthPickups
         renderer.draw(window, map);
         // Draw player
         player.sprite.setPosition(toSF(playerCollider.pos));
