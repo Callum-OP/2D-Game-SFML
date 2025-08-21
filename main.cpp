@@ -265,7 +265,6 @@ int main()
                 ++it;
             }
         }
-        std::cout << "Gold:" << player.getGold() << std::endl;
 
         // Draw tilemap with walls and healthPickups
         renderer.draw(window, map);

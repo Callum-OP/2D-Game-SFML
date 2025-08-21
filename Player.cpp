@@ -27,7 +27,7 @@ Player::Player()
     sprite.setScale({1.0f,1.0f});
     //sprite.setColor(sf::Color::White);
 
-    // Health textures
+    // Set health textures
     heartSprite.setScale({0.2f, 0.2f});
     if (!heartFull.loadFromFile("HeartFull.png") ||
         !heartEmpty.loadFromFile("HeartEmpty.png")) {
@@ -356,15 +356,28 @@ sf::Vector2f Player::getPosition() {
 
 // For drawing player in main
 void Player::draw(sf::RenderWindow& window, const sf::View& camera) {
+    const sf::Font font("assets/fonts/MagicSchoolOne.ttf");
     window.draw(sprite);
+
+    // Set up UI
     // Draw health bar at top left of camera
-    sf::Vector2f cameraTopLeft = camera.getCenter() - (camera.getSize() / 2.f);
+    sf::Vector2f cameraLocation = camera.getCenter() - (camera.getSize() / 2.f);
     for (int i = 0; i < maxHealth; ++i) {
         heartSprite.setTexture(i < health ? heartFull : heartEmpty);
         heartSprite.setPosition({
-            cameraTopLeft.x + 10.f + i * 60.f,
-            cameraTopLeft.y + 10.f
+            cameraLocation.x + 10.f + i * 60.f,
+            cameraLocation.y + 10.f
         });
         window.draw(heartSprite);
     }
+    // Draw gold text at top-right
+    sf::Text goldText(font, "Gold: " + std::to_string(Player::getGold()), 44); // Set text string, font, character size
+    goldText.setFillColor(sf::Color::Yellow);
+    sf::FloatRect textBounds = goldText.getLocalBounds();
+    goldText.setOrigin(textBounds.size);
+    goldText.setPosition({
+        cameraLocation.x + camera.getSize().x - 10.f,
+        cameraLocation.y + 37.f
+    });
+    window.draw(goldText);
 }
