@@ -71,8 +71,8 @@ int main()
     std::vector<Enem> enemies;
     std::vector<Object> wallObjects;
     sf::Texture enemyTex;
-    if (!enemyTex.loadFromFile("enemySpritesheet.png"))
-        throw std::runtime_error("Failed to load Wall.png");
+    if (!enemyTex.loadFromFile("assets/images/enemySpritesheet.png"))
+        throw std::runtime_error("Failed to load enemy spritesheet");
     sf::Vector2i size = map.getSize();
     wallObjects.reserve(size.x * size.y);
     for (int y = 0; y < size.y; ++y) { // Height

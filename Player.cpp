@@ -8,16 +8,16 @@ Player::Player()
     : texture{},
         sprite( // Create a player sprite
             [this]() {
-              if (!texture.loadFromFile("playerSpritesheet.png"))
-                  throw std::runtime_error("Failed to load sprite sheet");
-              return sf::Sprite(texture);
+                if (!texture.loadFromFile("assets/images/playerSpritesheet.png"))
+                    throw std::runtime_error("Failed to load sprite sheet");
+                return sf::Sprite(texture);
             }()
         ),
         heartSprite( // Create a player sprite
             [this]() {
-              if (!heartFull.loadFromFile("HeartFull.png"))
-                  throw std::runtime_error("Failed to load health textures");
-              return sf::Sprite(heartFull);
+                if (!heartFull.loadFromFile("assets/images/HeartFull.png"))
+                    throw std::runtime_error("Failed to load health textures");
+                return sf::Sprite(heartFull);
             }()
         )
     {
@@ -29,8 +29,7 @@ Player::Player()
 
     // Set health textures
     heartSprite.setScale({0.2f, 0.2f});
-    if (!heartFull.loadFromFile("HeartFull.png") ||
-        !heartEmpty.loadFromFile("HeartEmpty.png")) {
+    if (!heartFull.loadFromFile("assets/images/HeartFull.png") || !heartEmpty.loadFromFile("assets/images/HeartEmpty.png")) {
         throw std::runtime_error("Failed to load health textures");
     }
 

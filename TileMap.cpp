@@ -57,24 +57,24 @@ public:
           floorTex{},
           healthPickupTex{},
           wallSprite([this]() {
-              if (!wallTex.loadFromFile("Wall.png"))
-                  throw std::runtime_error("Failed to load Wall.png");
-              return sf::Sprite(wallTex);
+                if (!wallTex.loadFromFile("assets/images/Wall.png"))
+                    throw std::runtime_error("Failed to load Wall.png");
+                return sf::Sprite(wallTex);
           }()),
-          floorSprite([this]() {
-              if (!floorTex.loadFromFile("Floor.png"))
-                  throw std::runtime_error("Failed to load Floor.png");
-              return sf::Sprite(floorTex);
+            floorSprite([this]() {
+                if (!floorTex.loadFromFile("assets/images/Floor.png"))
+                    throw std::runtime_error("Failed to load Floor.png");
+                return sf::Sprite(floorTex);
           }()),
           healthPickupSprite([this]() {
-              if (!healthPickupTex.loadFromFile("HealthPickup.png"))
-                  throw std::runtime_error("Failed to load HealthPickup.png");
-              return sf::Sprite(healthPickupTex);
+                if (!healthPickupTex.loadFromFile("assets/images/HealthPickup.png"))
+                    throw std::runtime_error("Failed to load HealthPickup.png");
+                return sf::Sprite(healthPickupTex);
           }()),
           goldPickupSprite([this]() {
-              if (!goldPickupTex.loadFromFile("GoldPickup.png"))
-                  throw std::runtime_error("Failed to load GoldPickup.png");
-              return sf::Sprite(goldPickupTex);
+                if (!goldPickupTex.loadFromFile("assets/images/GoldPickup.png"))
+                    throw std::runtime_error("Failed to load GoldPickup.png");
+                return sf::Sprite(goldPickupTex);
           }())
     {}
 
