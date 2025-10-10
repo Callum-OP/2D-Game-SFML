@@ -144,7 +144,7 @@ void Enemy::update(float deltaTime, Grid& grid, const sf::Vector2f& playerPositi
             }
 
             // Begin pathfinding
-            std::vector<Node*> path = aStar(start, goal, grid, 1, 1);
+            std::vector<Node*> path = aStar(start, goal, grid, 2, 2);
             if (path.size() > 1) {
                 // Move toward next step
                 sf::Vector2f nextPos(
