@@ -1,9 +1,12 @@
 #pragma once
 #include "Enemy.hpp"
 #include "Physics.hpp"
+#include "PathFinder.hpp"
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
+
+#include "Constants.hpp"
 
 Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture)
     : texture(texture), // Store reference to texture
@@ -107,37 +110,67 @@ void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd) {
     }
 }
 
-void Enemy::update(float deltaTime, const sf::Vector2f& playerPosition, bool playerAttacking) {
-    // Chase player
+void Enemy::update(float deltaTime, Grid& grid, const sf::Vector2f& playerPosition, bool playerAttacking) {
     sf::Vector2f position = sprite.getPosition();
-    sf::Vector2f direction = playerPosition - position; // Calculate direction
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-    float distance = std::sqrt(std::pow(playerPosition.x - position.x, 2) + std::pow(playerPosition.y - position.y, 2)); // Calculate distance from player
-    float stopRadius = 500.0f; // When to stop chasing
-    float attackRadius = 60.0f; // When to attack
-    // Chase player, if not too close or far away
+    float dx = playerPosition.x - position.x;
+    float dy = playerPosition.y - position.y;
+    float distance = std::sqrt(dx*dx + dy*dy);
+
+    float stopRadius   = 500.0f;
+    attackRadius = 100.0f;
+
+    moving = false;
+    attacking = false;
+
+    // A* pathfinding, chase player, if not too close or far away
     if (distance > attackRadius && distance < stopRadius) {
-        if (length != 0.f) { // Avoid division by zero
-            moving = true;
-            attacking = false;
-            sf::Vector2f normalized = direction / length;
-            sf::Vector2f movement = (normalized * speed * deltaTime);
-            sprite.move(movement); // Move enemy sprite
-            collider.pos.x += movement.x;
-            collider.pos.y += movement.y;
-            direction = normalized; // Set direction
+        // Convert world into grid
+        int enemyGX  = static_cast<int>(collider.pos.x) / TILE_SIZE;
+        int enemyGY  = static_cast<int>(collider.pos.y) / TILE_SIZE;
+        int playerGX = static_cast<int>(playerPosition.x) / TILE_SIZE;
+        int playerGY = static_cast<int>(playerPosition.y) / TILE_SIZE;
+        if (grid.inBounds(enemyGX, enemyGY) && grid.inBounds(playerGX, playerGY)) {
+            Node* start = &grid.nodes[enemyGY][enemyGX];
+            Node* goal  = &grid.nodes[playerGY][playerGX];
+
+            // Reset node costs
+            for (auto& row : grid.nodes) {
+                for (auto& n : row) {
+                    n.visited = false;
+                    n.previousNode = nullptr;
+                    n.g = std::numeric_limits<float>::infinity();
+                    n.h = 0;
+                }
+            }
+
+            // Begin pathfinding
+            std::vector<Node*> path = aStar(start, goal, grid, 1, 1);
+            if (path.size() > 1) {
+                // Move toward next step
+                sf::Vector2f nextPos(
+                    path[1]->x * TILE_SIZE + TILE_SIZE / 2,
+                    path[1]->y * TILE_SIZE + TILE_SIZE / 2
+                );
+                sf::Vector2f dir = nextPos - position;
+                float len = std::sqrt(dir.x*dir.x + dir.y*dir.y);
+                if (len > 0.1f) {
+                    dir /= len;
+                    sf::Vector2f movement = dir * speed * deltaTime;
+                    sprite.move(movement);
+                    collider.pos.x += movement.x;
+                    collider.pos.y += movement.y;
+                    moving = true;
+                    direction = dir;
+                }
+            }
         }
     }
-    else if (distance <= attackRadius * 1.5 && playerAttacking) {
-        Enemy::takeDamage(1);
-    // Stop if too close to player
-    } else if (distance <= attackRadius) {
+    // Attack if too close to player
+    else if (distance <= attackRadius * 1.5f && playerAttacking) {
+        takeDamage(1);
+    }
+    else if (distance <= attackRadius) {
         attacking = true;
-        moving = false;
-    // Stop if too far away from player
-    } else if (distance >= stopRadius) {
-        attacking = false;
-        moving = false;
     }
 
     // Calculate current direction

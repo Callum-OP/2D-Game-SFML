@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <limits>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -18,6 +19,20 @@
 #include "Enemy.cpp"
 #include "Enemy.hpp"  
 
+#include "PathFinder.cpp"
+
+#include "Constants.hpp"
+
+// Functions for conversions
+inline sf::Vector2i worldToGrid(const Vec2& pos, int tileSize) {
+    return sf::Vector2i(static_cast<int>(pos.x) / tileSize,
+                        static_cast<int>(pos.y) / tileSize);
+}
+inline sf::Vector2f gridToWorld(const Node* node, int tileSize) {
+    return sf::Vector2f(node->x * tileSize + tileSize / 2,
+        node->y * tileSize + tileSize / 2);
+}
+
 int main()
 {
     sf::Clock clock;
@@ -25,7 +40,6 @@ int main()
 
     // Create colliders list
     std::vector<Object*> colliders;
-    const int TILE_SIZE = 96;
 
     // Create a player
     Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
@@ -61,8 +75,8 @@ int main()
         throw std::runtime_error("Failed to load Wall.png");
     sf::Vector2i size = map.getSize();
     wallObjects.reserve(size.x * size.y);
-    for (int y = 0; y < size.y; ++y) { // height
-        for (int x = 0; x < size.x; ++x) { // width
+    for (int y = 0; y < size.y; ++y) { // Height
+        for (int x = 0; x < size.x; ++x) { // Width
             // Walls
             if (map.getTile(x, y) == '#') {
                 Object wall;
@@ -96,6 +110,15 @@ int main()
                 Vec2 pos(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 Enemy enemy(toSF(pos), enemyTex);
                 enemies.push_back(Enem{enemy});
+            }
+        }
+    }
+    // Set up pathfinding grid
+    Grid grid(size.x, size.y);
+    for (int y = 0; y < size.y; ++y) {
+        for (int x = 0; x < size.x; ++x) {
+            if (map.getTile(x, y) == '#') {
+                grid.nodes[y][x].wall = true;
             }
         }
     }
@@ -213,11 +236,17 @@ int main()
         for (auto& enem : enemies) {
             Manifold m = { &playerCollider, enem.collider()};
             if (AABBvsAABB({&m})) {
-                if (enem.enemy.attacking) {
-                    player.takeDamage(1);
-                }
                 playerCollider.pos.y = originalY;
                 break;
+            }
+        }
+        // Check if enemy is attacking player, if close enough damage player
+        for (auto& enem : enemies) {
+            float dx = player.getPosition().x - enem.enemy.getPosition().x;
+            float dy = player.getPosition().y - enem.enemy.getPosition().y;
+            float dist = std::sqrt(dx*dx + dy*dy);
+            if (enem.enemy.attacking && dist <= enem.enemy.attackRadius) {
+                player.takeDamage(1);
             }
         }
         for (auto& obj : colliders) {
@@ -279,7 +308,7 @@ int main()
         // Draw and update enemies
         for (auto& enem : enemies) {
             enem.enemy.sprite.setPosition(toSF(enem.enemy.collider.pos));
-            enem.enemy.update(deltaTime, player.getPosition(), player.attacking);
+            enem.enemy.update(deltaTime, grid, player.getPosition(), player.attacking);
             enem.enemy.draw(window);
         }
         // Delete dead enemies

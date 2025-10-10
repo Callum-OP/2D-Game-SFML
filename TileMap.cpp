@@ -11,7 +11,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
-const int TILE_SIZE = 96;
+#include "Constants.hpp"
 
 // Load map from file
 class MapLoader {
