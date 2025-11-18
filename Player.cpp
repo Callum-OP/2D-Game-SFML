@@ -21,10 +21,16 @@ Player::Player()
             }()
         )
     {
+    // Size of textures in the spritesheet
+    spriteSize = 300;
+    // Colour tint of character
+    baseColour = sf::Color::Green;
+
     // Set up sprite
+    sprite.setOrigin({spriteSize / 2.0f, spriteSize / 2.0f});
     sprite.setTexture(texture);
-    sprite.setTextureRect({{485,1}, {240,240}});
-    sprite.setScale({1.0f,1.0f});
+    sprite.setTextureRect({{485,1}, {spriteSize,spriteSize}});
+    sprite.setScale({0.8f,0.8f});
     //sprite.setColor(sf::Color::White);
 
     // Set health textures
@@ -46,56 +52,56 @@ Player::Player()
     movement = {horizontalSpeed, 0};
     moving = false;
 
-    // Coordinates for current texture in spritesheet
-    textureX = 0;
-    textureY = 0;
-
     // Timer for animations and delays
     timer = 0.0f;
     timerMax = 0.5f;
 
     // When x coordinates have reached the final column
-    finalColumn = 3840;
-    finalRow = 2400;
+    finalColumn = 7800;
+    finalRow = 1800;
 
     // Start and end coordinates for animation textures in spritesheet
     // These values will need to be changed if the spritesheet changes
 
-    standingEastX = 0; standingEastY = 0;
-    standingNorthX = 240; standingNorthY = 0;
-    standingNorthEastX = 480; standingNorthEastY = 0;
-    standingNorthWestX = 720; standingNorthWestY = 0;
-    standingSouthX = 960; standingSouthY = 0;
-    standingSouthEastX = 1200; standingSouthEastY = 0;
-    standingSouthWestX = 1440; standingSouthWestY = 0;
-    standingWestX = 1680; standingWestY = 0;
+    AttackEastXStart = 0; AttackEastYStart = 0; AttackEastXEnd = 2100; AttackEastYEnd = 0;
+    AttackNorthXStart = 2400; AttackNorthYStart = 0; AttackNorthXEnd = 4500; AttackNorthYEnd = 0;
+    AttackNorthEastXStart = 4800; AttackNorthEastYStart = 0; AttackNorthEastXEnd = 6600; AttackNorthEastYEnd = 0;
+    AttackNorthWestXStart = 6900; AttackNorthWestYStart = 0; AttackNorthWestXEnd = 900; AttackNorthWestYEnd = 300;
+    AttackSouthXStart = 1200; AttackSouthYStart = 300; AttackSouthXEnd = 3300; AttackSouthYEnd = 300;
+    AttackSouthEastXStart = 3600; AttackSouthEastYStart = 300; AttackSouthEastXEnd = 5700; AttackSouthEastYEnd = 300;
+    AttackSouthWestXStart = 6000; AttackSouthWestYStart = 300; AttackSouthWestXEnd = 0; AttackSouthWestYEnd = 600;
+    AttackWestXStart = 300; AttackWestYStart = 600; AttackWestXEnd = 2400; AttackWestYEnd = 600;
 
-    JogEastXStart = 1920; JogEastYStart = 0; JogEastXEnd = 3120; JogEastYEnd = 0;
-    JogNorthXStart = 3360; JogNorthYStart = 0; JogNorthXEnd = 480; JogNorthYEnd = 240;
-    JogNorthEastXStart = 720; JogNorthEastYStart = 240; JogNorthEastXEnd = 1920; JogNorthEastYEnd = 240;
-    JogNorthWestXStart = 2160; JogNorthWestYStart = 240; JogNorthWestXEnd = 3360; JogNorthWestYEnd = 240;
-    JogSouthXStart = 3600; JogSouthYStart = 240; JogSouthXEnd = 720; JogSouthYEnd = 480;
-    JogSouthEastXStart = 960; JogSouthEastYStart = 480; JogSouthEastXEnd = 2160; JogSouthEastYEnd = 480;
-    JogSouthWestXStart = 2400; JogSouthWestYStart = 480; JogSouthWestXEnd = 3600; JogSouthWestYEnd = 480;
-    JogWestXStart = 3840; JogWestYStart = 480; JogWestXEnd = 960; JogWestYEnd = 720;
+    JogEastXStart = 2700; JogEastYStart = 600; JogEastXEnd = 4200; JogEastYEnd = 600;
+    JogNorthXStart = 4500; JogNorthYStart = 600; JogNorthXEnd = 6000; JogNorthYEnd = 600;
+    JogNorthEastXStart = 6300; JogNorthEastYStart = 600; JogNorthEastXEnd = 7800; JogNorthEastYEnd = 600;
+    JogNorthWestXStart = 0; JogNorthWestYStart = 900; JogNorthWestXEnd = 1500; JogNorthWestYEnd = 900;
+    JogSouthXStart = 1800; JogSouthYStart = 900; JogSouthXEnd = 3300; JogSouthYEnd = 900;
+    JogSouthEastXStart = 3600; JogSouthEastYStart = 900; JogSouthEastXEnd = 5100; JogSouthEastYEnd = 900;
+    JogSouthWestXStart = 5400; JogSouthWestYStart = 900; JogSouthWestXEnd = 6900; JogSouthWestYEnd = 900;
+    JogWestXStart = 7200; JogWestYStart = 900; JogWestXEnd = 600; JogWestYEnd = 1200;
 
-    SlashEastXStart = 960; SlashEastYStart = 960; SlashEastXEnd = 2400; SlashEastYEnd = 960;
-    SlashNorthXStart = 2640; SlashNorthYStart = 960; SlashNorthXEnd = 0; SlashNorthYEnd = 1200;
-    SlashNorthEastXStart = 240; SlashNorthEastYStart = 1200; SlashNorthEastXEnd = 1680; SlashNorthEastYEnd = 1200;
-    SlashNorthWestXStart = 1920; SlashNorthWestYStart = 1200; SlashNorthWestXEnd = 3360; SlashNorthWestYEnd = 1200;
-    SlashSouthXStart = 3600; SlashSouthYStart = 1200; SlashSouthXEnd = 960; SlashSouthYEnd = 1440;
-    SlashSouthEastXStart = 1200; SlashSouthEastYStart = 1440; SlashSouthEastXEnd = 2640; SlashSouthEastYEnd = 1440;
-    SlashSouthWestXStart = 2880; SlashSouthWestYStart = 1440; SlashSouthWestXEnd = 240; SlashSouthWestYEnd = 1680;
-    SlashWestXStart = 480; SlashWestYStart = 1680; SlashWestXEnd = 1920; SlashWestYEnd = 1680;
+    SprintEastXStart = 900; SprintEastYStart = 1200; SprintEastXEnd = 2400; SprintEastYEnd = 1200;
+    SprintNorthXStart = 2700; SprintNorthYStart = 1200; SprintNorthXEnd = 4200; SprintNorthYEnd = 1200;
+    SprintNorthEastXStart = 4500; SprintNorthEastYStart = 1200; SprintNorthEastXEnd = 6000; SprintNorthEastYEnd = 1200;
+    SprintNorthWestXStart = 6300; SprintNorthWestYStart = 1200; SprintNorthWestXEnd = 7800; SprintNorthWestYEnd = 1200;
+    SprintSouthXStart = 0; SprintSouthYStart = 1500; SprintSouthXEnd = 1500; SprintSouthYEnd = 1500;
+    SprintSouthEastXStart = 1800; SprintSouthEastYStart = 1500; SprintSouthEastXEnd = 3300; SprintSouthEastYEnd = 1500;
+    SprintSouthWestXStart = 3600; SprintSouthWestYStart = 1500; SprintSouthWestXEnd = 5100; SprintSouthWestYEnd = 1500;
+    SprintWestXStart = 5400; SprintWestYStart = 1500; SprintWestXEnd = 6900; SprintWestYEnd = 1500;
 
-    SprintEastXStart = 2160; SprintEastYStart = 1680; SprintEastXEnd = 3360; SprintEastYEnd = 1680;
-    SprintNorthXStart = 3600; SprintNorthYStart = 1680; SprintNorthXEnd = 720; SprintNorthYEnd = 1920;
-    SprintNorthEastXStart = 960; SprintNorthEastYStart = 1920; SprintNorthEastXEnd = 2160; SprintNorthEastYEnd = 1920;
-    SprintNorthWestXStart = 2400; SprintNorthWestYStart = 1920; SprintNorthWestXEnd = 3600; SprintNorthWestYEnd = 1920;
-    SprintSouthXStart = 3840; SprintSouthYStart = 1920; SprintSouthXEnd = 960; SprintSouthYEnd = 2160;
-    SprintSouthEastXStart = 1200; SprintSouthEastYStart = 2160; SprintSouthEastXEnd = 2400; SprintSouthEastYEnd = 2160;
-    SprintSouthWestXStart = 2640; SprintSouthWestYStart = 2160; SprintSouthWestXEnd = 3840; SprintSouthWestYEnd = 2160;
-    SprintWestXStart = 0; SprintWestYStart = 2400; SprintWestXEnd = 1200; SprintWestYEnd = 2400;
+    StandingEastX = 7200; StandingEastY = 1500;
+    StandingNorthX = 7500; StandingNorthY = 1500;
+    StandingNorthEastX = 7800; StandingNorthEastY = 1500;
+    StandingNorthWestX = 0; StandingNorthWestY = 1800;
+    StandingSouthX = 300; StandingSouthY = 1800;
+    StandingSouthEastX = 600; StandingSouthEastY = 1800;
+    StandingSouthWestX = 900; StandingSouthWestY = 1800;
+    StandingWestX = 1200; StandingWestY = 1800;
+
+    // Coordinates for current texture in spritesheet
+    textureX = StandingSouthX;
+    textureY = StandingSouthY;
 }
 
 // Take damage until no health left, with a 1 second delay between damage
@@ -138,10 +144,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog north east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; sprite.move(movement); textureX += 240; animate(SprintNorthEastXStart, SprintNorthEastXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; sprite.move(movement); textureX += spriteSize; animate(SprintNorthEastXStart, SprintNorthEastXEnd, 
             SprintNorthEastYStart, SprintNorthEastYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogNorthEastXStart, JogNorthEastXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogNorthEastXStart, JogNorthEastXEnd, 
             JogNorthEastYStart, JogNorthEastYEnd); timer = 0.0f;}
         sprite.move({movement});
     }
@@ -153,10 +159,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog south east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += 240; animate(SprintSouthEastXStart, SprintSouthEastXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += spriteSize; animate(SprintSouthEastXStart, SprintSouthEastXEnd, 
             SprintSouthEastYStart, SprintSouthEastYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogSouthEastXStart, JogSouthEastXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogSouthEastXStart, JogSouthEastXEnd, 
             JogSouthEastYStart, JogSouthEastYEnd); timer = 0.0f;}
         sprite.move({movement});
     }
@@ -168,10 +174,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog north west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; textureX += 240; animate(SprintNorthWestXStart, SprintNorthWestXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; textureX += spriteSize; animate(SprintNorthWestXStart, SprintNorthWestXEnd, 
             SprintNorthWestYStart, SprintNorthWestYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogNorthWestXStart, JogNorthWestXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogNorthWestXStart, JogNorthWestXEnd, 
             JogNorthWestYStart, JogNorthWestYEnd); timer = 0.0f;}
         sprite.move({movement});
     }
@@ -183,10 +189,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog south west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += 240; animate(SprintSouthWestXStart, SprintSouthWestXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += spriteSize; animate(SprintSouthWestXStart, SprintSouthWestXEnd, 
             SprintSouthWestYStart, SprintSouthWestYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogSouthWestXStart, JogSouthWestXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogSouthWestXStart, JogSouthWestXEnd, 
             JogSouthWestYStart, JogSouthWestYEnd); timer = 0.0f;}
         sprite.move({movement});
     }
@@ -198,10 +204,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed * 4, 0.0f}; textureX += 240; animate(SprintEastXStart, SprintEastXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed * 4, 0.0f}; textureX += spriteSize; animate(SprintEastXStart, SprintEastXEnd, 
             SprintEastYStart, SprintEastYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogEastXStart, JogEastXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogEastXStart, JogEastXEnd, 
             JogEastYStart, JogEastYEnd); timer = 0.0f;}
         sprite.move({movement});
     }
@@ -213,10 +219,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog north animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {0.0f, -verticalSpeed * 4}; textureX += 240; animate(SprintNorthXStart, SprintNorthXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {0.0f, -verticalSpeed * 4}; textureX += spriteSize; animate(SprintNorthXStart, SprintNorthXEnd, 
             SprintNorthYStart, SprintNorthYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogNorthXStart, JogNorthXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogNorthXStart, JogNorthXEnd, 
             JogNorthYStart, JogNorthYEnd); timer = 0.0f;}
         sprite.move({movement});
     }
@@ -228,10 +234,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog south animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {0.0f, verticalSpeed * 4}; textureX += 240; animate(SprintSouthXStart, SprintSouthXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {0.0f, verticalSpeed * 4}; textureX += spriteSize; animate(SprintSouthXStart, SprintSouthXEnd, 
             SprintSouthYStart, SprintSouthYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogSouthXStart, JogSouthXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogSouthXStart, JogSouthXEnd, 
             JogSouthYStart, JogSouthYEnd); timer = 0.0f;}
         sprite.move({movement});
     }
@@ -243,10 +249,10 @@ void Player::handleInput() {
         // Waits for set amount of time then plays Jog west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed * 4, 0.0f}; textureX += 240; animate(SprintWestXStart, SprintWestXEnd, 
+        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed * 4, 0.0f}; textureX += spriteSize; animate(SprintWestXStart, SprintWestXEnd, 
             SprintWestYStart, SprintWestYEnd); timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += 240; animate(JogWestXStart, JogWestXEnd, 
+        else if (timer >= timerMax) {textureX += spriteSize; animate(JogWestXStart, JogWestXEnd, 
             JogWestYStart, JogWestYEnd); timer = 0.0f;}
         sprite.move({movement});
     } else {
@@ -260,36 +266,36 @@ void Player::handleInput() {
         // Check direction user is facing
         if (north) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashNorthXStart, SlashNorthXEnd, 
-                SlashNorthYStart, SlashNorthYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackNorthXStart, AttackNorthXEnd, 
+                AttackNorthYStart, AttackNorthYEnd); timer = 0.0f;}
         } else if (northEast) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashNorthEastXStart, SlashNorthEastXEnd, 
-                SlashNorthEastYStart, SlashNorthEastYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackNorthEastXStart, AttackNorthEastXEnd, 
+                AttackNorthEastYStart, AttackNorthEastYEnd); timer = 0.0f;}
         } else if (east) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashEastXStart, SlashEastXEnd, 
-                SlashEastYStart, SlashEastYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackEastXStart, AttackEastXEnd, 
+                AttackEastYStart, AttackEastYEnd); timer = 0.0f;}
         } else if (southEast) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashSouthEastXStart, SlashSouthEastXEnd, 
-                SlashSouthEastYStart, SlashSouthEastYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackSouthEastXStart, AttackSouthEastXEnd, 
+                AttackSouthEastYStart, AttackSouthEastYEnd); timer = 0.0f;}
         } else if (south) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashSouthXStart, SlashSouthXEnd, 
-                SlashSouthYStart, SlashSouthYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackSouthXStart, AttackSouthXEnd, 
+                AttackSouthYStart, AttackSouthYEnd); timer = 0.0f;}
         } else if (southWest) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashSouthWestXStart, SlashSouthWestXEnd, 
-                SlashSouthWestYStart, SlashSouthWestYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackSouthWestXStart, AttackSouthWestXEnd, 
+                AttackSouthWestYStart, AttackSouthWestYEnd); timer = 0.0f;}
         } else if (west) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashWestXStart, SlashWestXEnd, 
-                SlashWestYStart, SlashWestYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackWestXStart, AttackWestXEnd, 
+                AttackWestYStart, AttackWestYEnd); timer = 0.0f;}
         } else if (northWest) {
             // Attack animation
-            if (timer >= timerMax) {textureX += 240; animate(SlashNorthWestXStart, SlashNorthWestXEnd, 
-                SlashNorthWestYStart, SlashNorthWestYEnd); timer = 0.0f;}
+            if (timer >= timerMax) {textureX += spriteSize; animate(AttackNorthWestXStart, AttackNorthWestXEnd, 
+                AttackNorthWestYStart, AttackNorthWestYEnd); timer = 0.0f;}
         }
     } else {
         attacking = false;
@@ -306,13 +312,13 @@ void Player::animate(int xStart, int xEnd, int yStart, int yEnd) {
     if(textureY != yStart && textureY != yEnd) {textureX = xStart; textureY = yStart;} // Row value is invalid
 
     // If x is at final column, switch to next row
-    if (textureX > finalColumn) { textureX = 0; textureY += 240;}
+    if (textureX > finalColumn) { textureX = 0; textureY += spriteSize;}
     // If y is at final row, then use start coordinates
     if (textureY > finalRow) {textureX = xStart; textureY = yStart;}
 
     // If x value is valid, then change current sprite texture coordinates
     if (textureX <= finalColumn) {
-        sprite.setTextureRect({{textureX, textureY}, {240, 240}});
+        sprite.setTextureRect({{textureX, textureY}, {spriteSize, spriteSize}});
     }
 }
 
@@ -329,20 +335,20 @@ void Player::sprint(bool sprint) {
 void Player::update() {
     // If player is not moving then change player to standing pose
     if (moving == false && attacking == false) {
-        if (east) {textureX = standingEastX; textureY = standingEastY;}
-        if (north) {textureX = standingNorthX; textureY = standingNorthY;}
-        if (northEast) {textureX = standingNorthEastX; textureY = standingNorthEastY;}
-        if (northWest) {textureX = standingNorthWestX; textureY = standingNorthWestY;}
-        if (south) {textureX = standingSouthX; textureY = standingSouthY;}
-        if (southEast) {textureX = standingSouthEastX; textureY = standingSouthEastY;}
-        if (southWest) {textureX = standingSouthWestX; textureY = standingSouthWestY;}
-        if (west) {textureX = standingWestX; textureY = standingWestY;}
-        sprite.setTextureRect({{textureX, textureY}, {240, 240}});
+        if (east) {textureX = StandingEastX; textureY = StandingEastY;}
+        if (north) {textureX = StandingNorthX; textureY = StandingNorthY;}
+        if (northEast) {textureX = StandingNorthEastX; textureY = StandingNorthEastY;}
+        if (northWest) {textureX = StandingNorthWestX; textureY = StandingNorthWestY;}
+        if (south) {textureX = StandingSouthX; textureY = StandingSouthY;}
+        if (southEast) {textureX = StandingSouthEastX; textureY = StandingSouthEastY;}
+        if (southWest) {textureX = StandingSouthWestX; textureY = StandingSouthWestY;}
+        if (west) {textureX = StandingWestX; textureY = StandingWestY;}
+        sprite.setTextureRect({{textureX, textureY}, {spriteSize, spriteSize}});
     }
 
     // Indicate damage by turning sprite red
     if (damageClock.getElapsedTime() >= damageCooldown - sf::seconds(0.7f)) {
-        sprite.setColor(sf::Color::White);
+        sprite.setColor(baseColour);
     } else {
         sprite.setColor(sf::Color::Red);
     }

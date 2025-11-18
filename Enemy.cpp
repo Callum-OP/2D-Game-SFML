@@ -13,14 +13,19 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture)
       sprite(texture)   // Initialize sprite with texture
     {
 
+    // Size of textures in the spritesheet
+    spriteSize = 300;
+    // Colour tint of character
+    baseColour = sf::Color::White;
+
     // Create a enemy sprite
     collider = { Vec2(startPosition.x, startPosition.y), { Vec2(-10, -10), Vec2(10, 10) } };
-    sprite.setOrigin({600.0f / 2.0f, 750.0f / 2.0f});
+    sprite.setOrigin({spriteSize / 2.0f, spriteSize / 2.0f});
     sprite.setPosition(toSF(collider.pos));
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {spriteSize,spriteSize}});
-    sprite.setScale({0.4f,0.4f});
-    sprite.setColor(sf::Color::White);
+    sprite.setScale({0.8f,0.8f});
+    sprite.setColor(sf::Color::Red);
 
     // Set health values
     maxHealth = 3;
@@ -30,51 +35,47 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture)
     speed = 80.0f;
     moving = false;
 
-    // Coordinates for current texture in spritesheet
-    textureX = 0;
-    textureY = 0;
-
     // Timer for animations and delays
     timer = 0.0f;
     timerMax = 0.5f;
 
-    // Size of textures in the spritesheet
-    spriteSize = 600;
-
     // When x coordinates have reached the final column
-    finalColumn = 7200;
-    finalRow = 2400;
+    finalColumn = 7800;
+    finalRow = 1800;
 
     // Start and end coordinates for animation textures in spritesheet
     // These values will need to be changed if the spritesheet changes
+    
+    AttackEastXStart = 0; AttackEastYStart = 0; AttackEastXEnd = 2100; AttackEastYEnd = 0;
+    AttackNorthXStart = 2400; AttackNorthYStart = 0; AttackNorthXEnd = 4500; AttackNorthYEnd = 0;
+    AttackNorthEastXStart = 4800; AttackNorthEastYStart = 0; AttackNorthEastXEnd = 6600; AttackNorthEastYEnd = 0;
+    AttackNorthWestXStart = 6900; AttackNorthWestYStart = 0; AttackNorthWestXEnd = 900; AttackNorthWestYEnd = 300;
+    AttackSouthXStart = 1200; AttackSouthYStart = 300; AttackSouthXEnd = 3300; AttackSouthYEnd = 300;
+    AttackSouthEastXStart = 3600; AttackSouthEastYStart = 300; AttackSouthEastXEnd = 5700; AttackSouthEastYEnd = 300;
+    AttackSouthWestXStart = 6000; AttackSouthWestYStart = 300; AttackSouthWestXEnd = 0; AttackSouthWestYEnd = 600;
+    AttackWestXStart = 300; AttackWestYStart = 600; AttackWestXEnd = 2400; AttackWestYEnd = 600;
 
-    standingEastX = 0; standingEastY = 0;
-    standingNorthX = 600; standingNorthY = 0;
-    standingNorthEastX = 1200; standingNorthEastY = 0;
-    standingNorthWestX = 1800; standingNorthWestY = 0;
-    standingSouthX = 2400; standingSouthY = 0;
-    standingSouthEastX = 3000; standingSouthEastY = 0;
-    standingSouthWestX = 3600; standingSouthWestY = 0;
-    standingWestX = 4200; standingWestY = 0;
+    JogEastXStart = 2700; JogEastYStart = 600; JogEastXEnd = 4200; JogEastYEnd = 600;
+    JogNorthXStart = 4500; JogNorthYStart = 600; JogNorthXEnd = 6000; JogNorthYEnd = 600;
+    JogNorthEastXStart = 6300; JogNorthEastYStart = 600; JogNorthEastXEnd = 7800; JogNorthEastYEnd = 600;
+    JogNorthWestXStart = 0; JogNorthWestYStart = 900; JogNorthWestXEnd = 1500; JogNorthWestYEnd = 900;
+    JogSouthXStart = 1800; JogSouthYStart = 900; JogSouthXEnd = 3300; JogSouthYEnd = 900;
+    JogSouthEastXStart = 3600; JogSouthEastYStart = 900; JogSouthEastXEnd = 5100; JogSouthEastYEnd = 900;
+    JogSouthWestXStart = 5400; JogSouthWestYStart = 900; JogSouthWestXEnd = 6900; JogSouthWestYEnd = 900;
+    JogWestXStart = 7200; JogWestYStart = 900; JogWestXEnd = 600; JogWestYEnd = 1200;
 
-    JogEastXStart = 4800; JogEastYStart = 0; JogEastXEnd = 0; JogEastYEnd = 600;
-    JogNorthXStart = 600; JogNorthYStart = 600; JogNorthXEnd = 3600; JogNorthYEnd = 600;
-    JogNorthEastXStart = 4200; JogNorthEastYStart = 600; JogNorthEastXEnd = 7200; JogNorthEastYEnd = 600;
-    JogNorthWestXStart = 0; JogNorthWestYStart = 1200; JogNorthWestXEnd = 3000; JogNorthWestYEnd = 1200;
-    JogSouthXStart = 3600; JogSouthYStart = 1200; JogSouthXEnd = 6600; JogSouthYEnd = 1200;
-    JogSouthEastXStart = 7200; JogSouthEastYStart = 1200; JogSouthEastXEnd = 2400; JogSouthEastYEnd = 1800;
-    JogSouthWestXStart = 3000; JogSouthWestYStart = 1800; JogSouthWestXEnd = 6000; JogSouthWestYEnd = 1800;
-    JogWestXStart = 6600; JogWestYStart = 1800; JogWestXEnd = 1800; JogWestYEnd = 2400;
+    StandingEastX = 7200; StandingEastY = 1500;
+    StandingNorthX = 7500; StandingNorthY = 1500;
+    StandingNorthEastX = 7800; StandingNorthEastY = 1500;
+    StandingNorthWestX = 0; StandingNorthWestY = 1800;
+    StandingSouthX = 300; StandingSouthY = 1800;
+    StandingSouthEastX = 600; StandingSouthEastY = 1800;
+    StandingSouthWestX = 900; StandingSouthWestY = 1800;
+    StandingWestX = 1200; StandingWestY = 1800;
 
-    attacking = false;
-    attackEastXStart = 1680; attackEastYStart = 1200; attackEastXEnd = 0; attackEastYEnd = 1440;
-    attackNorthXStart = 240; attackNorthYStart = 1440; attackNorthXEnd = 1680; attackNorthYEnd = 1440;
-    attackNorthEastXStart = 1920; attackNorthEastYStart = 1440; attackNorthEastXEnd = 240; attackNorthEastYEnd = 1680;
-    attackNorthWestXStart = 480; attackNorthWestYStart = 1680; attackNorthWestXEnd = 1920; attackNorthWestYEnd = 1680;
-    attackSouthXStart = 2160; attackSouthYStart = 1680; attackSouthXEnd = 480; attackSouthYEnd = 1920;
-    attackSouthEastXStart = 720; attackSouthEastYStart = 1920; attackSouthEastXEnd = 2160; attackSouthEastYEnd = 1920;
-    attackSouthWestXStart = 2400; attackSouthWestYStart = 1920; attackSouthWestXEnd = 720; attackSouthWestYEnd = 2160;
-    attackWestXStart = 960; attackWestYStart = 2160; attackWestXEnd = 2400; attackWestYEnd = 2160;
+    // Coordinates for current texture in spritesheet
+    textureX = StandingSouthX;
+    textureY = StandingSouthY;
 }
 
 // Take damage until no health left, with half a second delay between damage
@@ -202,45 +203,45 @@ void Enemy::update(float deltaTime, Grid& grid, const sf::Vector2f& playerPositi
         // Check direction and whether enemy is moving or attacking or standing still
         if (currentDirection == "north") {
             if (moving) {animate(JogNorthXStart, JogNorthXEnd, JogNorthYStart, JogNorthYEnd);}
-            else if (attacking) {animate(attackNorthXStart, attackNorthXEnd, attackNorthYStart, attackNorthYEnd);}
-            else {sprite.setTextureRect({{standingNorthX, standingNorthY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackNorthXStart, AttackNorthXEnd, AttackNorthYStart, AttackNorthYEnd);}
+            else {sprite.setTextureRect({{StandingNorthX, StandingNorthY}, {spriteSize, spriteSize}});}
         } else if (currentDirection == "northEast") {
             if (moving) {animate(JogNorthEastXStart, JogNorthEastXEnd, JogNorthEastYStart, JogNorthEastYEnd);}
-            else if (attacking) {animate(attackNorthEastXStart, attackNorthEastXEnd, attackNorthEastYStart, attackNorthEastYEnd);}
-            else {sprite.setTextureRect({{standingNorthEastX, standingNorthEastY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackNorthEastXStart, AttackNorthEastXEnd, AttackNorthEastYStart, AttackNorthEastYEnd);}
+            else {sprite.setTextureRect({{StandingNorthEastX, StandingNorthEastY}, {spriteSize, spriteSize}});}
         } else if (currentDirection == "east") {
             if (moving) {animate(JogEastXStart, JogEastXEnd, JogEastYStart, JogEastYEnd);}
-            else if (attacking) {animate(attackEastXStart, attackEastXEnd, attackEastYStart, attackEastYEnd);}
-            else {sprite.setTextureRect({{standingEastX, standingEastY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackEastXStart, AttackEastXEnd, AttackEastYStart, AttackEastYEnd);}
+            else {sprite.setTextureRect({{StandingEastX, StandingEastY}, {spriteSize, spriteSize}});}
         } else if (currentDirection == "southEast") {
             if (moving) {animate(JogSouthEastXStart, JogSouthEastXEnd, JogSouthEastYStart, JogSouthEastYEnd);}
-            else if (attacking) {animate(attackSouthEastXStart, attackSouthEastXEnd, attackSouthEastYStart, attackSouthEastYEnd);}
-            else {sprite.setTextureRect({{standingSouthEastX, standingSouthEastY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackSouthEastXStart, AttackSouthEastXEnd, AttackSouthEastYStart, AttackSouthEastYEnd);}
+            else {sprite.setTextureRect({{StandingSouthEastX, StandingSouthEastY}, {spriteSize, spriteSize}});}
         } else if (currentDirection == "south") {
             if (moving) {animate(JogSouthXStart, JogSouthXEnd, JogSouthYStart, JogSouthYEnd);}
-            else if (attacking) {animate(attackSouthXStart, attackSouthXEnd, attackSouthYStart, attackSouthYEnd);}
-            else {sprite.setTextureRect({{standingSouthX, standingSouthY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackSouthXStart, AttackSouthXEnd, AttackSouthYStart, AttackSouthYEnd);}
+            else {sprite.setTextureRect({{StandingSouthX, StandingSouthY}, {spriteSize, spriteSize}});}
         } else if (currentDirection == "southWest") {
             if (moving) {animate(JogSouthWestXStart, JogSouthWestXEnd, JogSouthWestYStart, JogSouthWestYEnd);}
-            else if (attacking) {animate(attackSouthWestXStart, attackSouthWestXEnd, attackSouthWestYStart, attackSouthWestYEnd);}
-            else {sprite.setTextureRect({{standingSouthWestX, standingSouthWestY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackSouthWestXStart, AttackSouthWestXEnd, AttackSouthWestYStart, AttackSouthWestYEnd);}
+            else {sprite.setTextureRect({{StandingSouthWestX, StandingSouthWestY}, {spriteSize, spriteSize}});}
         } else if (currentDirection == "west") {
             if (moving) {animate(JogWestXStart, JogWestXEnd, JogWestYStart, JogWestYEnd);}
-            else if (attacking) {animate(attackWestXStart, attackWestXEnd, attackWestYStart, attackWestYEnd);}
-            else {sprite.setTextureRect({{standingWestX, standingWestY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackWestXStart, AttackWestXEnd, AttackWestYStart, AttackWestYEnd);}
+            else {sprite.setTextureRect({{StandingWestX, StandingWestY}, {spriteSize, spriteSize}});}
         } else if (currentDirection == "northWest") {
             if (moving) {animate(JogNorthWestXStart, JogNorthWestXEnd, JogNorthWestYStart, JogNorthWestYEnd);}
-            else if (attacking) {animate(attackNorthWestXStart, attackNorthWestXEnd, attackNorthWestYStart, attackNorthWestYEnd);}
-            else {sprite.setTextureRect({{standingNorthWestX, standingNorthWestY}, {spriteSize, spriteSize}});}
+            else if (attacking) {animate(AttackNorthWestXStart, AttackNorthWestXEnd, AttackNorthWestYStart, AttackNorthWestYEnd);}
+            else {sprite.setTextureRect({{StandingNorthWestX, StandingNorthWestY}, {spriteSize, spriteSize}});}
         } else {
-            sprite.setTextureRect({{standingSouthX, standingSouthY}, {spriteSize, spriteSize}});
+            sprite.setTextureRect({{StandingSouthX, StandingSouthY}, {spriteSize, spriteSize}});
         }
         timer = 0.0f;
     }
 
     // Indicate damage by turning sprite red
     if (damageClock.getElapsedTime() >= damageCooldown - sf::seconds(0.3f)) {
-        sprite.setColor(sf::Color::White);
+        sprite.setColor(baseColour);
     } else {
         sprite.setColor(sf::Color::Red);
     }

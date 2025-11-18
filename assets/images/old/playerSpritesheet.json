@@ -1,0 +1,1412 @@
+{
+  "frames": {
+    "FaceEast.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "FaceNorth.png": {
+      "frame": {
+        "x": 240,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "FaceNorthEast.png": {
+      "frame": {
+        "x": 480,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "FaceNorthWest.png": {
+      "frame": {
+        "x": 720,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "FaceSouth.png": {
+      "frame": {
+        "x": 960,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "FaceSouthEast.png": {
+      "frame": {
+        "x": 1200,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "FaceSouthWest.png": {
+      "frame": {
+        "x": 1440,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "FaceWest.png": {
+      "frame": {
+        "x": 1680,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogEast1.png": {
+      "frame": {
+        "x": 1920,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogEast2.png": {
+      "frame": {
+        "x": 2160,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogEast3.png": {
+      "frame": {
+        "x": 2400,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogEast4.png": {
+      "frame": {
+        "x": 2640,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogEast5.png": {
+      "frame": {
+        "x": 2880,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogEast6.png": {
+      "frame": {
+        "x": 3120,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorth1.png": {
+      "frame": {
+        "x": 3360,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorth2.png": {
+      "frame": {
+        "x": 3600,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorth3.png": {
+      "frame": {
+        "x": 3840,
+        "y": 0,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorth4.png": {
+      "frame": {
+        "x": 0,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorth5.png": {
+      "frame": {
+        "x": 240,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorth6.png": {
+      "frame": {
+        "x": 480,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthEast1.png": {
+      "frame": {
+        "x": 720,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthEast2.png": {
+      "frame": {
+        "x": 960,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthEast3.png": {
+      "frame": {
+        "x": 1200,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthEast4.png": {
+      "frame": {
+        "x": 1440,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthEast5.png": {
+      "frame": {
+        "x": 1680,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthEast6.png": {
+      "frame": {
+        "x": 1920,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthWest1.png": {
+      "frame": {
+        "x": 2160,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthWest2.png": {
+      "frame": {
+        "x": 2400,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthWest3.png": {
+      "frame": {
+        "x": 2640,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthWest4.png": {
+      "frame": {
+        "x": 2880,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthWest5.png": {
+      "frame": {
+        "x": 3120,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogNorthWest6.png": {
+      "frame": {
+        "x": 3360,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouth1.png": {
+      "frame": {
+        "x": 3600,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouth2.png": {
+      "frame": {
+        "x": 3840,
+        "y": 240,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouth3.png": {
+      "frame": {
+        "x": 0,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouth4.png": {
+      "frame": {
+        "x": 240,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouth5.png": {
+      "frame": {
+        "x": 480,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouth6.png": {
+      "frame": {
+        "x": 720,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthEast1.png": {
+      "frame": {
+        "x": 960,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthEast2.png": {
+      "frame": {
+        "x": 1200,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthEast3.png": {
+      "frame": {
+        "x": 1440,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthEast4.png": {
+      "frame": {
+        "x": 1680,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthEast5.png": {
+      "frame": {
+        "x": 1920,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthEast6.png": {
+      "frame": {
+        "x": 2160,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthWest1.png": {
+      "frame": {
+        "x": 2400,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthWest2.png": {
+      "frame": {
+        "x": 2640,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthWest3.png": {
+      "frame": {
+        "x": 2880,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthWest4.png": {
+      "frame": {
+        "x": 3120,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthWest5.png": {
+      "frame": {
+        "x": 3360,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogSouthWest6.png": {
+      "frame": {
+        "x": 3600,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogWest1.png": {
+      "frame": {
+        "x": 3840,
+        "y": 480,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogWest2.png": {
+      "frame": {
+        "x": 0,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogWest3.png": {
+      "frame": {
+        "x": 240,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogWest4.png": {
+      "frame": {
+        "x": 480,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogWest5.png": {
+      "frame": {
+        "x": 720,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "JogWest6.png": {
+      "frame": {
+        "x": 960,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheEast1.png": {
+      "frame": {
+        "x": 1200,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheEast2.png": {
+      "frame": {
+        "x": 1440,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheNorth1.png": {
+      "frame": {
+        "x": 1680,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheNorth2.png": {
+      "frame": {
+        "x": 1920,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheNorthEast1.png": {
+      "frame": {
+        "x": 2160,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheNorthEast2.png": {
+      "frame": {
+        "x": 2400,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheNorthWest1.png": {
+      "frame": {
+        "x": 2640,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheNorthWest2.png": {
+      "frame": {
+        "x": 2880,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheSouth1.png": {
+      "frame": {
+        "x": 3120,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheSouth2.png": {
+      "frame": {
+        "x": 3360,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheSouthEast1.png": {
+      "frame": {
+        "x": 3600,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheSouthEast2.png": {
+      "frame": {
+        "x": 3840,
+        "y": 720,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheSouthWest1.png": {
+      "frame": {
+        "x": 0,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheSouthWest2.png": {
+      "frame": {
+        "x": 240,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheWest1.png": {
+      "frame": {
+        "x": 480,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SheatheWest2.png": {
+      "frame": {
+        "x": 720,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashEast1.png": {
+      "frame": {
+        "x": 960,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashEast2.png": {
+      "frame": {
+        "x": 1200,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashEast3.png": {
+      "frame": {
+        "x": 1440,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashEast4.png": {
+      "frame": {
+        "x": 1680,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashEast5.png": {
+      "frame": {
+        "x": 1920,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashEast6.png": {
+      "frame": {
+        "x": 2160,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashEast7.png": {
+      "frame": {
+        "x": 2400,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorth1.png": {
+      "frame": {
+        "x": 2640,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorth2.png": {
+      "frame": {
+        "x": 2880,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorth3.png": {
+      "frame": {
+        "x": 3120,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorth4.png": {
+      "frame": {
+        "x": 3360,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorth5.png": {
+      "frame": {
+        "x": 3600,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorth6.png": {
+      "frame": {
+        "x": 3840,
+        "y": 960,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorth7.png": {
+      "frame": {
+        "x": 0,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthEast1.png": {
+      "frame": {
+        "x": 240,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthEast2.png": {
+      "frame": {
+        "x": 480,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthEast3.png": {
+      "frame": {
+        "x": 720,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthEast4.png": {
+      "frame": {
+        "x": 960,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthEast5.png": {
+      "frame": {
+        "x": 1200,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthEast6.png": {
+      "frame": {
+        "x": 1440,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthEast7.png": {
+      "frame": {
+        "x": 1680,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthWest1.png": {
+      "frame": {
+        "x": 1920,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthWest2.png": {
+      "frame": {
+        "x": 2160,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthWest3.png": {
+      "frame": {
+        "x": 2400,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthWest4.png": {
+      "frame": {
+        "x": 2640,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthWest5.png": {
+      "frame": {
+        "x": 2880,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthWest6.png": {
+      "frame": {
+        "x": 3120,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashNorthWest7.png": {
+      "frame": {
+        "x": 3360,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouth1.png": {
+      "frame": {
+        "x": 3600,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouth2.png": {
+      "frame": {
+        "x": 3840,
+        "y": 1200,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouth3.png": {
+      "frame": {
+        "x": 0,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouth4.png": {
+      "frame": {
+        "x": 240,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouth5.png": {
+      "frame": {
+        "x": 480,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouth6.png": {
+      "frame": {
+        "x": 720,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouth7.png": {
+      "frame": {
+        "x": 960,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthEast1.png": {
+      "frame": {
+        "x": 1200,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthEast2.png": {
+      "frame": {
+        "x": 1440,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthEast3.png": {
+      "frame": {
+        "x": 1680,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthEast4.png": {
+      "frame": {
+        "x": 1920,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthEast5.png": {
+      "frame": {
+        "x": 2160,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthEast6.png": {
+      "frame": {
+        "x": 2400,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthEast7.png": {
+      "frame": {
+        "x": 2640,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthWest1.png": {
+      "frame": {
+        "x": 2880,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthWest2.png": {
+      "frame": {
+        "x": 3120,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthWest3.png": {
+      "frame": {
+        "x": 3360,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthWest4.png": {
+      "frame": {
+        "x": 3600,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthWest5.png": {
+      "frame": {
+        "x": 3840,
+        "y": 1440,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthWest6.png": {
+      "frame": {
+        "x": 0,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashSouthWest7.png": {
+      "frame": {
+        "x": 240,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashWest1.png": {
+      "frame": {
+        "x": 480,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashWest2.png": {
+      "frame": {
+        "x": 720,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashWest3.png": {
+      "frame": {
+        "x": 960,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashWest4.png": {
+      "frame": {
+        "x": 1200,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashWest5.png": {
+      "frame": {
+        "x": 1440,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashWest6.png": {
+      "frame": {
+        "x": 1680,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SlashWest7.png": {
+      "frame": {
+        "x": 1920,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintEast1.png": {
+      "frame": {
+        "x": 2160,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintEast2.png": {
+      "frame": {
+        "x": 2400,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintEast3.png": {
+      "frame": {
+        "x": 2640,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintEast4.png": {
+      "frame": {
+        "x": 2880,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintEast5.png": {
+      "frame": {
+        "x": 3120,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintEast6.png": {
+      "frame": {
+        "x": 3360,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorth1.png": {
+      "frame": {
+        "x": 3600,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorth2.png": {
+      "frame": {
+        "x": 3840,
+        "y": 1680,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorth3.png": {
+      "frame": {
+        "x": 0,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorth4.png": {
+      "frame": {
+        "x": 240,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorth5.png": {
+      "frame": {
+        "x": 480,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorth6.png": {
+      "frame": {
+        "x": 720,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthEast1.png": {
+      "frame": {
+        "x": 960,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthEast2.png": {
+      "frame": {
+        "x": 1200,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthEast3.png": {
+      "frame": {
+        "x": 1440,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthEast4.png": {
+      "frame": {
+        "x": 1680,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthEast5.png": {
+      "frame": {
+        "x": 1920,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthEast6.png": {
+      "frame": {
+        "x": 2160,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthWest1.png": {
+      "frame": {
+        "x": 2400,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthWest2.png": {
+      "frame": {
+        "x": 2640,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthWest3.png": {
+      "frame": {
+        "x": 2880,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthWest4.png": {
+      "frame": {
+        "x": 3120,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthWest5.png": {
+      "frame": {
+        "x": 3360,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintNorthWest6.png": {
+      "frame": {
+        "x": 3600,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouth1.png": {
+      "frame": {
+        "x": 3840,
+        "y": 1920,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouth2.png": {
+      "frame": {
+        "x": 0,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouth3.png": {
+      "frame": {
+        "x": 240,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouth4.png": {
+      "frame": {
+        "x": 480,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouth5.png": {
+      "frame": {
+        "x": 720,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouth6.png": {
+      "frame": {
+        "x": 960,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthEast1.png": {
+      "frame": {
+        "x": 1200,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthEast2.png": {
+      "frame": {
+        "x": 1440,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthEast3.png": {
+      "frame": {
+        "x": 1680,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthEast4.png": {
+      "frame": {
+        "x": 1920,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthEast5.png": {
+      "frame": {
+        "x": 2160,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthEast6.png": {
+      "frame": {
+        "x": 2400,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthWest1.png": {
+      "frame": {
+        "x": 2640,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthWest2.png": {
+      "frame": {
+        "x": 2880,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthWest3.png": {
+      "frame": {
+        "x": 3120,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthWest4.png": {
+      "frame": {
+        "x": 3360,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthWest5.png": {
+      "frame": {
+        "x": 3600,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintSouthWest6.png": {
+      "frame": {
+        "x": 3840,
+        "y": 2160,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintWest1.png": {
+      "frame": {
+        "x": 0,
+        "y": 2400,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintWest2.png": {
+      "frame": {
+        "x": 240,
+        "y": 2400,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintWest3.png": {
+      "frame": {
+        "x": 480,
+        "y": 2400,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintWest4.png": {
+      "frame": {
+        "x": 720,
+        "y": 2400,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintWest5.png": {
+      "frame": {
+        "x": 960,
+        "y": 2400,
+        "w": 240,
+        "h": 240
+      }
+    },
+    "SprintWest6.png": {
+      "frame": {
+        "x": 1200,
+        "y": 2400,
+        "w": 240,
+        "h": 240
+      }
+    }
+  }
+}

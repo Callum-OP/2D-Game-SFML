@@ -15,9 +15,9 @@ public:
     sf::Vector2f getPosition();
     void draw(sf::RenderWindow& window);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
+
     void takeDamage(int amount);
     void heal(int amount);
-
     int getHealth() const { return health; }
     int getMaxHealth() const { return maxHealth; }
     bool isDead() const { return health <= 0; }
@@ -29,6 +29,7 @@ public:
     sf::Clock damageClock;
     sf::Time damageCooldown = sf::seconds(0.5f);
     sf::Vector2f direction;
+    sf::Color baseColour;
 
     int textureX, textureY;
     float timer, timerMax;
@@ -41,11 +42,7 @@ public:
     int spriteSize;
     float attackRadius;
 
-    int standingNorthX, standingNorthY, standingNorthWestX, standingNorthWestY, 
-    standingNorthEastX, standingNorthEastY, standingEastX, standingEastY, 
-    standingSouthEastX, standingSouthEastY, standingSouthX, standingSouthY,
-    standingSouthWestX, standingSouthWestY, standingWestX, standingWestY;
-
+    // Coordinates for textures
     int JogNorthXStart, JogNorthYStart, JogNorthXEnd, JogNorthYEnd;
     int JogNorthEastXStart, JogNorthEastYStart, JogNorthEastXEnd, JogNorthEastYEnd;
     int JogEastXStart, JogEastYStart, JogEastXEnd, JogEastYEnd;
@@ -55,14 +52,19 @@ public:
     int JogWestXStart, JogWestYStart, JogWestXEnd, JogWestYEnd;
     int JogNorthWestXStart, JogNorthWestYStart, JogNorthWestXEnd, JogNorthWestYEnd;
 
-    int attackNorthXStart, attackNorthYStart, attackNorthXEnd, attackNorthYEnd;
-    int attackNorthEastXStart, attackNorthEastYStart, attackNorthEastXEnd, attackNorthEastYEnd;
-    int attackEastXStart, attackEastYStart, attackEastXEnd, attackEastYEnd;
-    int attackSouthEastXStart, attackSouthEastYStart, attackSouthEastXEnd, attackSouthEastYEnd;
-    int attackSouthXStart, attackSouthYStart, attackSouthXEnd, attackSouthYEnd;
-    int attackSouthWestXStart, attackSouthWestYStart, attackSouthWestXEnd, attackSouthWestYEnd;
-    int attackWestXStart, attackWestYStart, attackWestXEnd, attackWestYEnd;
-    int attackNorthWestXStart, attackNorthWestYStart, attackNorthWestXEnd, attackNorthWestYEnd;
+    int AttackNorthXStart, AttackNorthYStart, AttackNorthXEnd, AttackNorthYEnd;
+    int AttackNorthEastXStart, AttackNorthEastYStart, AttackNorthEastXEnd, AttackNorthEastYEnd;
+    int AttackEastXStart, AttackEastYStart, AttackEastXEnd, AttackEastYEnd;
+    int AttackSouthEastXStart, AttackSouthEastYStart, AttackSouthEastXEnd, AttackSouthEastYEnd;
+    int AttackSouthXStart, AttackSouthYStart, AttackSouthXEnd, AttackSouthYEnd;
+    int AttackSouthWestXStart, AttackSouthWestYStart, AttackSouthWestXEnd, AttackSouthWestYEnd;
+    int AttackWestXStart, AttackWestYStart, AttackWestXEnd, AttackWestYEnd;
+    int AttackNorthWestXStart, AttackNorthWestYStart, AttackNorthWestXEnd, AttackNorthWestYEnd;
+
+    int StandingNorthX, StandingNorthY, StandingNorthWestX, StandingNorthWestY, 
+    StandingNorthEastX, StandingNorthEastY, StandingEastX, StandingEastY, 
+    StandingSouthEastX, StandingSouthEastY, StandingSouthX, StandingSouthY,
+    StandingSouthWestX, StandingSouthWestY, StandingWestX, StandingWestY;
 };
 
 #endif // ENEMY_HPP

@@ -44,7 +44,6 @@ int main()
     // Create a player
     Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
     Player player;
-    player.sprite.setOrigin({240.0f / 2.0f, 350.0f / 2.0f});
     player.sprite.setPosition(toSF(playerCollider.pos));
 
     // Create tilemap
