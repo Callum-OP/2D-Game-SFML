@@ -27,11 +27,10 @@ Player::Player()
     baseColour = sf::Color::Green;
 
     // Set up sprite
-    sprite.setOrigin({spriteSize / 2.0f, spriteSize / 2.0f});
+    sprite.setOrigin({spriteSize / 2.0f, (spriteSize + spriteSize / 2) / 2.0f});
     sprite.setTexture(texture);
-    sprite.setTextureRect({{485,1}, {spriteSize,spriteSize}});
+    sprite.setTextureRect({{485, 1}, {spriteSize, spriteSize}});
     sprite.setScale({0.8f,0.8f});
-    //sprite.setColor(sf::Color::White);
 
     // Set health textures
     heartSprite.setScale({0.2f, 0.2f});
@@ -361,6 +360,15 @@ sf::Vector2f Player::getPosition() {
 
 // For drawing player in main
 void Player::draw(sf::RenderWindow& window, const sf::View& camera) {
+    // Add shadow under character
+    sf::CircleShape shadow(spriteSize / 5.f);
+    shadow.setFillColor(sf::Color(0, 0, 0, 100));
+    shadow.setOrigin({spriteSize / 2.0f, (spriteSize + spriteSize / 2) / 2.0f});
+    shadow.setScale({1.0f, 0.4f});
+    sf::Vector2f position = sprite.getPosition();
+    shadow.setPosition({position.x + spriteSize / 3.18f, position.y + spriteSize / 2.6f});
+    window.draw(shadow);
+
     const sf::Font font("assets/fonts/MagicSchoolOne.ttf");
     window.draw(sprite);
 

@@ -20,7 +20,7 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture)
 
     // Create a enemy sprite
     collider = { Vec2(startPosition.x, startPosition.y), { Vec2(-10, -10), Vec2(10, 10) } };
-    sprite.setOrigin({spriteSize / 2.0f, spriteSize / 2.0f});
+    sprite.setOrigin({spriteSize / 2.0f, (spriteSize + spriteSize / 2) / 2.0f});
     sprite.setPosition(toSF(collider.pos));
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {spriteSize,spriteSize}});
@@ -252,5 +252,14 @@ sf::Vector2f Enemy::getPosition() {
 }
 
 void Enemy::draw(sf::RenderWindow& window) {
+    // Add shadow under character
+    sf::CircleShape shadow(spriteSize / 5.f);
+    shadow.setFillColor(sf::Color(0, 0, 0, 100));
+    shadow.setOrigin({spriteSize / 2.0f, (spriteSize + spriteSize / 2) / 2.0f});
+    shadow.setScale({1.0f, 0.4f});
+    sf::Vector2f position = sprite.getPosition();
+    shadow.setPosition({position.x + spriteSize / 3.18f, position.y + spriteSize / 2.6f});
+    window.draw(shadow);
+
     window.draw(sprite);
 }
