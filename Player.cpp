@@ -4,6 +4,8 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "Constants.hpp"
+
 Player::Player()
     : texture{},
         sprite( // Create a player sprite
@@ -22,9 +24,9 @@ Player::Player()
         )
     {
     // Size of textures in the spritesheet
-    spriteSize = 300;
+    spriteSize = PLAYER_SPRITE_SIZE;
     // Colour tint of character
-    baseColour = sf::Color::Green;
+    baseColour = PLAYER_BASE_COLOUR;
 
     // Set up sprite
     sprite.setOrigin({spriteSize / 2.0f, (spriteSize + spriteSize / 2) / 2.0f});
@@ -37,70 +39,30 @@ Player::Player()
     if (!heartFull.loadFromFile("assets/images/HeartFull.png") || !heartEmpty.loadFromFile("assets/images/HeartEmpty.png")) {
         throw std::runtime_error("Failed to load health textures");
     }
-
-    // Set health values
-    maxHealth = 5;
-    health = 5;
-
+    // Set health
+    maxHealth = PLAYER_MAX_HEALTH;
+    health = PLAYER_MAX_HEALTH;
     // Set gold
     gold = 0;
 
     // Default movement speed
-    verticalSpeed = 3.0f;
-    horizontalSpeed = 3.0f;
+    verticalSpeed = PLAYER_V_SPEED;
+    horizontalSpeed = PLAYER_H_SPEED;
     movement = {horizontalSpeed, 0};
     moving = false;
 
     // Timer for animations and delays
-    timer = 0.0f;
-    timerMax = 0.5f;
+    timer = PLAYER_TIMER;
+    timerMax = PLAYER_TIMER_MAX;
 
     // When x coordinates have reached the final column
-    finalColumn = 7800;
-    finalRow = 1800;
-
-    // Start and end coordinates for animation textures in spritesheet
-    // These values will need to be changed if the spritesheet changes
-
-    AttackEastXStart = 0; AttackEastYStart = 0; AttackEastXEnd = 2100; AttackEastYEnd = 0;
-    AttackNorthXStart = 2400; AttackNorthYStart = 0; AttackNorthXEnd = 4500; AttackNorthYEnd = 0;
-    AttackNorthEastXStart = 4800; AttackNorthEastYStart = 0; AttackNorthEastXEnd = 6600; AttackNorthEastYEnd = 0;
-    AttackNorthWestXStart = 6900; AttackNorthWestYStart = 0; AttackNorthWestXEnd = 900; AttackNorthWestYEnd = 300;
-    AttackSouthXStart = 1200; AttackSouthYStart = 300; AttackSouthXEnd = 3300; AttackSouthYEnd = 300;
-    AttackSouthEastXStart = 3600; AttackSouthEastYStart = 300; AttackSouthEastXEnd = 5700; AttackSouthEastYEnd = 300;
-    AttackSouthWestXStart = 6000; AttackSouthWestYStart = 300; AttackSouthWestXEnd = 0; AttackSouthWestYEnd = 600;
-    AttackWestXStart = 300; AttackWestYStart = 600; AttackWestXEnd = 2400; AttackWestYEnd = 600;
-
-    JogEastXStart = 2700; JogEastYStart = 600; JogEastXEnd = 4200; JogEastYEnd = 600;
-    JogNorthXStart = 4500; JogNorthYStart = 600; JogNorthXEnd = 6000; JogNorthYEnd = 600;
-    JogNorthEastXStart = 6300; JogNorthEastYStart = 600; JogNorthEastXEnd = 7800; JogNorthEastYEnd = 600;
-    JogNorthWestXStart = 0; JogNorthWestYStart = 900; JogNorthWestXEnd = 1500; JogNorthWestYEnd = 900;
-    JogSouthXStart = 1800; JogSouthYStart = 900; JogSouthXEnd = 3300; JogSouthYEnd = 900;
-    JogSouthEastXStart = 3600; JogSouthEastYStart = 900; JogSouthEastXEnd = 5100; JogSouthEastYEnd = 900;
-    JogSouthWestXStart = 5400; JogSouthWestYStart = 900; JogSouthWestXEnd = 6900; JogSouthWestYEnd = 900;
-    JogWestXStart = 7200; JogWestYStart = 900; JogWestXEnd = 600; JogWestYEnd = 1200;
-
-    SprintEastXStart = 900; SprintEastYStart = 1200; SprintEastXEnd = 2400; SprintEastYEnd = 1200;
-    SprintNorthXStart = 2700; SprintNorthYStart = 1200; SprintNorthXEnd = 4200; SprintNorthYEnd = 1200;
-    SprintNorthEastXStart = 4500; SprintNorthEastYStart = 1200; SprintNorthEastXEnd = 6000; SprintNorthEastYEnd = 1200;
-    SprintNorthWestXStart = 6300; SprintNorthWestYStart = 1200; SprintNorthWestXEnd = 7800; SprintNorthWestYEnd = 1200;
-    SprintSouthXStart = 0; SprintSouthYStart = 1500; SprintSouthXEnd = 1500; SprintSouthYEnd = 1500;
-    SprintSouthEastXStart = 1800; SprintSouthEastYStart = 1500; SprintSouthEastXEnd = 3300; SprintSouthEastYEnd = 1500;
-    SprintSouthWestXStart = 3600; SprintSouthWestYStart = 1500; SprintSouthWestXEnd = 5100; SprintSouthWestYEnd = 1500;
-    SprintWestXStart = 5400; SprintWestYStart = 1500; SprintWestXEnd = 6900; SprintWestYEnd = 1500;
-
-    StandingEastX = 7200; StandingEastY = 1500;
-    StandingNorthX = 7500; StandingNorthY = 1500;
-    StandingNorthEastX = 7800; StandingNorthEastY = 1500;
-    StandingNorthWestX = 0; StandingNorthWestY = 1800;
-    StandingSouthX = 300; StandingSouthY = 1800;
-    StandingSouthEastX = 600; StandingSouthEastY = 1800;
-    StandingSouthWestX = 900; StandingSouthWestY = 1800;
-    StandingWestX = 1200; StandingWestY = 1800;
+    finalColumn = PLAYER_FINAL_COLUMN;
+    finalRow = PLAYER_FINAL_ROW;
 
     // Coordinates for current texture in spritesheet
-    textureX = StandingSouthX;
-    textureY = StandingSouthY;
+    auto coords = playerAnimationTable.at({Action::Standing, Direction::South});
+    textureX = coords.xStart;
+    textureY = coords.yStart;
 }
 
 // Take damage until no health left, with a 1 second delay between damage
@@ -137,122 +99,154 @@ void Player::setGold(int amount) {
 void Player::handleInput() {
     // If both right and up key pressed then move character right and up at same time
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        moving = true; northEast = true;
-        north = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
+        moving = true; currentDirection = Direction::NorthEast;
         movement = {horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
         // Waits for set amount of time then plays Jog north east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; sprite.move(movement); textureX += spriteSize; animate(SprintNorthEastXStart, SprintNorthEastXEnd, 
-            SprintNorthEastYStart, SprintNorthEastYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::NorthEast});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogNorthEastXStart, JogNorthEastXEnd, 
-            JogNorthEastYStart, JogNorthEastYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::NorthEast});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     }
     // If both right and down key pressed then move character right and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        moving = true; southEast = true;
-        north = false; northEast = false; east = false; south = false; southWest = false; west = false; northWest = false;
+        moving = true; currentDirection = Direction::SouthEast;
         movement = {horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
         // Waits for set amount of time then plays Jog south east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += spriteSize; animate(SprintSouthEastXStart, SprintSouthEastXEnd, 
-            SprintSouthEastYStart, SprintSouthEastYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::SouthEast});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogSouthEastXStart, JogSouthEastXEnd, 
-            JogSouthEastYStart, JogSouthEastYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::SouthEast});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     }
     // If both left and up key pressed then move character left and up at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        moving = true; northWest = true;
-        north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; west = false;
+        moving = true; currentDirection = Direction::NorthWest;
         movement = {-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
         // Waits for set amount of time then plays Jog north west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; textureX += spriteSize; animate(SprintNorthWestXStart, SprintNorthWestXEnd, 
-            SprintNorthWestYStart, SprintNorthWestYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::NorthWest});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {-horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogNorthWestXStart, JogNorthWestXEnd, 
-            JogNorthWestYStart, JogNorthWestYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::NorthWest});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     }
     // If both left and down key pressed then move character left and down at same time
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        moving = true; southWest = true;
-        north = false; northEast = false; east = false; southEast = false; south = false; west = false; northWest = false;
+        moving = true; currentDirection = Direction::SouthWest;
         movement = {-horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
         // Waits for set amount of time then plays Jog south west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; textureX += spriteSize; animate(SprintSouthWestXStart, SprintSouthWestXEnd, 
-            SprintSouthWestYStart, SprintSouthWestYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::SouthWest});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {-horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogSouthWestXStart, JogSouthWestXEnd, 
-            JogSouthWestYStart, JogSouthWestYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::SouthWest});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     }
     // If right key pressed then move character right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
-        moving = true; east = true;
-        north = false; northEast = false; southEast = false; south = false ;southWest = false; west = false; northWest = false;
+        moving = true; currentDirection = Direction::East;
         movement = {horizontalSpeed, 0.0f};
         // Waits for set amount of time then plays Jog east animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {horizontalSpeed * 4, 0.0f}; textureX += spriteSize; animate(SprintEastXStart, SprintEastXEnd, 
-            SprintEastYStart, SprintEastYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::East});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {horizontalSpeed * 4, 0.0f}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogEastXStart, JogEastXEnd, 
-            JogEastYStart, JogEastYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::East});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     }
     // If up key pressed then move character up
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        moving = true; north = true;
-        northEast = false; east = false; southEast = false; south = false; southWest = false; west = false; northWest = false;
+        moving = true; currentDirection = Direction::North;
         movement = {0.0f, -verticalSpeed};
         // Waits for set amount of time then plays Jog north animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {0.0f, -verticalSpeed * 4}; textureX += spriteSize; animate(SprintNorthXStart, SprintNorthXEnd, 
-            SprintNorthYStart, SprintNorthYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::North});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {0.0f, -verticalSpeed * 4}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogNorthXStart, JogNorthXEnd, 
-            JogNorthYStart, JogNorthYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::North});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     }
     // If down key pressed then move character down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        moving = true; south = true;
-        north = false; northEast = false; east = false; southEast = false; southWest = false; west = false; northWest = false;
+        moving = true; currentDirection = Direction::South;
         movement = {0.0f, verticalSpeed};
         // Waits for set amount of time then plays Jog south animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {0.0f, verticalSpeed * 4}; textureX += spriteSize; animate(SprintSouthXStart, SprintSouthXEnd, 
-            SprintSouthYStart, SprintSouthYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::South});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {0.0f, verticalSpeed * 4}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogSouthXStart, JogSouthXEnd, 
-            JogSouthYStart, JogSouthYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::South});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     }
     // If left key pressed then move character left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
-        moving = true; west = true;
-        north = false; northEast = false; east = false; southEast = false; south = false; southWest = false; northWest = false;
+        moving = true; currentDirection = Direction::West;
         movement = {-horizontalSpeed, 0.0f};
         // Waits for set amount of time then plays Jog west animation
         timer += 0.08f;
         // Sprinting animation
-        if (timer >= timerMax && sprinting) {movement = {-horizontalSpeed * 4, 0.0f}; textureX += spriteSize; animate(SprintWestXStart, SprintWestXEnd, 
-            SprintWestYStart, SprintWestYEnd); timer = 0.0f;}
+        if (timer >= timerMax && sprinting) {
+            auto coords = playerAnimationTable.at({Action::Sprint, Direction::West});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            movement = {-horizontalSpeed * 4, 0.0f}; 
+            textureX += spriteSize; timer = 0.0f;}
         // Jog animation
-        else if (timer >= timerMax) {textureX += spriteSize; animate(JogWestXStart, JogWestXEnd, 
-            JogWestYStart, JogWestYEnd); timer = 0.0f;}
+        else if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Jog, Direction::West});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;}
         sprite.move({movement});
     } else {
         movement = {0.0f, 0.0f};
@@ -262,39 +256,11 @@ void Player::handleInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Space)) {
         attacking = true;
         timer += 0.08f;
-        // Check direction user is facing
-        if (north) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackNorthXStart, AttackNorthXEnd, 
-                AttackNorthYStart, AttackNorthYEnd); timer = 0.0f;}
-        } else if (northEast) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackNorthEastXStart, AttackNorthEastXEnd, 
-                AttackNorthEastYStart, AttackNorthEastYEnd); timer = 0.0f;}
-        } else if (east) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackEastXStart, AttackEastXEnd, 
-                AttackEastYStart, AttackEastYEnd); timer = 0.0f;}
-        } else if (southEast) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackSouthEastXStart, AttackSouthEastXEnd, 
-                AttackSouthEastYStart, AttackSouthEastYEnd); timer = 0.0f;}
-        } else if (south) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackSouthXStart, AttackSouthXEnd, 
-                AttackSouthYStart, AttackSouthYEnd); timer = 0.0f;}
-        } else if (southWest) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackSouthWestXStart, AttackSouthWestXEnd, 
-                AttackSouthWestYStart, AttackSouthWestYEnd); timer = 0.0f;}
-        } else if (west) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackWestXStart, AttackWestXEnd, 
-                AttackWestYStart, AttackWestYEnd); timer = 0.0f;}
-        } else if (northWest) {
-            // Attack animation
-            if (timer >= timerMax) {textureX += spriteSize; animate(AttackNorthWestXStart, AttackNorthWestXEnd, 
-                AttackNorthWestYStart, AttackNorthWestYEnd); timer = 0.0f;}
+        // Attack animation
+        if (timer >= timerMax) {
+            auto coords = playerAnimationTable.at({Action::Attack, currentDirection});
+            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+            textureX += spriteSize; timer = 0.0f;
         }
     } else {
         attacking = false;
@@ -334,14 +300,15 @@ void Player::sprint(bool sprint) {
 void Player::update() {
     // If player is not moving then change player to standing pose
     if (moving == false && attacking == false) {
-        if (east) {textureX = StandingEastX; textureY = StandingEastY;}
-        if (north) {textureX = StandingNorthX; textureY = StandingNorthY;}
-        if (northEast) {textureX = StandingNorthEastX; textureY = StandingNorthEastY;}
-        if (northWest) {textureX = StandingNorthWestX; textureY = StandingNorthWestY;}
-        if (south) {textureX = StandingSouthX; textureY = StandingSouthY;}
-        if (southEast) {textureX = StandingSouthEastX; textureY = StandingSouthEastY;}
-        if (southWest) {textureX = StandingSouthWestX; textureY = StandingSouthWestY;}
-        if (west) {textureX = StandingWestX; textureY = StandingWestY;}
+        auto coords = playerAnimationTable.at({Action::Standing, currentDirection});
+        if (east) {textureX = coords.xStart; textureY = coords.yStart;}
+        if (north) {textureX = coords.xStart; textureY = coords.yStart;}
+        if (northEast) {textureX = coords.xStart; textureY = coords.yStart;}
+        if (northWest) {textureX = coords.xStart; textureY = coords.yStart;}
+        if (south) {textureX = coords.xStart; textureY = coords.yStart;}
+        if (southEast) {textureX = coords.xStart; textureY = coords.yStart;}
+        if (southWest) {textureX = coords.xStart; textureY = coords.yStart;}
+        if (west) {textureX = coords.xStart; textureY = coords.yStart;}
         sprite.setTextureRect({{textureX, textureY}, {spriteSize, spriteSize}});
     }
 
