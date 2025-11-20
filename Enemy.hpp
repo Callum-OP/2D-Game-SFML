@@ -13,7 +13,8 @@ public:
 
     void update(float deltaTime, Grid& grid, const sf::Vector2f& playerPosition, bool playerAttacking);
     sf::Vector2f getPosition();
-    void draw(sf::RenderWindow& window);
+    void drawShadow(sf::RenderWindow& window);
+    void drawEnemy(sf::RenderWindow& window);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
 
     void takeDamage(int amount);

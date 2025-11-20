@@ -205,6 +205,8 @@ int main()
         // Create new window with sprites drawn in
         window.clear(sf::Color::White);
 
+        //---- Collision detection ----
+
         // Try movement
         Vec2 originalPos = playerCollider.pos;
         // --- X axis ---
@@ -294,21 +296,28 @@ int main()
             }
         }
 
+        //---- Draw items ----
+
         // Draw tilemap with walls and healthPickups
         renderer.draw(window, map);
+        // Draw shadows first and update enemies
+        player.drawShadow(window);
+        for (auto& enem : enemies) {
+            enem.enemy.sprite.setPosition(toSF(enem.enemy.collider.pos));
+            enem.enemy.update(deltaTime, grid, player.getPosition(), player.attacking);
+            enem.enemy.drawShadow(window);
+        }
         // Draw player
         player.sprite.setPosition(toSF(playerCollider.pos));
-        player.draw(window, camera);
+        player.drawUI(window, camera);
+        player.drawPlayer(window);
         camera.setCenter(player.getPosition());
         window.setView(camera);
         if (player.isDead()) {
         }
-
-        // Draw and update enemies
+        // Draw enemies
         for (auto& enem : enemies) {
-            enem.enemy.sprite.setPosition(toSF(enem.enemy.collider.pos));
-            enem.enemy.update(deltaTime, grid, player.getPosition(), player.attacking);
-            enem.enemy.draw(window);
+            enem.enemy.drawEnemy(window);
         }
         // Delete dead enemies
         enemies.erase(
@@ -318,6 +327,7 @@ int main()
             enemies.end()
         );
 
+        // Display window
         window.display();
     }
     return 0;

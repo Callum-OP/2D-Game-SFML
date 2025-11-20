@@ -8,17 +8,19 @@ public:
     Player();
 
     void handleInput();
-    void Player::sprint(bool sprint);
+    void sprint(bool sprint);
     void update();
     sf::Vector2f getPosition();
-    void draw(sf::RenderWindow& window, const sf::View& view);
+    void drawUI(sf::RenderWindow& window, const sf::View& view);
+    void drawShadow(sf::RenderWindow& window);
+    void drawPlayer(sf::RenderWindow& window);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
 
-    void Player::takeDamage(int amount);
-    void Player::heal(int amount);
-    int Player::getHealth() const { return health; };
-    int Player::getMaxHealth() const { return maxHealth; };
-    bool Player::isDead() const { return health <= 0; };
+    void takeDamage(int amount);
+    void heal(int amount);
+    int getHealth() const { return health; };
+    int getMaxHealth() const { return maxHealth; };
+    bool isDead() const { return health <= 0; };
 
     int getGold() const { return gold; };;
     void addGold(int amount);

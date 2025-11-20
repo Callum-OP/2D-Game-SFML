@@ -213,7 +213,9 @@ sf::Vector2f Player::getPosition() {
 }
 
 // For drawing player in main
-void Player::draw(sf::RenderWindow& window, const sf::View& camera) {
+
+// Draw shadow seperately
+void Player::drawShadow(sf::RenderWindow& window) {
     // Add shadow under character
     sf::CircleShape shadow(spriteSize / 5.f);
     shadow.setFillColor(sf::Color(0, 0, 0, 100));
@@ -222,10 +224,17 @@ void Player::draw(sf::RenderWindow& window, const sf::View& camera) {
     sf::Vector2f position = sprite.getPosition();
     shadow.setPosition({position.x + spriteSize / 3.18f, position.y + spriteSize / 2.6f});
     window.draw(shadow);
+}
 
-    const sf::Font font("assets/fonts/MagicSchoolOne.ttf");
+// Draw player sprite
+void Player::drawPlayer(sf::RenderWindow& window) {
     window.draw(sprite);
+}
 
+// Draw user interface features
+void Player::drawUI(sf::RenderWindow& window, const sf::View& camera) {
+    const sf::Font font("assets/fonts/MagicSchoolOne.ttf");
+    
     // Set up UI
     // Draw health bar at top left of camera
     sf::Vector2f cameraLocation = camera.getCenter() - (camera.getSize() / 2.f);

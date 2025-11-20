@@ -195,7 +195,10 @@ sf::Vector2f Enemy::getPosition() {
     return sprite.getPosition();
 }
 
-void Enemy::draw(sf::RenderWindow& window) {
+// For drawing enemy in main
+
+// Draw shadow seperately
+void Enemy::drawShadow(sf::RenderWindow& window) {
     // Add shadow under character
     sf::CircleShape shadow(spriteSize / 5.f);
     shadow.setFillColor(sf::Color(0, 0, 0, 100));
@@ -204,6 +207,9 @@ void Enemy::draw(sf::RenderWindow& window) {
     sf::Vector2f position = sprite.getPosition();
     shadow.setPosition({position.x + spriteSize / 3.18f, position.y + spriteSize / 2.6f});
     window.draw(shadow);
+}
 
+// Draw enemy sprite
+void Enemy::drawEnemy(sf::RenderWindow& window) {
     window.draw(sprite);
 }
