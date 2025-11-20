@@ -95,178 +95,72 @@ void Player::setGold(int amount) {
     gold = amount;
 }
 
-
 void Player::handleInput() {
-    // If both right and up key pressed then move character right and up at same time
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        moving = true; currentDirection = Direction::NorthEast;
-        movement = {horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
-        // Waits for set amount of time then plays Jog north east animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::NorthEast});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::NorthEast});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
+    auto pressed = [&](sf::Keyboard::Scancode key1, std::optional<sf::Keyboard::Scancode> key2 = std::nullopt) {
+        if (sf::Keyboard::isKeyPressed(key1)) return true;
+        if (key2 && sf::Keyboard::isKeyPressed(*key2)) return true;
+        return false;
+    };
+
+    // Set up possilbe key combinations to related directions and movement values
+    struct InputMapping {
+        bool condition;
+        Direction dir;
+        sf::Vector2f baseMovement;
+    };
+    std::vector<InputMapping> mappings = {
+        { (pressed(sf::Keyboard::Scan::Right, sf::Keyboard::Scan::D) && pressed(sf::Keyboard::Scan::Up, sf::Keyboard::Scan::W)), Direction::NorthEast, { horizontalSpeed / 1.5f, -verticalSpeed / 1.5f } },
+        { (pressed(sf::Keyboard::Scan::Right, sf::Keyboard::Scan::D) && pressed(sf::Keyboard::Scan::Down, sf::Keyboard::Scan::S)), Direction::SouthEast, { horizontalSpeed / 1.5f,  verticalSpeed / 1.5f } },
+        { (pressed(sf::Keyboard::Scan::Left,  sf::Keyboard::Scan::A) && pressed(sf::Keyboard::Scan::Up,   sf::Keyboard::Scan::W)), Direction::NorthWest, { -horizontalSpeed / 1.5f, -verticalSpeed / 1.5f } },
+        { (pressed(sf::Keyboard::Scan::Left,  sf::Keyboard::Scan::A) && pressed(sf::Keyboard::Scan::Down, sf::Keyboard::Scan::S)), Direction::SouthWest, { -horizontalSpeed / 1.5f,  verticalSpeed / 1.5f } },
+        { pressed(sf::Keyboard::Scan::Right, sf::Keyboard::Scan::D), Direction::East,  { horizontalSpeed, 0.0f } },
+        { pressed(sf::Keyboard::Scan::Up,    sf::Keyboard::Scan::W), Direction::North, { 0.0f, -verticalSpeed } },
+        { pressed(sf::Keyboard::Scan::Down,  sf::Keyboard::Scan::S), Direction::South, { 0.0f,  verticalSpeed } },
+        { pressed(sf::Keyboard::Scan::Left,  sf::Keyboard::Scan::A), Direction::West,  { -horizontalSpeed, 0.0f } }
+    };
+
+    bool moved = false;
+    for (auto& m : mappings) {
+        if (m.condition) {
+            moved = true;
+            moving = true;
+            currentDirection = m.dir;
+            movement = m.baseMovement;
+
+            timer += 0.08f;
+            // Play movement animation
+            if (timer >= timerMax) {
+                Action action = sprinting ? Action::Sprint : Action::Jog; // Check if sprinting or jogging
+                auto coords = playerAnimationTable.at({action, currentDirection});
+                animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
+
+                if (sprinting) movement *= 4.0f; // Increase movement speed if sprinting
+                textureX += spriteSize; // Increment through textures
+                timer = 0.0f;
+            }
+            sprite.move(movement); // Move player
+            break;
+        }
     }
-    // If both right and down key pressed then move character right and down at same time
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        moving = true; currentDirection = Direction::SouthEast;
-        movement = {horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
-        // Waits for set amount of time then plays Jog south east animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::SouthEast});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::SouthEast});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
-    }
-    // If both left and up key pressed then move character left and up at same time
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        moving = true; currentDirection = Direction::NorthWest;
-        movement = {-horizontalSpeed / 1.5f, -verticalSpeed / 1.5f};
-        // Waits for set amount of time then plays Jog north west animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::NorthWest});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {-horizontalSpeed / 1.5f * 4, -verticalSpeed / 1.5f * 4}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::NorthWest});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
-    }
-    // If both left and down key pressed then move character left and down at same time
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        moving = true; currentDirection = Direction::SouthWest;
-        movement = {-horizontalSpeed / 1.5f, verticalSpeed / 1.5f};
-        // Waits for set amount of time then plays Jog south west animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::SouthWest});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {-horizontalSpeed / 1.5f * 4, verticalSpeed / 1.5f * 4}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::SouthWest});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
-    }
-    // If right key pressed then move character right
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::D)) {
-        moving = true; currentDirection = Direction::East;
-        movement = {horizontalSpeed, 0.0f};
-        // Waits for set amount of time then plays Jog east animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::East});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {horizontalSpeed * 4, 0.0f}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::East});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
-    }
-    // If up key pressed then move character up
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::W)) {
-        moving = true; currentDirection = Direction::North;
-        movement = {0.0f, -verticalSpeed};
-        // Waits for set amount of time then plays Jog north animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::North});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {0.0f, -verticalSpeed * 4}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::North});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
-    }
-    // If down key pressed then move character down
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::S)) {
-        moving = true; currentDirection = Direction::South;
-        movement = {0.0f, verticalSpeed};
-        // Waits for set amount of time then plays Jog south animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::South});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {0.0f, verticalSpeed * 4}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::South});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
-    }
-    // If left key pressed then move character left
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::A)) {
-        moving = true; currentDirection = Direction::West;
-        movement = {-horizontalSpeed, 0.0f};
-        // Waits for set amount of time then plays Jog west animation
-        timer += 0.08f;
-        // Sprinting animation
-        if (timer >= timerMax && sprinting) {
-            auto coords = playerAnimationTable.at({Action::Sprint, Direction::West});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            movement = {-horizontalSpeed * 4, 0.0f}; 
-            textureX += spriteSize; timer = 0.0f;}
-        // Jog animation
-        else if (timer >= timerMax) {
-            auto coords = playerAnimationTable.at({Action::Jog, Direction::West});
-            animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;}
-        sprite.move({movement});
-    } else {
+    if (!moved) {
         movement = {0.0f, 0.0f};
         moving = false;
     }
+
     // If space pressed then attack and change to attack animation
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Space)) {
+    if (pressed(sf::Keyboard::Scan::Space)) {
         attacking = true;
         timer += 0.08f;
-        // Attack animation
         if (timer >= timerMax) {
             auto coords = playerAnimationTable.at({Action::Attack, currentDirection});
             animate(coords.xStart, coords.xEnd, coords.yStart, coords.yEnd);
-            textureX += spriteSize; timer = 0.0f;
+            textureX += spriteSize;
+            timer = 0.0f;
         }
     } else {
         attacking = false;
     }
 }
-
 
 // Reusable function for animating player
 void Player::animate(int xStart, int xEnd, int yStart, int yEnd) {
