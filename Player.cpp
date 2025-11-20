@@ -301,14 +301,7 @@ void Player::update() {
     // If player is not moving then change player to standing pose
     if (moving == false && attacking == false) {
         auto coords = playerAnimationTable.at({Action::Standing, currentDirection});
-        if (east) {textureX = coords.xStart; textureY = coords.yStart;}
-        if (north) {textureX = coords.xStart; textureY = coords.yStart;}
-        if (northEast) {textureX = coords.xStart; textureY = coords.yStart;}
-        if (northWest) {textureX = coords.xStart; textureY = coords.yStart;}
-        if (south) {textureX = coords.xStart; textureY = coords.yStart;}
-        if (southEast) {textureX = coords.xStart; textureY = coords.yStart;}
-        if (southWest) {textureX = coords.xStart; textureY = coords.yStart;}
-        if (west) {textureX = coords.xStart; textureY = coords.yStart;}
+        textureX = coords.xStart; textureY = coords.yStart;
         sprite.setTextureRect({{textureX, textureY}, {spriteSize, spriteSize}});
     }
 

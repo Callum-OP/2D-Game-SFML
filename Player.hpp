@@ -39,7 +39,7 @@ public:
     float verticalSpeed, horizontalSpeed;
     sf::Vector2f movement;
     int finalColumn, finalRow;
-    bool moving, sprinting, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
+    bool moving, sprinting, attacking;
     Direction currentDirection = Direction::South;
 
     int maxHealth;
