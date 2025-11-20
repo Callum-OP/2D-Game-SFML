@@ -35,36 +35,13 @@ public:
     float timer, timerMax;
     float speed;
     int finalColumn, finalRow;
-    bool moving, attacking, north, northEast, east, southEast, south, southWest, west, northWest;
+    bool moving, attacking;
+    Direction currentDirection = Direction::South;
 
     int maxHealth;
     int health;
     int spriteSize;
     float attackRadius;
-
-    // Coordinates for textures
-    int JogNorthXStart, JogNorthYStart, JogNorthXEnd, JogNorthYEnd;
-    int JogNorthEastXStart, JogNorthEastYStart, JogNorthEastXEnd, JogNorthEastYEnd;
-    int JogEastXStart, JogEastYStart, JogEastXEnd, JogEastYEnd;
-    int JogSouthEastXStart, JogSouthEastYStart, JogSouthEastXEnd, JogSouthEastYEnd;
-    int JogSouthXStart, JogSouthYStart, JogSouthXEnd, JogSouthYEnd;
-    int JogSouthWestXStart, JogSouthWestYStart, JogSouthWestXEnd, JogSouthWestYEnd;
-    int JogWestXStart, JogWestYStart, JogWestXEnd, JogWestYEnd;
-    int JogNorthWestXStart, JogNorthWestYStart, JogNorthWestXEnd, JogNorthWestYEnd;
-
-    int AttackNorthXStart, AttackNorthYStart, AttackNorthXEnd, AttackNorthYEnd;
-    int AttackNorthEastXStart, AttackNorthEastYStart, AttackNorthEastXEnd, AttackNorthEastYEnd;
-    int AttackEastXStart, AttackEastYStart, AttackEastXEnd, AttackEastYEnd;
-    int AttackSouthEastXStart, AttackSouthEastYStart, AttackSouthEastXEnd, AttackSouthEastYEnd;
-    int AttackSouthXStart, AttackSouthYStart, AttackSouthXEnd, AttackSouthYEnd;
-    int AttackSouthWestXStart, AttackSouthWestYStart, AttackSouthWestXEnd, AttackSouthWestYEnd;
-    int AttackWestXStart, AttackWestYStart, AttackWestXEnd, AttackWestYEnd;
-    int AttackNorthWestXStart, AttackNorthWestYStart, AttackNorthWestXEnd, AttackNorthWestYEnd;
-
-    int StandingNorthX, StandingNorthY, StandingNorthWestX, StandingNorthWestY, 
-    StandingNorthEastX, StandingNorthEastY, StandingEastX, StandingEastY, 
-    StandingSouthEastX, StandingSouthEastY, StandingSouthX, StandingSouthY,
-    StandingSouthWestX, StandingSouthWestY, StandingWestX, StandingWestY;
 };
 
 #endif // ENEMY_HPP

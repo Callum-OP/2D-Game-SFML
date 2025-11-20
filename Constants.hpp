@@ -77,4 +77,57 @@ const std::map<std::pair<Action, Direction>, AnimationCoords> playerAnimationTab
     { {Action::Standing, Direction::West},      {1200, 1200, 1800, 1800} },
 };
 
+
 //----ENEMY----
+
+// Size of enemy sprite texture
+constexpr int ENEMY_SPRITE_SIZE = 300;
+
+// Base colour of enemy sprite texture
+constexpr sf::Color ENEMY_BASE_COLOUR = sf::Color::White;
+
+// Max health enemy can have
+constexpr int ENEMY_MAX_HEALTH = 3;
+
+// Spritesheet boundaries
+constexpr int ENEMY_FINAL_COLUMN = 7800; // These values will need to change if the spritesheet changes
+constexpr int ENEMY_FINAL_ROW = 1800;
+
+// Timers for animation
+constexpr float ENEMY_TIMER = 0.0f;
+constexpr float ENEMY_TIMER_MAX = 0.5f;
+
+// Spped of movement for enemy
+constexpr float ENEMY_SPEED = 80.0f;
+
+// Start and end coordinates for animation textures in spritesheet
+// Action + Direction → Coordinates
+const std::map<std::pair<Action, Direction>, AnimationCoords> enemyAnimationTable = {
+    // Attack
+    { {Action::Attack, Direction::East},      {0,    2100, 0,    0} },
+    { {Action::Attack, Direction::North},     {2400, 4500, 0,    0} },
+    { {Action::Attack, Direction::NorthEast}, {4800, 6600, 0,    0} },
+    { {Action::Attack, Direction::NorthWest}, {6900,  900, 0,  300} },
+    { {Action::Attack, Direction::South},     {1200, 3300, 300, 300} },
+    { {Action::Attack, Direction::SouthEast}, {3600, 5700, 300, 300} },
+    { {Action::Attack, Direction::SouthWest}, {6000,    0, 300, 600} },
+    { {Action::Attack, Direction::West},      {300,  2400, 600, 600} },
+    // Jog
+    { {Action::Jog, Direction::East},      {2700, 4200, 600, 600} },
+    { {Action::Jog, Direction::North},     {4500, 6000, 600, 600} },
+    { {Action::Jog, Direction::NorthEast}, {6300, 7800, 600, 600} },
+    { {Action::Jog, Direction::NorthWest}, {   0, 1500, 900, 900} },
+    { {Action::Jog, Direction::South},     {1800, 3300, 900, 900} },
+    { {Action::Jog, Direction::SouthEast}, {3600, 5100, 900, 900} },
+    { {Action::Jog, Direction::SouthWest}, {5400, 6900, 900, 900} },
+    { {Action::Jog, Direction::West},      {7200,  600, 900, 1200} },
+    // Standing (Currently not an animation but a single frame)
+    { {Action::Standing, Direction::East},      {7200, 7200, 1500, 1500} },
+    { {Action::Standing, Direction::North},     {7500, 7500, 1500, 1500} },
+    { {Action::Standing, Direction::NorthEast}, {7800, 7800, 1500, 1500} },
+    { {Action::Standing, Direction::NorthWest}, {   0,    0, 1800, 1800} },
+    { {Action::Standing, Direction::South},     { 300,  300, 1800, 1800} },
+    { {Action::Standing, Direction::SouthEast}, { 600,  600, 1800, 1800} },
+    { {Action::Standing, Direction::SouthWest}, { 900,  900, 1800, 1800} },
+    { {Action::Standing, Direction::West},      {1200, 1200, 1800, 1800} },
+};
