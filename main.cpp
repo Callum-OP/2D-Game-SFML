@@ -33,25 +33,49 @@ inline sf::Vector2f gridToWorld(const Node* node, int tileSize) {
         node->y * tileSize + tileSize / 2);
 }
 
+// Function for pickup object collision
+template <typename PickupType, typename EffectFunc>
+void handlePickup(std::vector<PickupType>& pickups,
+                  Object& playerCollider,
+                  MapLoader& map,
+                  EffectFunc effect) {
+    for (auto it = pickups.begin(); it != pickups.end();) {
+        Manifold m = { &playerCollider, it->collider() };
+        if (AABBvsAABB(&m)) {
+            // Apply pickup effect
+            effect(*it);
+
+            // Remove from tilemap
+            Vec2 pos = it->collider()->pos;
+            int tileX = static_cast<int>(pos.x) / TILE_SIZE;
+            int tileY = static_cast<int>(pos.y) / TILE_SIZE;
+            map.setTile(tileX, tileY, '.');
+
+            // Remove from vector
+            it = pickups.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
 int main()
 {
     sf::Clock clock;
     sf::Clock sprintClock;
 
-    // Create colliders list
-    std::vector<Object*> colliders;
-
-    // Create a player
+    // ---- Create a player ----
     Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
     Player player;
     player.sprite.setPosition(toSF(playerCollider.pos));
 
-    // Create tilemap
+    // ---- Load tilemap ----
     MapLoader map;
     TileMapRenderer renderer;
     map.loadFromFile("level.txt");
 
-    // Set up wall and health pickup colliders
+    // ---- Set up colliders ----
+    std::vector<Object*> colliders; // Create colliders list
     struct healthPickup {
         Object healthPickup;
         Object* collider() { return &healthPickup; }
@@ -62,11 +86,12 @@ int main()
         Object* collider() { return &goldPickup; }
     };
     std::vector<goldPickup> goldPickups;
-    // Set enemy list
     struct Enem {
         Enemy enemy;
         Object* collider() { return &enemy.collider; }
     };
+
+    // ---- Set up objects ----
     std::vector<Enem> enemies;
     std::vector<Object> wallObjects;
     sf::Texture enemyTex;
@@ -122,10 +147,10 @@ int main()
         }
     }
 
+    // ---- Set up game window ----
     // Create game window
     sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
-
     // Create game camera
     sf::View camera;
     sf::Vector2u winSize = window.getSize();
@@ -133,6 +158,7 @@ int main()
     camera.setCenter(player.getPosition());
     window.setView(camera);
 
+    // ---- Events ----
     // Timers and keys used for detecting double taps
     sf::Time lastClickTime; // The last click of each key
     const sf::Time doubleClickTime = sf::milliseconds(500); // Expected time limit for second click to happen
@@ -145,7 +171,6 @@ int main()
     const auto onClose = [&window](const sf::Event::Closed&) {
         window.close();
     };
-
     // Check when key is pressed
     const auto onKeyPressed = [&window, &player, &sprintClock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint, &isDoubleTap](const sf::Event::KeyPressed& keyPressed) {
         // Ensure window is closed when Escape key is pressed
@@ -173,8 +198,6 @@ int main()
         lastDirection = keyPressed.scancode; // Key that was last clicked
         lastClickTime = now; // Time user last clicked
     };
-
-    
     // Check when key is released
     const auto onKeyReleased = [&window, &keyHeld](const sf::Event::KeyReleased& keyPressed) {
         // If double tap movement keys, tell player to sprint
@@ -196,51 +219,38 @@ int main()
         sf::Time delta = clock.restart(); // Time since last frame
         float deltaTime = delta.asSeconds(); // Convert to seconds
 
+        // Handle events and updates
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
-
-        // Handle player controls and enemy updates
         player.handleInput();
         player.update();
 
-        // Create new window with sprites drawn in
-        window.clear(sf::Color::White);
+        // Create new window with black background
+        window.clear(sf::Color::Black);
 
-        //---- Collision detection ----
-
-        // Try movement
+        //---- Movement ----
         Vec2 originalPos = playerCollider.pos;
-        // --- X axis ---
+        // X axis
         float originalX = playerCollider.pos.x;
         playerCollider.pos.x += player.movement.x;
         // Stop if colliding with object
-        for (auto& enem : enemies) {
-            Manifold m = { &playerCollider, enem.collider()};
-            if (AABBvsAABB({&m})) {
-                if (enem.enemy.attacking) {
-                    player.takeDamage(1);
-                }
-                playerCollider.pos.x = originalX;
-                break;
-            }
+        for (auto& enem : enemies) { Manifold m = { &playerCollider, enem.collider() };
+            if (AABBvsAABB({&m})) { playerCollider.pos.x = originalX; break; }
         }
-        for (auto& obj : colliders) {
-            Manifold m = { &playerCollider, obj };
-            if (AABBvsAABB(&m)) {
-                playerCollider.pos.x = originalX;
-                break;
-            }
+        for (auto& obj : colliders) { Manifold m = { &playerCollider, obj };
+            if (AABBvsAABB(&m)) { playerCollider.pos.x = originalX; break; }
         }
-        // --- Y axis ---
+        // Y axis
         float originalY = playerCollider.pos.y;
         playerCollider.pos.y += player.movement.y;
         // Stop if colliding with object
-        for (auto& enem : enemies) {
-            Manifold m = { &playerCollider, enem.collider()};
-            if (AABBvsAABB({&m})) {
-                playerCollider.pos.y = originalY;
-                break;
-            }
+        for (auto& enem : enemies) { Manifold m = { &playerCollider, enem.collider() };
+            if (AABBvsAABB({&m})) { playerCollider.pos.y = originalY; break; }
         }
+        for (auto& obj : colliders) { Manifold m = { &playerCollider, obj };
+            if (AABBvsAABB(&m)) { playerCollider.pos.y = originalY; break; }
+        }
+
+        //---- Damage ----
         // Check if enemy is attacking player, if close enough damage player
         for (auto& enem : enemies) {
             float dx = player.getPosition().x - enem.enemy.getPosition().x;
@@ -250,54 +260,21 @@ int main()
                 player.takeDamage(1);
             }
         }
-        for (auto& obj : colliders) {
-            Manifold m = { &playerCollider, obj };
-            if (AABBvsAABB(&m)) {
-                playerCollider.pos.y = originalY;
-                break;
-            }
-        }
-        // Delete healthPickup if collided with
-        for (auto it = healthPickups.begin(); it != healthPickups.end(); ) {
-            Manifold m = {&playerCollider, it->collider()};
-            if (AABBvsAABB(&m)) {
-                if (player.getHealth() < player.getMaxHealth()) {
-                    // Heal player
+
+        //---- Pickups ----
+        // Heal player when colliding with health pickups if not at max health
+        if (player.getHealth() < player.getMaxHealth()) {
+            handlePickup(healthPickups, playerCollider, map, [&](auto& pickup) {
                     player.heal(1);
-                    // Remove healthPickup from tilemap
-                    Vec2 pos = (it)->healthPickup.pos;
-                    int tileX = static_cast<int>(pos.x) / TILE_SIZE;
-                    int tileY = static_cast<int>(pos.y) / TILE_SIZE;
-                    map.setTile(tileX, tileY, '.');
-                    // Remove healthPickup from objects and colliders
-                    it = healthPickups.erase(it);
-                }
-                break;
-            } else {
-                ++it;
-            }
+            
+            });
         }
-        // Delete goldPickup if collided with
-        for (auto it = goldPickups.begin(); it != goldPickups.end(); ) {
-            Manifold m = {&playerCollider, it->collider()};
-            if (AABBvsAABB(&m)) {
-                // Add gold
-                player.addGold(25);
-                // Remove healthPickup from tilemap
-                Vec2 pos = (it)->goldPickup.pos;
-                int tileX = static_cast<int>(pos.x) / TILE_SIZE;
-                int tileY = static_cast<int>(pos.y) / TILE_SIZE;
-                map.setTile(tileX, tileY, '.');
-                // Remove healthPickup from objects and colliders
-                it = goldPickups.erase(it);
-                break;
-            } else {
-                ++it;
-            }
-        }
+        // Give gold when colliding with gold pickups
+        handlePickup(goldPickups, playerCollider, map, [&](auto& pickup) {
+            player.addGold(25);
+        });
 
         //---- Draw items ----
-
         // Draw tilemap with walls and healthPickups
         renderer.draw(window, map);
         // Draw shadows first and update enemies
