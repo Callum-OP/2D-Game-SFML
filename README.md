@@ -1,3 +1,8 @@
+# Demo Video
+
+https://github.com/user-attachments/assets/bcdcdc1e-d377-426c-b32a-6c03af6905ff
+
+
 # How to run
 To run the game on Windows I am using MSVC, the command will be similar to:
   cl /EHsc /std:c++17 /I 'C:\C++ Libraries\SFML-3.0.0-windows-vc17-32-bit\SFML-3.0.0\include' C:\Users\callu\2D-Game-C++\main.cpp /link '/LIBPATH:C:\C++ Libraries\SFML-3.0.0-     windows-vc17-32-bit\SFML-3.0.0\lib' sfml-graphics.lib sfml-window.lib sfml-system.lib
@@ -14,13 +19,15 @@ This a 2D top down game using C++ and SFML 3.0, includes 8 directional movement,
 
 This app requires the SMFL 3.0 library to work, specifically the graphics, window and system components.
 
-Below is a video of the game in its current state. I am using temporary assets that will be replaced later.
+# Features to consider
+Multiple levels
+Death screen
+Menu and pause features
+Finished assets (not the template ones being used at the moment)
+Store player and enemies as entities?
 
-
-
-https://github.com/user-attachments/assets/bcdcdc1e-d377-426c-b32a-6c03af6905ff
-
-
+# Issues
+Objects are not always drawn right, the solution is to draw the lowest object on the screen last so that they appear in front. Might need to use the lowest point of that object as well.
 
 
 
