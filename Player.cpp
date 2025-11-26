@@ -6,23 +6,30 @@
 
 #include "Constants.hpp"
 
-Player::Player()
-    : texture{},
-        sprite( // Create a player sprite
-            [this]() {
-                if (!texture.loadFromFile("assets/images/playerSpritesheet.png"))
-                    throw std::runtime_error("Failed to load sprite sheet");
-                return sf::Sprite(texture);
-            }()
-        ),
-        heartSprite( // Create a player sprite
-            [this]() {
-                if (!heartFull.loadFromFile("assets/images/HeartFull.png"))
-                    throw std::runtime_error("Failed to load health textures");
-                return sf::Sprite(heartFull);
-            }()
-        )
-    {
+Player::Player(sf::Vector2f startPosition)
+: texture{},
+    sprite( // Create a player sprite
+        [this]() {
+            if (!texture.loadFromFile("assets/images/playerSpritesheet.png"))
+                throw std::runtime_error("Failed to load sprite sheet");
+            return sf::Sprite(texture);
+        }()
+    ),
+    heartSprite( // Create a player sprite
+        [this]() {
+            if (!heartFull.loadFromFile("assets/images/HeartFull.png"))
+                throw std::runtime_error("Failed to load health textures");
+            return sf::Sprite(heartFull);
+        }()
+    ),
+    playerCollider(playerCollider) // Store reference to collider
+{
+    // Create player collider
+    playerCollider = { Vec2(startPosition.x, startPosition.y), { Vec2(-50, -50), Vec2(50, 50) } };
+
+    // Set start position of player
+    sprite.setPosition(startPosition);
+
     // Size of textures in the spritesheet
     spriteSize = PLAYER_SPRITE_SIZE;
     // Colour tint of character
@@ -191,7 +198,7 @@ void Player::sprint(bool sprint) {
 }
 
 // Checking for changes to player
-void Player::update() {
+void Player::update(float deltaTime) {
     // If player is not moving then change player to standing pose
     if (moving == false && attacking == false) {
         auto coords = playerAnimationTable.at({Action::Standing, currentDirection});
@@ -205,11 +212,9 @@ void Player::update() {
     } else {
         sprite.setColor(sf::Color::Red);
     }
-}
 
-// Get position of player in main
-sf::Vector2f Player::getPosition() {
-    return sprite.getPosition();
+    // Sync sprite with collider
+    sprite.setPosition(toSF(playerCollider.pos));
 }
 
 // For drawing player in main
@@ -227,7 +232,7 @@ void Player::drawShadow(sf::RenderWindow& window) {
 }
 
 // Draw player sprite
-void Player::drawPlayer(sf::RenderWindow& window) {
+void Player::draw(sf::RenderWindow& window) {
     window.draw(sprite);
 }
 

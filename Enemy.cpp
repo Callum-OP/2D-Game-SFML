@@ -1,17 +1,21 @@
 #pragma once
 #include "Enemy.hpp"
+#include "Player.hpp"
 #include "Physics.hpp"
 #include "PathFinder.hpp"
+#include "Entity.hpp"
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
 #include "Constants.hpp"
 
-Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture)
-    : texture(texture), // Store reference to texture
-      sprite(texture)   // Initialize sprite with texture
-    {
+Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture, Grid& grid, Player& player)
+: texture(texture), // Store reference to texture
+    sprite(texture), // Initialize sprite with texture
+    grid(grid), // Store reference to grid
+    player(player) // Store reference to player
+{
 
     // Size of textures in the spritesheet
     spriteSize = ENEMY_SPRITE_SIZE;
@@ -19,9 +23,9 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture)
     baseColour = ENEMY_BASE_COLOUR;
 
     // Create a enemy sprite
-    collider = { Vec2(startPosition.x, startPosition.y), { Vec2(-10, -10), Vec2(10, 10) } };
+    enemyCollider = { Vec2(startPosition.x, startPosition.y), { Vec2(-10, -10), Vec2(10, 10) } };
     sprite.setOrigin({spriteSize / 2.0f, (spriteSize + spriteSize / 2) / 2.0f});
-    sprite.setPosition(toSF(collider.pos));
+    sprite.setPosition(toSF(enemyCollider.pos));
     sprite.setTexture(texture);
     sprite.setTextureRect({{485,1}, {spriteSize,spriteSize}});
     sprite.setScale({0.8f,0.8f});
@@ -82,7 +86,11 @@ void Enemy::animate(int xStart, int xEnd, int yStart, int yEnd) {
     }
 }
 
-void Enemy::update(float deltaTime, Grid& grid, const sf::Vector2f& playerPosition, bool playerAttacking) {
+void Enemy::update(float deltaTime)
+{
+    auto playerPosition = player.getPosition();
+    bool playerAttacking = player.attacking;
+
     sf::Vector2f position = sprite.getPosition();
     float dx = playerPosition.x - position.x;
     float dy = playerPosition.y - position.y;
@@ -97,8 +105,8 @@ void Enemy::update(float deltaTime, Grid& grid, const sf::Vector2f& playerPositi
     // A* pathfinding, chase player, if not too close or far away
     if (distance > attackRadius && distance < stopRadius) {
         // Convert world into grid
-        int enemyGX  = static_cast<int>(collider.pos.x) / TILE_SIZE;
-        int enemyGY  = static_cast<int>(collider.pos.y) / TILE_SIZE;
+        int enemyGX  = static_cast<int>(enemyCollider.pos.x) / TILE_SIZE;
+        int enemyGY  = static_cast<int>(enemyCollider.pos.y) / TILE_SIZE;
         int playerGX = static_cast<int>(playerPosition.x) / TILE_SIZE;
         int playerGY = static_cast<int>(playerPosition.y) / TILE_SIZE;
         if (grid.inBounds(enemyGX, enemyGY) && grid.inBounds(playerGX, playerGY)) {
@@ -129,13 +137,16 @@ void Enemy::update(float deltaTime, Grid& grid, const sf::Vector2f& playerPositi
                     dir /= len;
                     sf::Vector2f movement = dir * speed * deltaTime;
                     sprite.move(movement);
-                    collider.pos.x += movement.x;
-                    collider.pos.y += movement.y;
+                    enemyCollider.pos.x += movement.x;
+                    enemyCollider.pos.y += movement.y;
                     moving = true;
                     direction = dir;
                 }
             }
         }
+
+        // Sync sprite with collider
+        sprite.setPosition(toSF(enemyCollider.pos));
     }
     // Attack if too close to player
     else if (distance <= attackRadius * 1.5f && playerAttacking) {
@@ -191,10 +202,6 @@ void Enemy::update(float deltaTime, Grid& grid, const sf::Vector2f& playerPositi
     }
 }
 
-sf::Vector2f Enemy::getPosition() {
-    return sprite.getPosition();
-}
-
 // For drawing enemy in main
 
 // Draw shadow seperately
@@ -210,6 +217,6 @@ void Enemy::drawShadow(sf::RenderWindow& window) {
 }
 
 // Draw enemy sprite
-void Enemy::drawEnemy(sf::RenderWindow& window) {
+void Enemy::draw(sf::RenderWindow& window) {
     window.draw(sprite);
 }

@@ -1,32 +1,39 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
+#include "Player.hpp"
 #include "Physics.hpp"
 #include "PathFinder.hpp"
 #include <SFML/Graphics.hpp>
 
+#include "Entity.hpp"
 #include "Constants.hpp"
 
-class Enemy {
+class Enemy : public Entity {
 public:
-    Enemy(sf::Vector2f startPosition, sf::Texture& texture);
+    Enemy(sf::Vector2f startPosition, sf::Texture& texture, Grid& grid, Player& player);
 
-    void update(float deltaTime, Grid& grid, const sf::Vector2f& playerPosition, bool playerAttacking);
-    sf::Vector2f getPosition();
-    void drawShadow(sf::RenderWindow& window);
-    void drawEnemy(sf::RenderWindow& window);
+    EntityType type() const override { return EntityType::Enemy; }
+    Object& collider() override { return enemyCollider; }
+    sf::Vector2f getPosition() const override { return sprite.getPosition(); }
+    bool isAttacking() const override { return attacking; }
+    float getAttackRadius() const override { return attackRadius; }
+    void update(float deltaTime) override;
+    void drawShadow(sf::RenderWindow& window) override;
+    void draw(sf::RenderWindow& window) override;
+    bool isDead() const override { return health <= 0; }
+
     void animate(int xStart, int xEnd, int yStart, int yEnd);
 
     void takeDamage(int amount);
     void heal(int amount);
     int getHealth() const { return health; }
     int getMaxHealth() const { return maxHealth; }
-    bool isDead() const { return health <= 0; }
 
     // Data members
+    Object enemyCollider;
     sf::Texture texture;
     sf::Sprite sprite;
-    Object collider;
     sf::Clock damageClock;
     sf::Time damageCooldown = sf::seconds(0.5f);
     sf::Vector2f direction;
@@ -43,6 +50,10 @@ public:
     int health;
     int spriteSize;
     float attackRadius;
+    
+private:
+    Grid& grid;
+    Player& player;
 };
 
 #endif // ENEMY_HPP

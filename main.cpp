@@ -13,14 +13,15 @@
 
 #include "TileMap.cpp"
 
-#include "Player.cpp"
-#include "Player.hpp"
+#include "player.cpp"
+#include "player.hpp"
 
 #include "Enemy.cpp"
 #include "Enemy.hpp"  
 
 #include "PathFinder.cpp"
 
+#include "Entity.hpp"
 #include "Constants.hpp"
 
 // Functions for conversions
@@ -36,11 +37,11 @@ inline sf::Vector2f gridToWorld(const Node* node, int tileSize) {
 // Function for pickup object collision
 template <typename PickupType, typename EffectFunc>
 void handlePickup(std::vector<PickupType>& pickups,
-                  Object& playerCollider,
+                  Object& (playerCollider),
                   MapLoader& map,
                   EffectFunc effect) {
     for (auto it = pickups.begin(); it != pickups.end();) {
-        Manifold m = { &playerCollider, it->collider() };
+        Manifold m = { &(playerCollider), it->collider() };
         if (AABBvsAABB(&m)) {
             // Apply pickup effect
             effect(*it);
@@ -64,15 +65,29 @@ int main()
     sf::Clock clock;
     sf::Clock sprintClock;
 
+    // Create list of entities
+    std::vector<std::shared_ptr<Entity>> entities;
+
     // ---- Create a player ----
-    Object playerCollider = { Vec2(275, 200), { Vec2(-50, -50), Vec2(50, 50) } };
-    Player player;
-    player.sprite.setPosition(toSF(playerCollider.pos));
+    sf::Vector2f pos = {275, 200};
+    auto player = std::make_shared<Player>(pos);
+    entities.push_back(player);
+    Object playerCollider = (player->playerCollider);
 
     // ---- Load tilemap ----
     MapLoader map;
     TileMapRenderer renderer;
     map.loadFromFile("level.txt");
+    // Set up pathfinding grid
+    sf::Vector2i size = map.getSize();
+    Grid grid(size.x, size.y);
+    for (int y = 0; y < size.y; ++y) {
+        for (int x = 0; x < size.x; ++x) {
+            if (map.getTile(x, y) == '#') {
+                grid.nodes[y][x].wall = true;
+            }
+        }
+    }
 
     // ---- Set up colliders ----
     std::vector<Object*> colliders; // Create colliders list
@@ -86,18 +101,12 @@ int main()
         Object* collider() { return &goldPickup; }
     };
     std::vector<goldPickup> goldPickups;
-    struct Enem {
-        Enemy enemy;
-        Object* collider() { return &enemy.collider; }
-    };
 
     // ---- Set up objects ----
-    std::vector<Enem> enemies;
     std::vector<Object> wallObjects;
     sf::Texture enemyTex;
     if (!enemyTex.loadFromFile("assets/images/enemySpritesheet.png"))
         throw std::runtime_error("Failed to load enemy spritesheet");
-    sf::Vector2i size = map.getSize();
     wallObjects.reserve(size.x * size.y);
     for (int y = 0; y < size.y; ++y) { // Height
         for (int x = 0; x < size.x; ++x) { // Width
@@ -132,17 +141,9 @@ int main()
             // Enemies
             if (map.getTile(x, y) == 'E') {
                 Vec2 pos(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
-                Enemy enemy(toSF(pos), enemyTex);
-                enemies.push_back(Enem{enemy});
-            }
-        }
-    }
-    // Set up pathfinding grid
-    Grid grid(size.x, size.y);
-    for (int y = 0; y < size.y; ++y) {
-        for (int x = 0; x < size.x; ++x) {
-            if (map.getTile(x, y) == '#') {
-                grid.nodes[y][x].wall = true;
+                entities.push_back(std::make_shared<Enemy>(
+                    toSF(pos), enemyTex, grid, *player
+                ));
             }
         }
     }
@@ -155,7 +156,7 @@ int main()
     sf::View camera;
     sf::Vector2u winSize = window.getSize();
     camera.setSize(sf::Vector2f(winSize.x, winSize.y));
-    camera.setCenter(player.getPosition());
+    camera.setCenter(player->getPosition());
     window.setView(camera);
 
     // ---- Events ----
@@ -188,7 +189,7 @@ int main()
             } else {
                 isDoubleTap = false;
             }
-            player.sprint(isDoubleTap);
+            player->sprint(isDoubleTap);
             if (isDoubleTap) {
                 sprint = true;
             } else {
@@ -215,93 +216,93 @@ int main()
     };
 
     // Game loop
+    std::cout << "Starting game";
     while (window.isOpen()) {
         sf::Time delta = clock.restart(); // Time since last frame
         float deltaTime = delta.asSeconds(); // Convert to seconds
 
         // Handle events and updates
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
-        player.handleInput();
-        player.update();
+        player->handleInput();
+        for (auto& e : entities) e->update(deltaTime);
 
         // Create new window with black background
         window.clear(sf::Color::Black);
 
         //---- Movement ----
-        Vec2 originalPos = playerCollider.pos;
+        Vec2 originalPos = (player->playerCollider).pos;
         // X axis
-        float originalX = playerCollider.pos.x;
-        playerCollider.pos.x += player.movement.x;
-        // Stop if colliding with object
-        for (auto& enem : enemies) { Manifold m = { &playerCollider, enem.collider() };
-            if (AABBvsAABB({&m})) { playerCollider.pos.x = originalX; break; }
+        float originalX = (player->playerCollider).pos.x;
+        (player->playerCollider).pos.x += player->movement.x;
+        // Stop if colliding with an object that isn't the player and isn't a pickup
+        for (auto& e : entities) { if (e->type() == EntityType::Player) continue; 
+            if (e->type() == EntityType::Pickup) continue;
+            Manifold m = { &(player->playerCollider), &e->collider() };
+            if (AABBvsAABB(&m)) { (player->playerCollider).pos.x = originalX; break; }
         }
-        for (auto& obj : colliders) { Manifold m = { &playerCollider, obj };
-            if (AABBvsAABB(&m)) { playerCollider.pos.x = originalX; break; }
+        for (auto& obj : colliders) { 
+            Manifold m = { &(player->playerCollider), obj };
+            if (AABBvsAABB(&m)) { (player->playerCollider).pos.x = originalX; break; }
         }
         // Y axis
-        float originalY = playerCollider.pos.y;
-        playerCollider.pos.y += player.movement.y;
+        float originalY = (player->playerCollider).pos.y;
+        (player->playerCollider).pos.y += player->movement.y;
         // Stop if colliding with object
-        for (auto& enem : enemies) { Manifold m = { &playerCollider, enem.collider() };
-            if (AABBvsAABB({&m})) { playerCollider.pos.y = originalY; break; }
+        for (auto& e : entities) { if (e->type() == EntityType::Player) continue; 
+            if (e->type() == EntityType::Pickup) continue;
+            Manifold m = { &(player->playerCollider), &e->collider() };
+            if (AABBvsAABB(&m)) { (player->playerCollider).pos.y = originalY; break; }
         }
-        for (auto& obj : colliders) { Manifold m = { &playerCollider, obj };
-            if (AABBvsAABB(&m)) { playerCollider.pos.y = originalY; break; }
+        for (auto& obj : colliders) { Manifold m = { &(player->playerCollider), obj };
+            if (AABBvsAABB(&m)) { (player->playerCollider).pos.y = originalY; break; }
         }
 
         //---- Damage ----
         // Check if enemy is attacking player, if close enough damage player
-        for (auto& enem : enemies) {
-            float dx = player.getPosition().x - enem.enemy.getPosition().x;
-            float dy = player.getPosition().y - enem.enemy.getPosition().y;
-            float dist = std::sqrt(dx*dx + dy*dy);
-            if (enem.enemy.attacking && dist <= enem.enemy.attackRadius) {
-                player.takeDamage(1);
+        for (auto& e : entities) {
+            if (e->type() == EntityType::Enemy) {
+                float dx = player->getPosition().x - e->getPosition().x;
+                float dy = player->getPosition().y - e->getPosition().y;
+                float dist = std::sqrt(dx*dx + dy*dy);
+                if (e->isAttacking() && dist <= e->getAttackRadius()) {
+                    player->takeDamage(1);
+                }
             }
         }
 
         //---- Pickups ----
         // Heal player when colliding with health pickups if not at max health
-        if (player.getHealth() < player.getMaxHealth()) {
-            handlePickup(healthPickups, playerCollider, map, [&](auto& pickup) {
-                    player.heal(1);
+        if (player->getHealth() < player->getMaxHealth()) {
+            handlePickup(healthPickups, (player->playerCollider), map, [&](auto& pickup) {
+                    player->heal(1);
             
             });
         }
         // Give gold when colliding with gold pickups
-        handlePickup(goldPickups, playerCollider, map, [&](auto& pickup) {
-            player.addGold(25);
+        handlePickup(goldPickups, (player->playerCollider), map, [&](auto& pickup) {
+            player->addGold(25);
         });
 
         //---- Draw items ----
         // Draw tilemap with walls and healthPickups
         renderer.draw(window, map);
-        // Draw shadows first and update enemies
-        player.drawShadow(window);
-        for (auto& enem : enemies) {
-            enem.enemy.sprite.setPosition(toSF(enem.enemy.collider.pos));
-            enem.enemy.update(deltaTime, grid, player.getPosition(), player.attacking);
-            enem.enemy.drawShadow(window);
-        }
-        // Draw player
-        player.sprite.setPosition(toSF(playerCollider.pos));
-        player.drawUI(window, camera);
-        player.drawPlayer(window);
-        camera.setCenter(player.getPosition());
+        // Draw all shadows for entities (enemies and player)
+        for (auto& e : entities) { e->drawShadow(window); }
+        // Draw and update all entity sprites
+        for (auto& e : entities) { e->draw(window); }
+        // Draw player features
+        player->drawUI(window, camera);
+        camera.setCenter(player->getPosition());
         window.setView(camera);
-        if (player.isDead()) {
+        if (player->isDead()) {
         }
-        // Draw enemies
-        for (auto& enem : enemies) {
-            enem.enemy.drawEnemy(window);
-        }
-        // Delete dead enemies
-        enemies.erase(
-            std::remove_if(enemies.begin(), enemies.end(), [](const Enem& enem) {
-                return enem.enemy.isDead();
-            }),
-            enemies.end()
+        // Delete dead entities
+        entities.erase(
+            std::remove_if(entities.begin(), entities.end(),
+                [](const std::shared_ptr<Entity>& e) {
+                    return e->isDead();
+                }),
+            entities.end()
         );
 
         // Display window
