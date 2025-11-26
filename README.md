@@ -24,7 +24,6 @@ Multiple levels
 Death screen
 Menu and pause features
 Finished assets (not the template ones being used at the moment)
-Store player and enemies as entities?
 
 # Issues
 Objects are not always drawn right, the solution is to draw the lowest object on the screen last so that they appear in front. Might need to use the lowest point of that object as well.
