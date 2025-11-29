@@ -150,7 +150,7 @@ int main()
 
     // ---- Set up game window ----
     // Create game window
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode({1500, 800}), "2D Game", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
     // Create game camera
     sf::View camera;

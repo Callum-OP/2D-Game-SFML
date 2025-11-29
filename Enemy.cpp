@@ -31,6 +31,8 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture, Grid& grid, Playe
     sprite.setScale({0.8f,0.8f});
     sprite.setColor(ENEMY_BASE_COLOUR);
 
+    spawnPoint = toSF(enemyCollider.pos);
+
     // Set health
     maxHealth = ENEMY_MAX_HEALTH;
     health = ENEMY_MAX_HEALTH;
@@ -51,6 +53,27 @@ Enemy::Enemy(sf::Vector2f startPosition, sf::Texture& texture, Grid& grid, Playe
     auto coords = enemyAnimationTable.at({Action::Standing, Direction::South});
     textureX = coords.xStart;
     textureY = coords.yStart;
+
+    randomPoint = getRandomPatrolPoint(40.f);
+}
+
+// Choose a random point from the radius around the enemy
+sf::Vector2f Enemy::getRandomPatrolPoint(float radius) {
+    // Try 10 times to find a random valid target
+    for (int attempts = 0; attempts < 10; ++attempts) {
+        float angle = static_cast<float>(rand()) / RAND_MAX * 2.f * 3.14159265358979323846;
+        float dist  = static_cast<float>(rand()) / RAND_MAX * radius;
+        sf::Vector2f target = spawnPoint + sf::Vector2f(std::cos(angle) * dist, std::sin(angle) * dist);
+
+        int gx = static_cast<int>(target.x) / TILE_SIZE;
+        int gy = static_cast<int>(target.y) / TILE_SIZE;
+
+        if (grid.inBounds(gx, gy)) {
+            return target;
+        }
+    }
+    // Return spawn point if no valid patrol point can be found
+    return spawnPoint;
 }
 
 // Take damage until no health left, with half a second delay between damage
@@ -94,24 +117,67 @@ void Enemy::update(float deltaTime)
     sf::Vector2f position = sprite.getPosition();
     float dx = playerPosition.x - position.x;
     float dy = playerPosition.y - position.y;
-    float distance = std::sqrt(dx*dx + dy*dy);
+    float playerDistance = std::sqrt(dx*dx + dy*dy);
 
     float stopRadius   = 500.0f;
-    attackRadius = 100.0f;
+    attackRadius = 80.0f;
 
     moving = false;
     attacking = false;
 
-    // A* pathfinding, chase player, if not too close or far away
-    if (distance > attackRadius && distance < stopRadius) {
+    int enemyGX;
+    int enemyGY;
+    int targetGX;
+    int targetGY;
+    Node* start;
+    Node* goal;
+
+    // ---- Movement and pathfinding ----
+
+    // Chase player, if they are not too close or far away
+    if (playerDistance > attackRadius && playerDistance < stopRadius) {
+        targetPosition = playerPosition;
+    } 
+    // Attack if too close to player
+    else if (playerDistance <= attackRadius) {
+        attacking = true;
+        targetPosition = std::nullopt;
+    } 
+    // Wander randomly around spawn if player is far away
+    else if (playerDistance > stopRadius) {
+        // If we don't have a target, pick random one
+        if (!targetPosition) {
+            randomPoint = getRandomPatrolPoint(300.f);
+            targetPosition = randomPoint;
+        }
+
+        // Check if we've reached the target
+        sf::Vector2f dir = *targetPosition - sprite.getPosition();
+        float dist = std::sqrt(dir.x*dir.x + dir.y*dir.y);
+
+        // Pause before picking a new point
+        idleTimer += 0.1f;
+        if (idleTimer > 20.0f) {
+            randomPoint = getRandomPatrolPoint(500.f);
+            targetPosition = randomPoint;
+            idleTimer = 0.f;
+        }
+    }
+
+    // Take damage if being attacked when close to player
+    if (playerDistance <= attackRadius * 1.5f && playerAttacking) {
+        takeDamage(1);
+    }
+
+    if (targetPosition) {
         // Convert world into grid
-        int enemyGX  = static_cast<int>(enemyCollider.pos.x) / TILE_SIZE;
-        int enemyGY  = static_cast<int>(enemyCollider.pos.y) / TILE_SIZE;
-        int playerGX = static_cast<int>(playerPosition.x) / TILE_SIZE;
-        int playerGY = static_cast<int>(playerPosition.y) / TILE_SIZE;
-        if (grid.inBounds(enemyGX, enemyGY) && grid.inBounds(playerGX, playerGY)) {
-            Node* start = &grid.nodes[enemyGY][enemyGX];
-            Node* goal  = &grid.nodes[playerGY][playerGX];
+        enemyGX  = static_cast<int>(enemyCollider.pos.x) / TILE_SIZE;
+        enemyGY  = static_cast<int>(enemyCollider.pos.y) / TILE_SIZE;
+        targetGX = static_cast<int>(targetPosition->x) / TILE_SIZE;
+        targetGY = static_cast<int>(targetPosition->y) / TILE_SIZE;
+        if (grid.inBounds(enemyGX, enemyGY) && grid.inBounds(targetGX, targetGY)) {
+            start = &grid.nodes[enemyGY][enemyGX];
+            goal  = &grid.nodes[targetGY][targetGX];
 
             // Reset node costs
             for (auto& row : grid.nodes) {
@@ -144,17 +210,12 @@ void Enemy::update(float deltaTime)
                 }
             }
         }
+    }
 
-        // Sync sprite with collider
-        sprite.setPosition(toSF(enemyCollider.pos));
-    }
-    // Attack if too close to player
-    else if (distance <= attackRadius * 1.5f && playerAttacking) {
-        takeDamage(1);
-    }
-    else if (distance <= attackRadius) {
-        attacking = true;
-    }
+    // Sync sprite with collider
+    sprite.setPosition(toSF(enemyCollider.pos));
+
+    // ---- Animation ----
 
     // Calculate current direction
     float absX = std::abs(direction.x);

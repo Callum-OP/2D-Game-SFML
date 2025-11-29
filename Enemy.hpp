@@ -5,6 +5,7 @@
 #include "Physics.hpp"
 #include "PathFinder.hpp"
 #include <SFML/Graphics.hpp>
+#include <optional>
 
 #include "Entity.hpp"
 #include "Constants.hpp"
@@ -23,6 +24,7 @@ public:
     void draw(sf::RenderWindow& window) override;
     bool isDead() const override { return health <= 0; }
 
+    sf::Vector2f Enemy::getRandomPatrolPoint(float radius);
     void animate(int xStart, int xEnd, int yStart, int yEnd);
 
     void takeDamage(int amount);
@@ -45,6 +47,10 @@ public:
     int finalColumn, finalRow;
     bool moving, attacking;
     Direction currentDirection = Direction::South;
+    sf::Vector2f spawnPoint;
+    sf::Vector2f randomPoint;
+    std::optional<sf::Vector2f> targetPosition;
+    float idleTimer = 0.f;
 
     int maxHealth;
     int health;
