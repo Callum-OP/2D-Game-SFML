@@ -79,7 +79,7 @@ public:
     {}
 
     // Draw tilemap
-    void draw(sf::RenderWindow& window, const MapLoader& map) {
+    void drawFloor(sf::RenderWindow& window, const MapLoader& map) {
         for (int y = 0; y < map.getSize().y; ++y) {
             for (int x = 0; x < map.getSize().x; ++x) {
                 sf::Sprite* sprite = nullptr;
@@ -91,9 +91,37 @@ public:
                     window.draw(floorSprite);
                 }
 
-                // Draw other tilemap objects
+                if (sprite) {
+                    sprite->setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
+                    window.draw(*sprite);
+                }
+            }
+        }
+    }
+    void drawWalls(sf::RenderWindow& window, const MapLoader& map) {
+        for (int y = 0; y < map.getSize().y; ++y) {
+            for (int x = 0; x < map.getSize().x; ++x) {
+                sf::Sprite* sprite = nullptr;
+                char tile = map.getTile(x, y);
+
+                // Draw walls
                 if (tile == '#') sprite = &wallSprite;
-                else if (tile == 'H') sprite = &healthPickupSprite;
+
+                if (sprite) {
+                    sprite->setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
+                    window.draw(*sprite);
+                }
+            }
+        }
+    }
+    void drawItems(sf::RenderWindow& window, const MapLoader& map) {
+        for (int y = 0; y < map.getSize().y; ++y) {
+            for (int x = 0; x < map.getSize().x; ++x) {
+                sf::Sprite* sprite = nullptr;
+                char tile = map.getTile(x, y);
+
+                // Draw other pickup objects
+                if (tile == 'H') sprite = &healthPickupSprite;
                 else if (tile == 'G') sprite = &goldPickupSprite;
 
                 if (sprite) {
