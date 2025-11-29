@@ -286,6 +286,11 @@ int main()
         //---- Draw items ----
         // Draw tilemap with walls and healthPickups
         renderer.draw(window, map);
+        // Sort by Y position before drawing, so that the highest objects are drawn first
+        std::sort(entities.begin(), entities.end(),
+        [](const std::shared_ptr<Entity>& a, const std::shared_ptr<Entity>& b) {
+            return a->getPosition().y < b->getPosition().y;
+        });
         // Draw all shadows for entities (enemies and player)
         for (auto& e : entities) { e->drawShadow(window); }
         // Draw and update all entity sprites
