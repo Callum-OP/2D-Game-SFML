@@ -25,6 +25,9 @@ Ranged attack
 More enemy options
 Make enemies more intelligent and dangerous
 Audio and sfx
+Damage animation that delays next attack for enemies
+
+Lighting system?
 
 Multiple more levels, Procedurally generated dungeons and levels?
 Death screen
