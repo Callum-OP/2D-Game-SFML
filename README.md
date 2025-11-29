@@ -20,14 +20,20 @@ This a 2D top down game using C++ and SFML 3.0, includes 8 directional movement,
 This app requires the SMFL 3.0 library to work, specifically the graphics, window and system components.
 
 # Features to consider
-Multiple levels
+Add more tile options
+Ranged attack
+More enemy options
+Make enemies more intelligent and dangerous
+Audio and sfx
+
+Multiple more levels, Procedurally generated dungeons and levels?
 Death screen
 Menu and pause features
 Finished assets (not the template ones being used at the moment)
 
 # Issues
-Objects are not always drawn right, the solution is to draw the lowest object on the screen last so that they appear in front. Might need to use the lowest point of that object as well.
-
+Character animation is a bit stuttery when sprinting
+Player was stuck sprinting when playing one time, but have been unable to recreate the issue
 
 
 
