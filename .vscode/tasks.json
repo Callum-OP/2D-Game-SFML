@@ -14,7 +14,8 @@
                 "/LIBPATH:C:\\C++ Libraries\\SFML-3.0.0-windows-vc17-32-bit\\SFML-3.0.0\\lib",
                 "sfml-graphics.lib",
                 "sfml-window.lib",
-                "sfml-system.lib"
+                "sfml-system.lib",
+                "sfml-audio.lib"
             ],
             "group": {
                 "kind": "build",

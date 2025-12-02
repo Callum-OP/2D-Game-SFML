@@ -65,6 +65,24 @@ int main()
     sf::Clock clock;
     sf::Clock sprintClock;
 
+    // Set up audio
+    sf::SoundBuffer goldPickupBuffer;
+    sf::SoundBuffer healthPickupBuffer;
+
+    // Load audio from files
+    if (!goldPickupBuffer.loadFromFile("assets/audio/goldPickup.ogg")) {
+        std::cerr << "Error: Could not load gold pickup sound file!" << std::endl;
+        return -1;
+    }
+    if (!healthPickupBuffer.loadFromFile("assets/audio/healthPickup.ogg")) {
+        std::cerr << "Error: Could not load health pickup sound file!" << std::endl;
+        return -1;
+    }
+
+    // Creat sounds
+    sf::Sound goldPickupSound(goldPickupBuffer);
+    sf::Sound healthPickupSound(healthPickupBuffer);
+
     // Create list of entities
     std::vector<std::shared_ptr<Entity>> entities;
 
@@ -274,13 +292,14 @@ int main()
         // Heal player when colliding with health pickups if not at max health
         if (player->getHealth() < player->getMaxHealth()) {
             handlePickup(healthPickups, (player->playerCollider), map, [&](auto& pickup) {
-                    player->heal(1);
-            
+                player->heal(1);
+                healthPickupSound.play();
             });
         }
         // Give gold when colliding with gold pickups
         handlePickup(goldPickups, (player->playerCollider), map, [&](auto& pickup) {
             player->addGold(25);
+            goldPickupSound.play();
         });
 
         //---- Draw items ----
