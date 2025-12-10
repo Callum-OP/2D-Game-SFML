@@ -303,11 +303,11 @@ int main()
         });
 
         //---- Draw items ----
-        // Draw tilemap floor
-        renderer.drawFloor(window, map);
+        // Draw tilemap floors
+        renderer.drawFloors(window, map);
         // Draw all shadows for entities (enemies and player)
         for (auto& e : entities) { e->drawShadow(window); }
-        // Draw tilemap with walls and pickup items
+        // Draw tilemap walls and items
         renderer.drawWalls(window, map);
         renderer.drawItems(window, map);
         // Sort by Y position before drawing, so that the highest objects are drawn first

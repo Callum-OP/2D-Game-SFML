@@ -39,94 +39,122 @@ public:
     }   
 };
 
+// Store the symbol, texture and type of tiles
+struct TileAsset {
+    char symbol;
+    sf::Texture texture;
+    enum class Type { Floor, Wall, Item, Enemy } type;
+};
+
 // Tilemap renderer
 class TileMapRenderer {
-    sf::Texture wallTex;
-    sf::Texture floorTex;
-    sf::Texture healthPickupTex;
-    sf::Texture goldPickupTex;
-    sf::Sprite wallSprite;
-    sf::Sprite floorSprite;
-    sf::Sprite healthPickupSprite;
-    sf::Sprite goldPickupSprite;
+    std::vector<TileAsset> tiles;
 
 public:
-    // Get tilemap textures
-    TileMapRenderer()
-        : wallTex{},
-          floorTex{},
-          healthPickupTex{},
-          wallSprite([this]() {
-                if (!wallTex.loadFromFile("assets/images/Wall.png"))
-                    throw std::runtime_error("Failed to load Wall.png");
-                return sf::Sprite(wallTex);
-          }()),
-            floorSprite([this]() {
-                if (!floorTex.loadFromFile("assets/images/Floor.png"))
-                    throw std::runtime_error("Failed to load Floor.png");
-                return sf::Sprite(floorTex);
-          }()),
-          healthPickupSprite([this]() {
-                if (!healthPickupTex.loadFromFile("assets/images/HealthPickup.png"))
-                    throw std::runtime_error("Failed to load HealthPickup.png");
-                return sf::Sprite(healthPickupTex);
-          }()),
-          goldPickupSprite([this]() {
-                if (!goldPickupTex.loadFromFile("assets/images/GoldPickup.png"))
-                    throw std::runtime_error("Failed to load GoldPickup.png");
-                return sf::Sprite(goldPickupTex);
-          }())
-    {}
+    TileMapRenderer() {
+        // Load all tile definitions
+        loadTile('#', "assets/images/Wall.png", TileAsset::Type::Wall);
+        
+        loadTile('.', "assets/images/Floor.png", TileAsset::Type::Floor);
+        loadTile(',', "assets/images/Grass.png", TileAsset::Type::Floor);
 
-    // Draw tilemap
-    void drawFloor(sf::RenderWindow& window, const MapLoader& map) {
+        loadTile('H', "assets/images/HealthPickup.png", TileAsset::Type::Item);
+        loadTile('G', "assets/images/GoldPickup.png", TileAsset::Type::Item);
+        //loadTile('C', "assets/images/Chest.png", TileAsset::Type::Item);
+    }
+
+    // Add tiles to tile list
+    void loadTile(char symbol, const std::string& filename, TileAsset::Type type) {
+        TileAsset def;
+        def.symbol = symbol;
+        if (!def.texture.loadFromFile(filename)) {
+            throw std::runtime_error("Failed to load " + filename);
+        }
+        def.type = type;
+        tiles.push_back(std::move(def));
+    }
+
+    const TileAsset* find(char symbol) const {
+        for (auto& t : tiles) {
+            if (t.symbol == symbol) return &t;
+        }
+        return nullptr;
+    }
+
+    // Draw all floors
+    void drawFloors(sf::RenderWindow& window, const MapLoader& map) {
         for (int y = 0; y < map.getSize().y; ++y) {
             for (int x = 0; x < map.getSize().x; ++x) {
-                sf::Sprite* sprite = nullptr;
                 char tile = map.getTile(x, y);
-
-                // Always draw floor if it's not a wall
-                if (tile != '#') {
-                    floorSprite.setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
-                    window.draw(floorSprite);
-                }
-
-                if (sprite) {
-                    sprite->setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
-                    window.draw(*sprite);
+                const TileAsset* def = find(tile);
+                if (def && def->type == TileAsset::Type::Floor) {
+                    sf::Sprite sprite(def->texture);
+                    sprite.setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
+                    window.draw(sprite);
+                // Should still draw a floor even if there is another object there
+                // It will decide the texture of the floor by looking at nearby floors
+                } else {
+                    // Count nearby floor symbols
+                    std::map<char,int> counts;
+                    for (int dy = -1; dy <= 1; ++dy) {
+                        for (int dx = -1; dx <= 1; ++dx) {
+                            if (dx == 0 && dy == 0) continue;
+                            int nx = x + dx;
+                            int ny = y + dy;
+                            if (nx >= 0 && ny >= 0 && nx < map.getSize().x && ny < map.getSize().y) {
+                                char neighbor = map.getTile(nx, ny);
+                                const TileAsset* ndef = find(neighbor);
+                                if (ndef && ndef->type == TileAsset::Type::Floor) {
+                                    counts[neighbor]++;
+                                }
+                            }
+                        }
+                    }
+                    // Pick the floor symbol with the highest count
+                    char floorSymbol = '.';
+                    int bestCount = -1;
+                    for (auto& kv : counts) {
+                        if (kv.second > bestCount) {
+                            bestCount = kv.second;
+                            floorSymbol = kv.first;
+                        }
+                    }
+                    const TileAsset* def = find(floorSymbol);
+                    if (def && def->type == TileAsset::Type::Floor) {
+                        sf::Sprite sprite(def->texture);
+                        sprite.setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
+                        window.draw(sprite);
+                    }
                 }
             }
         }
     }
+
+    // Draw all walls
     void drawWalls(sf::RenderWindow& window, const MapLoader& map) {
         for (int y = 0; y < map.getSize().y; ++y) {
             for (int x = 0; x < map.getSize().x; ++x) {
-                sf::Sprite* sprite = nullptr;
                 char tile = map.getTile(x, y);
-
-                // Draw walls
-                if (tile == '#') sprite = &wallSprite;
-
-                if (sprite) {
-                    sprite->setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
-                    window.draw(*sprite);
+                const TileAsset* def = find(tile);
+                if (def && def->type == TileAsset::Type::Wall) {
+                    sf::Sprite sprite(def->texture);
+                    sprite.setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
+                    window.draw(sprite);
                 }
             }
         }
     }
+
+    // Draw all items
     void drawItems(sf::RenderWindow& window, const MapLoader& map) {
         for (int y = 0; y < map.getSize().y; ++y) {
             for (int x = 0; x < map.getSize().x; ++x) {
-                sf::Sprite* sprite = nullptr;
                 char tile = map.getTile(x, y);
-
-                // Draw other pickup objects
-                if (tile == 'H') sprite = &healthPickupSprite;
-                else if (tile == 'G') sprite = &goldPickupSprite;
-
-                if (sprite) {
-                    sprite->setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
-                    window.draw(*sprite);
+                const TileAsset* def = find(tile);
+                if (def && def->type == TileAsset::Type::Item) {
+                    sf::Sprite sprite(def->texture);
+                    sprite.setPosition(sf::Vector2f(x * TILE_SIZE, y * TILE_SIZE));
+                    window.draw(sprite);
                 }
             }
         }
