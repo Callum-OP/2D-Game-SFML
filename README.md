@@ -37,11 +37,11 @@ Finished assets (not the template ones being used at the moment)
 # Issues
 Character animation is a bit stuttery when sprinting
 Player was stuck sprinting when playing one time, but have been unable to recreate the issue
-Getting audio errors:
-  miniaudio ERROR: [WASAPI] Failed to initialize device.
-  Failed to initialize the audio playback device: Invalid argument
-  Failed to initialize audio device or engine   
+Sometimes get the errors: "miniaudio ERROR: [WASAPI] Failed to initialize device.""
+  "Failed to initialize the audio playback device: Invalid argument"
+  "Failed to initialize audio device or engine"   
 As a result sometimes audio works and sometimes it does not.
+Sometimes get the error: "Cannot copy texture, failed to link texture to frame buffer"
 
 
 
