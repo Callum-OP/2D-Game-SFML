@@ -27,21 +27,21 @@ Make enemies more intelligent and dangerous
 Audio and sfx
 Damage animation that delays next attack for enemies
 
+Stop enemy AI and any other animations or movement when far outside the view of the player/camera
 Lighting system?
-
 Multiple more levels, Procedurally generated dungeons and levels?
 Death screen
-Menu and pause features
+Main menu when paused
+
 Finished assets (not the template ones being used at the moment)
 
 # Issues
 Character animation is a bit stuttery when sprinting
-Player was stuck sprinting when playing one time, but have been unable to recreate the issue
-Sometimes get the errors: "miniaudio ERROR: [WASAPI] Failed to initialize device.""
+Sometimes get the errors: 
+  "miniaudio ERROR: [WASAPI] Failed to initialize device.""
   "Failed to initialize the audio playback device: Invalid argument"
   "Failed to initialize audio device or engine"   
 As a result sometimes audio works and sometimes it does not.
-Sometimes get the error: "Cannot copy texture, failed to link texture to frame buffer"
 
 
 
