@@ -190,11 +190,16 @@ int main()
     const auto onClose = [&window](const sf::Event::Closed&) {
         window.close();
     };
+    bool isPaused = false;
     // Check when key is pressed
-    const auto onKeyPressed = [&window, &player, &sprintClock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint, &isDoubleTap](const sf::Event::KeyPressed& keyPressed) {
+    const auto onKeyPressed = [&window, &player, &sprintClock, &lastClickTime, &doubleClickTime, &lastDirection, &keyHeld, &sprint, &isDoubleTap, &isPaused](const sf::Event::KeyPressed& keyPressed) {
         // Ensure window is closed when Escape key is pressed
         if (keyPressed.scancode == sf::Keyboard::Scancode::Escape) {
             window.close();
+        }
+        // Toggle pause when P is pressed
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::P)) {
+            isPaused = !isPaused;
         }
         sf::Time now = sprintClock.getElapsedTime();
         // Check for double tap
@@ -233,74 +238,86 @@ int main()
         keyHeld[keyPressed.scancode] = false;
     };
 
+    // Add pause button 
+    auto windowSize = window.getSize();
+    sf::Texture pauseTex("assets/images/PauseButton.png");
+    sf::Sprite pauseButton(pauseTex);
+    pauseButton.setScale({0.06, 0.06});
+    pauseButton.setColor(sf::Color::White);
+
     // Game loop
     std::cout << "Starting game";
     while (window.isOpen()) {
+
         sf::Time delta = clock.restart(); // Time since last frame
         float deltaTime = delta.asSeconds(); // Convert to seconds
 
         // Handle events and updates
         window.handleEvents(onClose, onKeyPressed, onKeyReleased);
-        player->handleInput();
-        for (auto& e : entities) e->update(deltaTime);
+        if (!isPaused) {
+            player->handleInput();
+            for (auto& e : entities) e->update(deltaTime);
+        }
 
         // Create new window with black background
         window.clear(sf::Color::Black);
 
-        //---- Movement ----
-        Vec2 originalPos = (player->playerCollider).pos;
-        // X axis
-        float originalX = (player->playerCollider).pos.x;
-        (player->playerCollider).pos.x += player->movement.x;
-        // Stop if colliding with an object that isn't the player and isn't a pickup
-        for (auto& e : entities) { if (e->type() == EntityType::Player) continue; 
-            if (e->type() == EntityType::Pickup) continue;
-            Manifold m = { &(player->playerCollider), &e->collider() };
-            if (AABBvsAABB(&m)) { (player->playerCollider).pos.x = originalX; break; }
-        }
-        for (auto& obj : colliders) { 
-            Manifold m = { &(player->playerCollider), obj };
-            if (AABBvsAABB(&m)) { (player->playerCollider).pos.x = originalX; break; }
-        }
-        // Y axis
-        float originalY = (player->playerCollider).pos.y;
-        (player->playerCollider).pos.y += player->movement.y;
-        // Stop if colliding with object
-        for (auto& e : entities) { if (e->type() == EntityType::Player) continue; 
-            if (e->type() == EntityType::Pickup) continue;
-            Manifold m = { &(player->playerCollider), &e->collider() };
-            if (AABBvsAABB(&m)) { (player->playerCollider).pos.y = originalY; break; }
-        }
-        for (auto& obj : colliders) { Manifold m = { &(player->playerCollider), obj };
-            if (AABBvsAABB(&m)) { (player->playerCollider).pos.y = originalY; break; }
-        }
+        if (!isPaused) {
+            //---- Movement ----
+            Vec2 originalPos = (player->playerCollider).pos;
+            // X axis
+            float originalX = (player->playerCollider).pos.x;
+            (player->playerCollider).pos.x += player->movement.x;
+            // Stop if colliding with an object that isn't the player and isn't a pickup
+            for (auto& e : entities) { if (e->type() == EntityType::Player) continue; 
+                if (e->type() == EntityType::Pickup) continue;
+                Manifold m = { &(player->playerCollider), &e->collider() };
+                if (AABBvsAABB(&m)) { (player->playerCollider).pos.x = originalX; break; }
+            }
+            for (auto& obj : colliders) { 
+                Manifold m = { &(player->playerCollider), obj };
+                if (AABBvsAABB(&m)) { (player->playerCollider).pos.x = originalX; break; }
+            }
+            // Y axis
+            float originalY = (player->playerCollider).pos.y;
+            (player->playerCollider).pos.y += player->movement.y;
+            // Stop if colliding with object
+            for (auto& e : entities) { if (e->type() == EntityType::Player) continue; 
+                if (e->type() == EntityType::Pickup) continue;
+                Manifold m = { &(player->playerCollider), &e->collider() };
+                if (AABBvsAABB(&m)) { (player->playerCollider).pos.y = originalY; break; }
+            }
+            for (auto& obj : colliders) { Manifold m = { &(player->playerCollider), obj };
+                if (AABBvsAABB(&m)) { (player->playerCollider).pos.y = originalY; break; }
+            }
 
-        //---- Damage ----
-        // Check if enemy is attacking player, if close enough damage player
-        for (auto& e : entities) {
-            if (e->type() == EntityType::Enemy) {
-                float dx = player->getPosition().x - e->getPosition().x;
-                float dy = player->getPosition().y - e->getPosition().y;
-                float dist = std::sqrt(dx*dx + dy*dy);
-                if (e->isAttacking() && dist <= e->getAttackRadius()) {
-                    player->takeDamage(1);
+            //---- Damage ----
+            // Check if enemy is attacking player, if close enough damage player
+            for (auto& e : entities) {
+                if (e->type() == EntityType::Enemy) {
+                    float dx = player->getPosition().x - e->getPosition().x;
+                    float dy = player->getPosition().y - e->getPosition().y;
+                    float dist = std::sqrt(dx*dx + dy*dy);
+                    if (e->isAttacking() && dist <= e->getAttackRadius()) {
+                        player->takeDamage(1);
+                    }
                 }
             }
-        }
 
-        //---- Pickups ----
-        // Heal player when colliding with health pickups if not at max health
-        if (player->getHealth() < player->getMaxHealth()) {
-            handlePickup(healthPickups, (player->playerCollider), map, [&](auto& pickup) {
-                player->heal(1);
-                healthPickupSound.play();
+            //---- Pickups ----
+            // Heal player when colliding with health pickups if not at max health
+            if (player->getHealth() < player->getMaxHealth()) {
+                handlePickup(healthPickups, (player->playerCollider), map, [&](auto& pickup) {
+                    player->heal(1);
+                    healthPickupSound.play();
+                });
+            }
+            // Give gold when colliding with gold pickups
+            handlePickup(goldPickups, (player->playerCollider), map, [&](auto& pickup) {
+                player->addGold(25);
+                goldPickupSound.play();
             });
         }
-        // Give gold when colliding with gold pickups
-        handlePickup(goldPickups, (player->playerCollider), map, [&](auto& pickup) {
-            player->addGold(25);
-            goldPickupSound.play();
-        });
 
         //---- Draw items ----
         // Draw tilemap floors
@@ -317,10 +334,17 @@ int main()
         });
         // Draw and update all entity sprites
         for (auto& e : entities) { e->draw(window); }
-        // Draw player features
+        // Draw camera and UI
         player->drawUI(window, camera);
         camera.setCenter(player->getPosition());
         window.setView(camera);
+        sf::Vector2f viewCenter = camera.getCenter();
+        sf::FloatRect bounds = pauseButton.getGlobalBounds();
+        pauseButton.setPosition({ // Center button at top of camera
+            viewCenter.x - bounds.size.x / 2.f,
+            viewCenter.y - bounds.size.y / 2.f - 370.f
+        });
+        window.draw(pauseButton);
         if (player->isDead()) {
         }
         // Delete dead entities
@@ -334,6 +358,17 @@ int main()
 
         // Display window
         window.display();
+
+        // Check if pause button pressed
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            
+            sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
+
+            if (pauseButton.getGlobalBounds().contains(worldPos)) {
+                isPaused = !isPaused;
+            }
+        }
     }
     return 0;
 }
