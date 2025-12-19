@@ -241,8 +241,9 @@ int main()
     // Add pause button 
     auto windowSize = window.getSize();
     sf::Texture pauseTex("assets/images/PauseButton.png");
+    sf::Texture playTex("assets/images/PlayButton.png");
     sf::Sprite pauseButton(pauseTex);
-    pauseButton.setScale({0.06, 0.06});
+    pauseButton.setScale({0.07, 0.07});
     pauseButton.setColor(sf::Color::White);
 
     // Game loop
@@ -257,6 +258,9 @@ int main()
         if (!isPaused) {
             player->handleInput();
             for (auto& e : entities) e->update(deltaTime);
+            pauseButton.setTexture(pauseTex);
+        } else {
+            pauseButton.setTexture(playTex);
         }
 
         // Create new window with black background
