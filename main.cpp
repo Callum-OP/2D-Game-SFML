@@ -245,6 +245,9 @@ int main()
     sf::Sprite pauseButton(pauseTex);
     pauseButton.setScale({0.07, 0.07});
     pauseButton.setColor(sf::Color::White);
+    // To store time paused button was clicked to add a click delay
+    sf::Clock clickClock;
+    sf::Time clickDelay = sf::milliseconds(300);
 
     // Game loop
     std::cout << "Starting game";
@@ -346,7 +349,7 @@ int main()
         sf::FloatRect bounds = pauseButton.getGlobalBounds();
         pauseButton.setPosition({ // Center button at top of camera
             viewCenter.x - bounds.size.x / 2.f,
-            viewCenter.y - bounds.size.y / 2.f - 370.f
+            viewCenter.y - bounds.size.y / 2.f - 368.f
         });
         window.draw(pauseButton);
         if (player->isDead()) {
@@ -366,11 +369,13 @@ int main()
         // Check if pause button pressed
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            
             sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
-
+            // Toggle pause if clicked on and click delay has passed
             if (pauseButton.getGlobalBounds().contains(worldPos)) {
-                isPaused = !isPaused;
+                if (clickClock.getElapsedTime() > clickDelay) {
+                    isPaused = !isPaused;
+                    clickClock.restart(); // Restart delay
+                }
             }
         }
     }
