@@ -119,6 +119,13 @@ int main()
         Object* collider() { return &goldPickup; }
     };
     std::vector<goldPickup> goldPickups;
+    struct chestPickup {
+        Object chestPickup;
+        float stateTimer = 0.f;
+        int state = 0; // 0 = closed, 1 = open-full, 2 = open-empty
+        Object* collider() { return &chestPickup; }
+    };
+    std::vector<chestPickup> chestPickups;
 
     // ---- Set up objects ----
     std::vector<Object> wallObjects;
@@ -155,6 +162,15 @@ int main()
                 pickup.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
                 // Add to list
                 goldPickups.push_back(goldPickup{pickup});
+            }
+            // Chest pickups
+            if (map.getTile(x, y) == 'C') {
+                Object pickup;
+                pickup.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
+                pickup.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);
+                pickup.aabb.max = Vec2((x + 1) * TILE_SIZE, (y + 1) * TILE_SIZE);
+                // Add to list
+                chestPickups.push_back(chestPickup{pickup});
             }
             // Enemies
             if (map.getTile(x, y) == 'E') {
@@ -324,6 +340,38 @@ int main()
                 player->addGold(25);
                 goldPickupSound.play();
             });
+            // Give gold when colliding with chest pickups
+            for (auto& chest : chestPickups) {
+                Manifold m = { &(player->playerCollider), chest.collider() };
+                if (AABBvsAABB(&m)) {
+                    // Open chest
+                    Vec2 pos = chest.collider()->pos;
+                    int tileX = pos.x / TILE_SIZE;
+                    int tileY = pos.y / TILE_SIZE;
+                    if (chest.state == 0) {
+                        map.setTile(tileX, tileY, 'Q');
+                        player->addGold(100);
+                        goldPickupSound.play();
+
+                        chest.state = 1;
+                        chest.stateTimer = 0.f; // Start animation timer
+                    }
+                }
+            }
+            // Check chest states
+            for (auto& chest : chestPickups) {
+                if (chest.state == 1) {
+                    chest.stateTimer += deltaTime;
+                    // After 0.4 seconds, switch to empty chest
+                    if (chest.stateTimer >= 0.4f) {
+                        Vec2 pos = chest.collider()->pos;
+                        int tileX = pos.x / TILE_SIZE;
+                        int tileY = pos.y / TILE_SIZE;
+                        map.setTile(tileX, tileY, 'O');
+                        chest.state = 2;
+                    }
+                }
+            }
         }
 
         //---- Draw items ----

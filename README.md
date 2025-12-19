@@ -17,7 +17,7 @@ This may change in the future.
 # About the app
 This a 2D top down game using C++ and SFML 3.0, includes 8 directional movement, combat, animation and enemies, it is still a work in progress, but is planned to be similar to top down zelda games. I am very new to SFML so I'm learning as I go.
 
-This app requires the SMFL 3.0 library to work, specifically the graphics, window and system components.
+This app requires the SMFL 3.0 library to work, specifically the graphics, audio, window and system components.
 
 # Features to consider
 Add more tile options

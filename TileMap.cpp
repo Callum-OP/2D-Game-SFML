@@ -60,7 +60,9 @@ public:
 
         loadTile('H', "assets/images/HealthPickup.png", TileAsset::Type::Item);
         loadTile('G', "assets/images/GoldPickup.png", TileAsset::Type::Item);
-        //loadTile('C', "assets/images/Chest.png", TileAsset::Type::Item);
+        loadTile('C', "assets/images/ChestClosed.png", TileAsset::Type::Item);
+        loadTile('Q', "assets/images/ChestOpenFull.png", TileAsset::Type::Item);
+        loadTile('O', "assets/images/ChestOpenEmpty.png",     TileAsset::Type::Item);
     }
 
     // Add tiles to tile list
