@@ -86,11 +86,8 @@ int main()
     // Create list of entities
     std::vector<std::shared_ptr<Entity>> entities;
 
-    // ---- Create a player ----
+    // Default player position
     sf::Vector2f pos = {275, 200};
-    auto player = std::make_shared<Player>(pos);
-    entities.push_back(player);
-    Object playerCollider = (player->playerCollider);
 
     // ---- Load tilemap ----
     MapLoader map;
@@ -99,13 +96,23 @@ int main()
     // Set up pathfinding grid
     sf::Vector2i size = map.getSize();
     Grid grid(size.x, size.y);
+    // Find player and walls
     for (int y = 0; y < size.y; ++y) {
         for (int x = 0; x < size.x; ++x) {
             if (map.getTile(x, y) == '#') {
                 grid.nodes[y][x].wall = true;
             }
+            if (map.getTile(x, y) == 'P') {
+                // Set player position
+                pos = sf::Vector2f(static_cast<float>(x * TILE_SIZE + TILE_SIZE / 2.0f), static_cast<float>(y * TILE_SIZE + TILE_SIZE / 2.0f));
+            }
         }
     }
+
+    // ---- Create a player ----
+    auto player = std::make_shared<Player>(pos);
+    entities.push_back(player);
+    Object playerCollider = (player->playerCollider);
 
     // ---- Set up colliders ----
     std::vector<Object*> colliders; // Create colliders list
@@ -352,7 +359,6 @@ int main()
                         map.setTile(tileX, tileY, 'Q');
                         player->addGold(100);
                         goldPickupSound.play();
-
                         chest.state = 1;
                         chest.stateTimer = 0.f; // Start animation timer
                     }
