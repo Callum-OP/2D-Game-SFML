@@ -99,7 +99,7 @@ int main()
     // Find player and walls
     for (int y = 0; y < size.y; ++y) {
         for (int x = 0; x < size.x; ++x) {
-            if (map.getTile(x, y) == '#') {
+            if (map.getTile(x, y) == '#' || map.getTile(x, y) == 'U' || map.getTile(x, y) == 'L' || map.getTile(x, y) == 'R'  || map.getTile(x, y) == '%') {
                 grid.nodes[y][x].wall = true;
             }
             if (map.getTile(x, y) == 'P') {
@@ -143,7 +143,7 @@ int main()
     for (int y = 0; y < size.y; ++y) { // Height
         for (int x = 0; x < size.x; ++x) { // Width
             // Walls
-            if (map.getTile(x, y) == '#') {
+            if (map.getTile(x, y) == '#' || map.getTile(x, y) == 'U' || map.getTile(x, y) == 'L' || map.getTile(x, y) == 'R'  || map.getTile(x, y) == '%') {
                 Object wall;
                 wall.pos = Vec2(x * TILE_SIZE + TILE_SIZE / 2.0f, y * TILE_SIZE + TILE_SIZE / 2.0f);
                 wall.aabb.min = Vec2(x * TILE_SIZE, y * TILE_SIZE);

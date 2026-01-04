@@ -54,14 +54,12 @@ public:
     TileMapRenderer() {
         // Load all tile definitions
         loadTile('#', "assets/images/WallLowM.png", TileAsset::Type::Wall);
-        loadTile('<', "assets/images/WallLowL.png", TileAsset::Type::Wall);
-        loadTile('>', "assets/images/WallLowR.png", TileAsset::Type::Wall);
-        loadTile('[', "assets/images/WallHighL.png", TileAsset::Type::Wall);
-        loadTile(']', "assets/images/WallHighR.png", TileAsset::Type::Wall);
-        loadTile('_', "assets/images/WallHighM.png", TileAsset::Type::Wall);
         loadTile('L', "assets/images/WallSideL.png", TileAsset::Type::Wall);
         loadTile('R', "assets/images/WallSideR.png", TileAsset::Type::Wall);
         loadTile('U', "assets/images/WallSideU.png", TileAsset::Type::Wall);
+        loadTile('l', "assets/images/WallSideL.png", TileAsset::Type::Wall);
+        loadTile('r', "assets/images/WallSideR.png", TileAsset::Type::Wall);
+        loadTile('u', "assets/images/WallSideU.png", TileAsset::Type::Wall);
         
         loadTile('.', "assets/images/Floor.png", TileAsset::Type::Floor);
         loadTile(',', "assets/images/Grass.png", TileAsset::Type::Floor);
@@ -103,7 +101,7 @@ public:
                     window.draw(sprite);
                 // Should still draw a floor even if there is another object there
                 // It will decide the texture of the floor by looking at nearby floors
-                } else if (tile != 'U' && tile != 'L' && tile != 'R') {
+                } else if (tile != 'U' && tile != 'L' && tile != 'R' && tile != '%') {
                     // Count nearby floor symbols
                     std::map<char,int> counts;
                     for (int dy = -1; dy <= 1; ++dy) {
