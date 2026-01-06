@@ -42,6 +42,7 @@ Sometimes get the errors:
   "Failed to initialize the audio playback device: Invalid argument"
   "Failed to initialize audio device or engine"   
 As a result sometimes audio works and sometimes it does not.
+Enemies do not always spawn where they should spawn, some are outside of the map or seemingly absent.
 
 
 
